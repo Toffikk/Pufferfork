@@ -45,7 +45,7 @@ public class SentryContext {
 		ThreadContext.remove("pufferfishsentry_playerid");
 	}
 	
-	public static void setEventContext(Event event, RegisteredListener registration) {
+	public static void setEventContext(@Nullable Event event, @Nullable RegisteredListener registration) {
 		setPluginContext(registration.getPlugin());
 		
 		try {
@@ -118,43 +118,48 @@ public class SentryContext {
 		private Event event;
 		private RegisteredListener registeredListener;
 		
-		public Plugin getPlugin() {
+		@Nullable
+		public Plugin getPlugin(@Nullable Plugin plugin) {
 			return plugin;
 		}
 		
-		public void setPlugin(Plugin plugin) {
+		public void setPlugin(@Nullable Plugin plugin) {
 			this.plugin = plugin;
 		}
 		
-		public Command getCommand() {
+		@Nullable
+		public Command getCommand(@Nullable Command command) {
 			return command;
 		}
 		
-		public void setCommand(Command command) {
+		public void setCommand(@Nullable Command command) {
 			this.command = command;
 		}
 		
-		public String getCommandLine() {
+		@Nullable
+		public String getCommandLine(@Nullable String commandLine) {
 			return commandLine;
 		}
 		
-		public void setCommandLine(String commandLine) {
+		public void setCommandLine(@Nullable String commandLine) {
 			this.commandLine = commandLine;
 		}
 		
-		public Event getEvent() {
+		@Nullable
+		public Event getEvent(@Nullable Event event) {
 			return event;
 		}
 		
-		public void setEvent(Event event) {
+		public void setEvent(@Nullable Event event) {
 			this.event = event;
 		}
 		
-		public RegisteredListener getRegisteredListener() {
+		@Nullable
+		public RegisteredListener getRegisteredListener(@Nullable RegisteredListener registeredListener) {
 			return registeredListener;
 		}
 		
-		public void setRegisteredListener(RegisteredListener registeredListener) {
+		public void setRegisteredListener(@Nullable RegisteredListener registeredListener) {
 			this.registeredListener = registeredListener;
 		}
 	}

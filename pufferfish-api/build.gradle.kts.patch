@@ -50,15 +50,17 @@
  tasks.jar {
      from(generateApiVersioningFile.map { it.outputs.files.singleFile }) {
          into("META-INF/maven/${project.group}/${project.name}")
-@@ -169,7 +_,7 @@
+@@ -169,8 +_,9 @@
  
  tasks.withType<Javadoc> {
      val options = options as StandardJavadocDocletOptions
 -    options.overview = "src/main/javadoc/overview.html"
 +    options.overview = "../paper-api/src/main/javadoc/overview.html"
      options.use()
++    options.addStringOption("-add-modules", "jdk.incubator.vector") // Pufferfish - Sentry
      options.isDocFilesSubDirs = true
      options.links(
+         "https://guava.dev/releases/33.3.1-jre/api/docs/",
 @@ -202,11 +_,11 @@
      }
  
