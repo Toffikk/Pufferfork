@@ -27,7 +27,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 diff --git a/io/papermc/paper/entity/activation/ActivationRange.java b/io/papermc/paper/entity/activation/ActivationRange.java
-index a09d3d5f88405011e0c2309465c7135d2fca265e..2501ddc89f7bac56ef9c47bde85f8d815e9b942b 100644
+index f4e281d85d10083c588795b9dc3424193b31dcef..1876b79fdeeaf615d482a20718fba11d69939782 100644
 --- a/io/papermc/paper/entity/activation/ActivationRange.java
 +++ b/io/papermc/paper/entity/activation/ActivationRange.java
 @@ -33,6 +33,11 @@ import net.minecraft.world.entity.schedule.Activity;
@@ -83,7 +83,7 @@ index a09d3d5f88405011e0c2309465c7135d2fca265e..2501ddc89f7bac56ef9c47bde85f8d81
              }
          }
 diff --git a/net/minecraft/server/level/ServerLevel.java b/net/minecraft/server/level/ServerLevel.java
-index 4604a83b8428fc1c9359f6208a5b293a2a6488a9..1144f8864cebd8d6798998007aeb141f9ca8aaf4 100644
+index 0ac4af6ca44013047c939ac40bcbbe65d57ce4d4..fbe34459595f476fd52be8b7cc508e488297b5d9 100644
 --- a/net/minecraft/server/level/ServerLevel.java
 +++ b/net/minecraft/server/level/ServerLevel.java
 @@ -798,6 +798,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
@@ -95,10 +95,10 @@ index 4604a83b8428fc1c9359f6208a5b293a2a6488a9..1144f8864cebd8d6798998007aeb141f
                              if (!tickRateManager.isEntityFrozen(entity)) {
                                  profilerFiller.push("checkDespawn");
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index c67e0fec95a32588a06e9f0c3dc386475166bdda..12dc601bedab80d4d72e12f671c11b2bd968a5c6 100644
+index 101fce8389f0cc169a71c39d2640da090cdef571..8adde6bc46daa1ca7d962775e6dcc6a279fac2fd 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
-@@ -343,6 +343,8 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -344,6 +344,8 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
      public boolean isTemporarilyActive;
      public long activatedImmunityTick = Integer.MIN_VALUE;
      public final BlockPos.MutableBlockPos cachedBlockPos = new BlockPos.MutableBlockPos(); // Pufferfish - reduce entity allocations
@@ -262,7 +262,7 @@ index 97adf8142cdd322c4873c420ed760e9dee34da23..86b77aa80c82427598af41d028badbfd
          profilerFiller.pop();
          profilerFiller.push("tadpoleActivityUpdate");
 diff --git a/net/minecraft/world/entity/animal/goat/Goat.java b/net/minecraft/world/entity/animal/goat/Goat.java
-index 504a30ead8d2bb13d559acbde62f9d44a5dda1cb..be97c94dd88b5cfe0fdeef9446b966b313101ffe 100644
+index c91e1f8e5fd39bcc48f9f0bf002770b2dff74404..84709165e7abf3411ad8a91082e1489ab53ee1dc 100644
 --- a/net/minecraft/world/entity/animal/goat/Goat.java
 +++ b/net/minecraft/world/entity/animal/goat/Goat.java
 @@ -184,10 +184,12 @@ public class Goat extends Animal {
