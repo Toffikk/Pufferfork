@@ -6,7 +6,7 @@
                      flag4 = true;
 -                } else if ((!flag2 || !flag) && !(this.entity instanceof AbstractArrow)) {
 +                    // Pufferfish start - Better checking for useless move packets
-+                } else if (flag2 || flag3 || this.entity instanceof AbstractArrow) {
++                } else if (flag2 || flag || this.entity instanceof AbstractArrow) {
 +                 if ((!flag2 || !flag) && !(this.entity instanceof AbstractArrow)) {
 +                    // Pufferfish end
                      if (flag2) {
