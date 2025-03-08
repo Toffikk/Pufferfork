@@ -3,6 +3,7 @@ exit_on_error() {
     exit 1
 }
 
+cd ..
 git reset HEAD --hard
 
 oldHash=$(grep "paperRef=" gradle.properties | cut -d "=" -f2)
