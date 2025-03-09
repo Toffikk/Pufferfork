@@ -17,12 +17,13 @@ fi
 echo "Updating paper: $oldHash -> $newHash"
 
 sed -i "s/$oldHash/$newHash/g" gradle.properties
-git add gradle.properties
 
 ./gradlew applyAllPatches || exit_on_error "An error occurred when merging patches!"
 ./gradlew rebuildAllServerPatches || exit_on_error "An error occurred when rebuilding server patches!"
 ./gradlew rebuildPaperApiPatches || exit_on_error "An error occurred when rebuilding api patches!"
 ./gradlew createMojmapPaperclipJar || exit_on_error "An error occurred when building!"
+
+git add .
 
 scripts/upstreamCommit.sh $oldHash $newHash
 
