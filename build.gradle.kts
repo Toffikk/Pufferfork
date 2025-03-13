@@ -64,6 +64,7 @@ subprojects {
         options.encoding = Charsets.UTF_8.name()
         options.release = 21
         options.isFork = true
+	options.isWarnings = false
     }
     tasks.withType<Javadoc> {
         options.encoding = Charsets.UTF_8.name()
