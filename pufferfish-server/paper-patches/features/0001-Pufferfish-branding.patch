@@ -32,10 +32,10 @@ index 8f62879582195d8ae4f64bd23f752fa133b1c973..e8a4224c91602f615fa7bc7f6dce92ea
                  metrics.addCustomChart(new Metrics.DrilldownPie("java_version", () -> {
                      Map<String, Map<String, Integer>> map = new HashMap<>();
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index bd8005cd3a52532f4cb2e123da473f1490b59dbb..6d6e18f5a4db6ac2f79324780e714c048f84f33c 100644
+index 9ffc41ee446f617e35df0e6fc2b0f7e21433c8e4..3d0bc172fe80c3541e5a88dcb22057d79b7c9be3 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-@@ -508,7 +508,7 @@ public final class CraftMagicNumbers implements UnsafeValues {
+@@ -507,7 +507,7 @@ public final class CraftMagicNumbers implements UnsafeValues {
      // Paper start
      @Override
      public com.destroystokyo.paper.util.VersionFetcher getVersionFetcher() {

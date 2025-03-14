@@ -5,7 +5,7 @@ Subject: [PATCH] Fix version fetcher
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
-index 532306cacd52579cdf37e4aca25887b1ed3ba6a1..37886ff73cd806859efd981b7942dd64435445d0 100644
+index afa6ac623bc280f1ff4da580eb6f14fc839a2580..63eb07bcd6279cf2f8e265aada9fa86758bfaf3c 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 @@ -35,7 +35,7 @@ public class PaperVersionFetcher implements VersionFetcher {
@@ -49,7 +49,7 @@ index 532306cacd52579cdf37e4aca25887b1ed3ba6a1..37886ff73cd806859efd981b7942dd64
 -        try {
 -            try (final BufferedReader reader = Resources.asCharSource(
 -                URI.create("https://api.papermc.io/v2/projects/paper/versions/" + build.minecraftVersionId()).toURL(),
--                Charsets.UTF_8
+-                StandardCharsets.UTF_8
 -            ).openBufferedStream()) {
 -                final JsonObject json = new Gson().fromJson(reader, JsonObject.class);
 -                final JsonArray builds = json.getAsJsonArray("builds");
@@ -96,10 +96,10 @@ index 790bad0494454ca12ee152e3de6da3da634d9b20..edf7ea1ca28102163f9a29f6134883b7
              SharedConstants.getCurrentVersion().getName(),
              getManifestAttribute(manifest, ATTRIBUTE_BUILD_NUMBER)
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index f63f146fa55c39a04c0141b7aaba9e633d0f4ea4..46ffdad1f23108807b4396853470a9ad1bea6361 100644
+index 3d0bc172fe80c3541e5a88dcb22057d79b7c9be3..de1d6c4e2d2b4802eb2934440a5893892f125ca6 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-@@ -508,7 +508,8 @@ public final class CraftMagicNumbers implements UnsafeValues {
+@@ -507,7 +507,8 @@ public final class CraftMagicNumbers implements UnsafeValues {
      // Paper start
      @Override
      public com.destroystokyo.paper.util.VersionFetcher getVersionFetcher() {
