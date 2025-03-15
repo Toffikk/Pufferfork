@@ -1,0 +1,21 @@
+--- a/net/minecraft/world/level/Level.java
++++ b/net/minecraft/world/level/Level.java
+@@ -1497,15 +_,15 @@
+     public <T extends Entity> void guardEntityTick(Consumer<T> consumerEntity, T entity) {
+         try {
+             consumerEntity.accept(entity);
+-        } catch (Throwable var6) {
++        } catch (Throwable var6) { // Pufferfish - Remove lambda from ticking guard (diff on change ServerLevel.tick)
+             // Paper start - Prevent block entity and entity crashes
+             final String msg = String.format("Entity threw exception at %s:%s,%s,%s", entity.level().getWorld().getName(), entity.getX(), entity.getY(), entity.getZ());
+             MinecraftServer.LOGGER.error(msg, var6);
+             getCraftServer().getPluginManager().callEvent(new com.destroystokyo.paper.event.server.ServerExceptionEvent(new com.destroystokyo.paper.exception.ServerInternalException(msg, var6))); // Paper - ServerExceptionEvent
+-            entity.discard(org.bukkit.event.entity.EntityRemoveEvent.Cause.DISCARD);
++            entity.discard(org.bukkit.event.entity.EntityRemoveEvent.Cause.DISCARD); // Pufferfish - Remove lambda from ticking guard (diff on change ServerLevel.tick)
+             // Paper end - Prevent block entity and entity crashes
+         }
+-        this.moonrise$midTickTasks(); // Paper - rewrite chunk system
++        this.moonrise$midTickTasks(); // Paper - rewrite chunk system // Pufferfish - Remove lambda from ticking guard (diff on change ServerLevel.tick)
+     }
+ 
+     // Paper start - Option to prevent armor stands from doing entity lookups
