@@ -1,14 +1,5 @@
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
-@@ -28,6 +_,8 @@
- import java.util.function.Predicate;
- import javax.annotation.Nonnull;
- import javax.annotation.Nullable;
-+import javax.swing.text.html.parser.Entity;
-+
- import net.minecraft.BlockUtil;
- import net.minecraft.Util;
- import net.minecraft.advancements.CriteriaTriggers;
 @@ -436,7 +_,7 @@
  
          if (this.isAlive() && this.level() instanceof ServerLevel serverLevel1) {
