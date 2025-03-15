@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/entity/ai/attributes/AttributeMap.java
 +++ b/net/minecraft/world/entity/ai/attributes/AttributeMap.java
-@@ -23,9 +_,11 @@
+@@ -18,9 +_,11 @@
      private final Set<AttributeInstance> attributesToSync = new ObjectOpenHashSet<>();
      private final Set<AttributeInstance> attributesToUpdate = new ObjectOpenHashSet<>();
      private final AttributeSupplier supplier;
@@ -12,7 +12,7 @@
      }
  
      private void onAttributeModified(AttributeInstance instance) {
-@@ -49,7 +_,7 @@
+@@ -44,7 +_,7 @@
  
      @Nullable
      public AttributeInstance getInstance(Holder<Attribute> attribute) {
