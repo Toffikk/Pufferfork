@@ -5,10 +5,10 @@ Subject: [PATCH] Pufferfish branding
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/Metrics.java b/src/main/java/com/destroystokyo/paper/Metrics.java
-index 8f62879582195d8ae4f64bd23f752fa133b1c973..e8a4224c91602f615fa7bc7f6dce92eadc400c6e 100644
+index 6abc57669e87f7f98f3b76af3c0e50825fea6eb1..ee75e46b77caccde3c7571a85b05702a6b9bdf9d 100644
 --- a/src/main/java/com/destroystokyo/paper/Metrics.java
 +++ b/src/main/java/com/destroystokyo/paper/Metrics.java
-@@ -592,7 +592,7 @@ public class Metrics {
+@@ -593,7 +593,7 @@ public class Metrics {
              boolean logFailedRequests = config.getBoolean("logFailedRequests", false);
              // Only start Metrics, if it's enabled in the config
              if (config.getBoolean("enabled", true)) {
@@ -17,7 +17,7 @@ index 8f62879582195d8ae4f64bd23f752fa133b1c973..e8a4224c91602f615fa7bc7f6dce92ea
  
                  metrics.addCustomChart(new Metrics.SimplePie("minecraft_version", () -> {
                      String minecraftVersion = Bukkit.getVersion();
-@@ -606,11 +606,11 @@ public class Metrics {
+@@ -607,11 +607,11 @@ public class Metrics {
                  final String implVersion = org.bukkit.craftbukkit.Main.class.getPackage().getImplementationVersion();
                  if (implVersion != null) {
                      final String buildOrHash = implVersion.substring(implVersion.lastIndexOf('-') + 1);
@@ -32,11 +32,11 @@ index 8f62879582195d8ae4f64bd23f752fa133b1c973..e8a4224c91602f615fa7bc7f6dce92ea
                  metrics.addCustomChart(new Metrics.DrilldownPie("java_version", () -> {
                      Map<String, Map<String, Integer>> map = new HashMap<>();
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index 9ffc41ee446f617e35df0e6fc2b0f7e21433c8e4..3d0bc172fe80c3541e5a88dcb22057d79b7c9be3 100644
+index 4f7d7c94dfea0d39de555d5e7eb6853aea606a76..64ffefb1fe1a3191838b446eaa9a3da6b6b517b0 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-@@ -507,7 +507,7 @@ public final class CraftMagicNumbers implements UnsafeValues {
-     // Paper start
+@@ -491,7 +491,7 @@ public final class CraftMagicNumbers implements UnsafeValues {
+ 
      @Override
      public com.destroystokyo.paper.util.VersionFetcher getVersionFetcher() {
 -        return new com.destroystokyo.paper.PaperVersionFetcher();

@@ -2,7 +2,7 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
-    id("io.papermc.paperweight.patcher") version "2.0.1-SNAPSHOT"
+    id("io.papermc.paperweight.patcher") version "2.0.0-beta.16"
 }
 
 paperweight {
@@ -41,14 +41,8 @@ subprojects {
     }
 
     repositories {
-        mavenLocal()
         mavenCentral()
-        maven("https://oss.sonatype.org/content/groups/public/")
         maven(paperMavenPublicUrl)
-        maven("https://ci.emc.gs/nexus/content/groups/aikar/")
-        maven("https://repo.aikar.co/content/groups/aikar")
-        maven("https://repo.md-5.net/content/repositories/releases/")
-        maven("https://hub.spigotmc.org/nexus/content/groups/public/")
         maven("https://jitpack.io")
     }
 
@@ -64,7 +58,7 @@ subprojects {
         options.encoding = Charsets.UTF_8.name()
         options.release = 21
         options.isFork = true
-	options.isWarnings = false
+	options.compilerArgs.addAll(listOf("-Xlint:-deprecation", "-Xlint:-removal"))
     }
     tasks.withType<Javadoc> {
         options.encoding = Charsets.UTF_8.name()

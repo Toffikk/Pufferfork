@@ -13,4 +13,4 @@
 +    // Pufferfish end
  
      @Override
-     protected SoundEvent getAmbientSound() {
+     public SoundEvent getAmbientSound() {
