@@ -1,11 +1,9 @@
 --- a/paper-server/build.gradle.kts
 +++ b/paper-server/build.gradle.kts
-@@ -20,9 +_,20 @@
-     minecraftVersion = providers.gradleProperty("mcVersion")
-     gitFilePatches = false
+@@ -24,6 +_,17 @@
+     //    oldPaperCommit = "f4f275519f7c1fbe9db173b7144a4fe81440e365"
+     //}
  
--    updatingMinecraft {
--        oldPaperCommit = "f4f275519f7c1fbe9db173b7144a4fe81440e365"
 +    val pufferfish = forks.register("pufferfish") {
 +        upstream.patchDir("paperServer") {
 +            upstreamPath = "paper-server"
@@ -13,16 +11,13 @@
 +            patchesDir = rootDirectory.dir("pufferfish-server/paper-patches")
 +            outputDir = rootDirectory.dir("paper-server")
 +        }
-     }
++     }
 +
 +    activeFork = pufferfish
 +
-+    //updatingMinecraft {
-+    //    oldPaperCommit = "f4f275519f7c1fbe9db173b7144a4fe81440e365"
-+    //}
- 
      spigot {
          buildDataRef = "3edaf46ec1eed4115ce1b18d2846cded42577e42"
+         packageVersion = "v1_21_R3" // also needs to be updated in MappingEnvironment
 @@ -104,7 +_,21 @@
      }
  }
