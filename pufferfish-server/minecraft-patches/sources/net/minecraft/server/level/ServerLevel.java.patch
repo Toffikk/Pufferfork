@@ -16,7 +16,7 @@
 +                                    entity.discard(org.bukkit.event.entity.EntityRemoveEvent.Cause.DISCARD);
 +                                    // Paper end - Prevent block entity and entity crashes
 +                                }
-+                                this.moonrise$midTickTasks(); // Paper - rewrite chunk system
++                                //this.moonrise$midTickTasks(); // Paper - rewrite chunk system
 +                                // Pufferfish end
                                      profilerFiller.pop();
                                  }
@@ -26,7 +26,7 @@
          ProfilerFiller profilerFiller = Profiler.get();
          profilerFiller.push("thunder");
 -        if (!this.paperConfig().environment.disableThunder && isRaining && this.isThundering() && this.spigotConfig.thunderChance > 0 && this.random.nextInt(this.spigotConfig.thunderChance) == 0) { // Spigot // Paper - Option to disable thunder
-+        if (!this.paperConfig().environment.disableThunder && isRaining && this.isThundering() && this.spigotConfig.thunderChance > 0 && /*simpleRandom.nextInt(this.spigotConfig.thunderChance) == 0*/ chunk.shouldDoLightning(this.simpleRandom)) { // Spigot // Paper - Option to disable thunder // Pufferfish - Optimize random calls in chunk ticking (replace random with shouldDoLightning)
++        if (!this.paperConfig().environment.disableThunder && isRaining && this.isThundering() && this.spigotConfig.thunderChance > 0 && /*simpleRandom.nextInt(this.spigotConfig.thunderChance) == 0*/ chunk.shouldDoLightning(this.random)) { // Spigot // Paper - Option to disable thunder // Pufferfish - Optimize random calls in chunk ticking (replace random with shouldDoLightning) - (compile fix) change to simpleRandom later
              BlockPos blockPos = this.findLightningTargetAround(this.getBlockRandomPos(minBlockX, 0, minBlockZ, 15));
              if (this.isRainingAt(blockPos)) {
                  DifficultyInstance currentDifficultyAt = this.getCurrentDifficultyAt(blockPos);
