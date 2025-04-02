@@ -5,7 +5,7 @@ Subject: [PATCH] Fix version fetcher
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
-index 532306cacd52579cdf37e4aca25887b1ed3ba6a1..37886ff73cd806859efd981b7942dd64435445d0 100644
+index bad941054349efe53756d6ab53ba7f6872de8e6f..1b65ee65d9eea066221805f5c34ccadfe2c1f202 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 @@ -35,7 +35,7 @@ public class PaperVersionFetcher implements VersionFetcher {
@@ -41,36 +41,6 @@ index 532306cacd52579cdf37e4aca25887b1ed3ba6a1..37886ff73cd806859efd981b7942dd64
          }
  
          return switch (distance) {
-@@ -83,29 +79,6 @@ public class PaperVersionFetcher implements VersionFetcher {
-         };
-     }
- 
--    private static int fetchDistanceFromSiteApi(final ServerBuildInfo build, final int jenkinsBuild) {
--        try {
--            try (final BufferedReader reader = Resources.asCharSource(
--                URI.create("https://api.papermc.io/v2/projects/paper/versions/" + build.minecraftVersionId()).toURL(),
--                Charsets.UTF_8
--            ).openBufferedStream()) {
--                final JsonObject json = new Gson().fromJson(reader, JsonObject.class);
--                final JsonArray builds = json.getAsJsonArray("builds");
--                final int latest = StreamSupport.stream(builds.spliterator(), false)
--                    .mapToInt(JsonElement::getAsInt)
--                    .max()
--                    .orElseThrow();
--                return latest - jenkinsBuild;
--            } catch (final JsonSyntaxException ex) {
--                LOGGER.error("Error parsing json from Paper's downloads API", ex);
--                return DISTANCE_ERROR;
--            }
--        } catch (final IOException e) {
--            LOGGER.error("Error while parsing version", e);
--            return DISTANCE_ERROR;
--        }
--    }
--
-     // Contributed by Techcable <Techcable@outlook.com> in GH-65
-     private static int fetchDistanceFromGitHub(final String repo, final String branch, final String hash) {
-         try {
 diff --git a/src/main/java/io/papermc/paper/ServerBuildInfoImpl.java b/src/main/java/io/papermc/paper/ServerBuildInfoImpl.java
 index 790bad0494454ca12ee152e3de6da3da634d9b20..edf7ea1ca28102163f9a29f6134883b75b082e0a 100644
 --- a/src/main/java/io/papermc/paper/ServerBuildInfoImpl.java
@@ -96,11 +66,11 @@ index 790bad0494454ca12ee152e3de6da3da634d9b20..edf7ea1ca28102163f9a29f6134883b7
              SharedConstants.getCurrentVersion().getName(),
              getManifestAttribute(manifest, ATTRIBUTE_BUILD_NUMBER)
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index f63f146fa55c39a04c0141b7aaba9e633d0f4ea4..46ffdad1f23108807b4396853470a9ad1bea6361 100644
+index c1ab70777393f078087d2589ffb007badb1d1f28..cd4f9c7cc22a04815bc3948d5671e9400a36ccdb 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-@@ -508,7 +508,8 @@ public final class CraftMagicNumbers implements UnsafeValues {
-     // Paper start
+@@ -481,7 +481,8 @@ public final class CraftMagicNumbers implements UnsafeValues {
+ 
      @Override
      public com.destroystokyo.paper.util.VersionFetcher getVersionFetcher() {
 -        return new gg.pufferfish.pufferfish.PufferfishVersionFetcher(); // Pufferfish - Rebranding

@@ -6,6 +6,6 @@
                          EndDragonFight dragonFight = ((ServerLevel)level).getDragonFight();
 -                        if (dragonFight != null) {
 +                        if (dragonFight != null && gg.pufferfish.pufferfish.PufferfishConfig.allowEndCrystalRespawn) { // Pufferfish - Option to disable end crystal dragon respawning
-                             dragonFight.tryRespawn(aboveBlockPosition); // Paper - Perf: Do crystal-portal proximity check before entity lookup
+                             dragonFight.tryRespawn(aboveBlockPos); // Paper - Perf: Do crystal-portal proximity check before entity lookup
                          }
                      }

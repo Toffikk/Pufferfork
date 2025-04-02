@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/entity/ambient/Bat.java
 +++ b/net/minecraft/world/entity/ambient/Bat.java
-@@ -243,11 +_,20 @@
+@@ -244,11 +_,20 @@
          }
      }
  

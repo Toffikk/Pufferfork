@@ -1,9 +1,9 @@
 --- a/paper-server/build.gradle.kts
 +++ b/paper-server/build.gradle.kts
-@@ -20,6 +_,16 @@
-     minecraftVersion = providers.gradleProperty("mcVersion")
-     // macheOldPath = file("F:\\Projects\\PaperTooling\\mache\\versions\\1.21.4\\src\\main\\java")
-     // gitFilePatches = true
+@@ -28,6 +_,17 @@
+     //    oldPaperCommit = "f4f275519f7c1fbe9db173b7144a4fe81440e365"
+     //}
+ 
 +    val pufferfish = forks.register("pufferfish") {
 +        upstream.patchDir("paperServer") {
 +            upstreamPath = "paper-server"
@@ -11,13 +11,14 @@
 +            patchesDir = rootDirectory.dir("pufferfish-server/paper-patches")
 +            outputDir = rootDirectory.dir("paper-server")
 +        }
-+    }
++     }
 +
 +    activeFork = pufferfish
- 
++
      spigot {
-         buildDataRef = "3edaf46ec1eed4115ce1b18d2846cded42577e42"
-@@ -101,7 +_,21 @@
+         buildDataRef = "702e1a0a5072b2c4082371d5228cb30525687efc"
+         packageVersion = "v1_21_R4" // also needs to be updated in MappingEnvironment
+@@ -108,7 +_,21 @@
      }
  }
  
@@ -40,7 +41,7 @@
  configurations.named(log4jPlugins.compileClasspathConfigurationName) {
      extendsFrom(configurations.compileClasspath.get())
  }
-@@ -119,7 +_,7 @@
+@@ -130,7 +_,7 @@
  }
  
  dependencies {
@@ -49,7 +50,7 @@
      implementation("ca.spottedleaf:concurrentutil:0.0.3")
      implementation("org.jline:jline-terminal-ffm:3.27.1") // use ffm on java 22+
      implementation("org.jline:jline-terminal-jni:3.27.1") // fall back to jni on java 21
-@@ -154,6 +_,14 @@
+@@ -166,6 +_,14 @@
      runtimeOnly("org.apache.maven.resolver:maven-resolver-connector-basic:1.9.18")
      runtimeOnly("org.apache.maven.resolver:maven-resolver-transport-http:1.9.18")
  
@@ -64,7 +65,7 @@
      testImplementation("io.github.classgraph:classgraph:4.8.47") // For mob goal test
      testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
      testImplementation("org.junit.platform:junit-platform-suite-engine:1.10.0")
-@@ -177,6 +_,13 @@
+@@ -189,6 +_,13 @@
      implementation("me.lucko:spark-paper:1.10.119-20241121.092015-1")
  }
  
@@ -78,7 +79,7 @@
  tasks.jar {
      manifest {
          val git = Git(rootProject.layout.projectDirectory.path)
-@@ -189,14 +_,14 @@
+@@ -201,14 +_,14 @@
          val gitBranch = git.exec(providers, "rev-parse", "--abbrev-ref", "HEAD").get().trim()
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
@@ -98,3 +99,12 @@
              "Build-Number" to (build ?: ""),
              "Build-Time" to buildTime.toString(),
              "Git-Branch" to gitBranch,
+@@ -262,7 +_,7 @@
+     jvmArgumentProviders.add(provider)
+ }
+ 
+-val generatedDir: java.nio.file.Path = layout.projectDirectory.dir("src/generated/java").asFile.toPath()
++val generatedDir: java.nio.file.Path = layout.projectDirectory.dir("../paper-server/src/generated/java").asFile.toPath()
+ idea {
+     module {
+         generatedSourceDirs.add(generatedDir.toFile())

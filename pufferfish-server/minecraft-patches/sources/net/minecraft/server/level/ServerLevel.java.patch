@@ -1,6 +1,6 @@
 --- a/net/minecraft/server/level/ServerLevel.java
 +++ b/net/minecraft/server/level/ServerLevel.java
-@@ -814,7 +_,19 @@
+@@ -804,7 +_,19 @@
                                      }
  
                                      profilerFiller.push("tick");
@@ -21,12 +21,12 @@
                                      profilerFiller.pop();
                                  }
                              }
-@@ -926,7 +_,7 @@
+@@ -939,7 +_,7 @@
          int minBlockZ = pos.getMinBlockZ();
          ProfilerFiller profilerFiller = Profiler.get();
          profilerFiller.push("thunder");
--        if (!this.paperConfig().environment.disableThunder && isRaining && this.isThundering() && this.spigotConfig.thunderChance > 0 && simpleRandom.nextInt(this.spigotConfig.thunderChance) == 0) { // Spigot // Paper - Option to disable thunder // Paper - optimise random ticking
-+        if (!this.paperConfig().environment.disableThunder && isRaining && this.isThundering() && this.spigotConfig.thunderChance > 0 && /*simpleRandom.nextInt(this.spigotConfig.thunderChance) == 0*/ chunk.shouldDoLightning(this.simpleRandom)) { // Spigot // Paper - Option to disable thunder // Paper - optimise random ticking // Pufferfish - Optimize random calls in chunk ticking (replace random with shouldDoLightning)
+-        if (!this.paperConfig().environment.disableThunder && isRaining && this.isThundering() && this.spigotConfig.thunderChance > 0 && this.random.nextInt(this.spigotConfig.thunderChance) == 0) { // Spigot // Paper - Option to disable thunder
++        if (!this.paperConfig().environment.disableThunder && isRaining && this.isThundering() && this.spigotConfig.thunderChance > 0 && /*simpleRandom.nextInt(this.spigotConfig.thunderChance) == 0*/ chunk.shouldDoLightning(this.simpleRandom)) { // Spigot // Paper - Option to disable thunder // Pufferfish - Optimize random calls in chunk ticking (replace random with shouldDoLightning)
              BlockPos blockPos = this.findLightningTargetAround(this.getBlockRandomPos(minBlockX, 0, minBlockZ, 15));
              if (this.isRainingAt(blockPos)) {
                  DifficultyInstance currentDifficultyAt = this.getCurrentDifficultyAt(blockPos);
