@@ -17,7 +17,7 @@ and, in my opinion, worth the low risk of minor mob-spawning-related
 inconsistencies.
 
 diff --git a/net/minecraft/server/MinecraftServer.java b/net/minecraft/server/MinecraftServer.java
-index 505f17c19a9fc33b4f25b5ab1a276bb14870fc0a..14601eceeb4712ec47d915e1dcb52cbf0e7cc722 100644
+index f65b586b6f00f2a294822df4f9fd046db1e582b9..dfba265d574506809f98811649fb8f8682d7c98a 100644
 --- a/net/minecraft/server/MinecraftServer.java
 +++ b/net/minecraft/server/MinecraftServer.java
 @@ -302,6 +302,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -42,7 +42,7 @@ index 50ae0c22469b0aeee5e2a04b60565418bbb3a711..82e8110eaef1ffaf833b6b5a5bf99fc4
          }
      }
 diff --git a/net/minecraft/server/level/ServerChunkCache.java b/net/minecraft/server/level/ServerChunkCache.java
-index 59e8a5e1b35c81883c9b1ca00c6e55d77584d8cc..685d666c2b0d62b7925317c4452321945cc10e27 100644
+index 59e8a5e1b35c81883c9b1ca00c6e55d77584d8cc..0be7fe541d310f002a406584d3cb5f8a4039e8be 100644
 --- a/net/minecraft/server/level/ServerChunkCache.java
 +++ b/net/minecraft/server/level/ServerChunkCache.java
 @@ -184,7 +184,10 @@ public class ServerChunkCache extends ChunkSource implements ca.spottedleaf.moon
@@ -138,6 +138,15 @@ index 59e8a5e1b35c81883c9b1ca00c6e55d77584d8cc..685d666c2b0d62b7925317c445232194
          } else {
              filteredSpawningCategories = List.of();
          }
+@@ -596,7 +641,7 @@ public class ServerChunkCache extends ChunkSource implements ca.spottedleaf.moon
+             profiler.popPush("tickSpawningChunks");
+ 
+             for (LevelChunk levelChunk : list) {
+-                this.tickSpawningChunk(levelChunk, timeInhabited, filteredSpawningCategories, spawnState);
++                this.tickSpawningChunk(levelChunk, timeInhabited, filteredSpawningCategories, lastSpawnState); // Pufferfish - optimize mob spawning
+             }
+         } finally {
+             list.clear();
 @@ -619,8 +664,8 @@ public class ServerChunkCache extends ChunkSource implements ca.spottedleaf.moon
          }
  
