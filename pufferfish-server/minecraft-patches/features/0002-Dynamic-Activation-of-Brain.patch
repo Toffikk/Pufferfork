@@ -83,10 +83,10 @@ index a4cfccf915b1200ba071482329a3b35531bfdfd5..50f82248c140316ceb5ed7f5fe89ef78
              }
          }
 diff --git a/net/minecraft/server/level/ServerLevel.java b/net/minecraft/server/level/ServerLevel.java
-index b81153a32f2e267cc88980f3ab0519057f569bbb..e49455cd94c40e3c9b01a23ed30501c1d2702480 100644
+index 089074c07762315ebfce888efad1e8ccc2fca157..0291960642289a96ec88fb70c2a5ebc49726d97b 100644
 --- a/net/minecraft/server/level/ServerLevel.java
 +++ b/net/minecraft/server/level/ServerLevel.java
-@@ -548,6 +548,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
+@@ -788,6 +788,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
              this.entityTickList
                  .forEach(
                      entity -> {
@@ -95,10 +95,10 @@ index b81153a32f2e267cc88980f3ab0519057f569bbb..e49455cd94c40e3c9b01a23ed30501c1
                              if (!tickRateManager.isEntityFrozen(entity)) {
                                  profilerFiller.push("checkDespawn");
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index 59d22a255162fc9110e0fe3270f2b5e862c0c14a..b874fe8e349d5c5eb09a9669b753e7d2f2b48e9c 100644
+index 0abddb09bb83a628ed5ac446f880f8dfcca0d432..9aa7f90a4e8822375b657d460a8f5763f4cdfa84 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
-@@ -395,6 +395,8 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -351,6 +351,8 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
      public boolean isTemporarilyActive;
      public long activatedImmunityTick = Integer.MIN_VALUE;
      public final BlockPos.MutableBlockPos cachedBlockPos = new BlockPos.MutableBlockPos(); // Pufferfish - reduce entity allocations
@@ -108,7 +108,7 @@ index 59d22a255162fc9110e0fe3270f2b5e862c0c14a..b874fe8e349d5c5eb09a9669b753e7d2
      public void inactiveTick() {
      }
 diff --git a/net/minecraft/world/entity/EntityType.java b/net/minecraft/world/entity/EntityType.java
-index 4c57990c94721dd0973477669e1dadfab5f16404..034021b819f5a684fcb49005768eb5c54fa370be 100644
+index 8af02ed823da098a5592ef195c9fe8ed8f245b53..69d79fc9fec9c0f020eb3055de480f26f2f02084 100644
 --- a/net/minecraft/world/entity/EntityType.java
 +++ b/net/minecraft/world/entity/EntityType.java
 @@ -1076,6 +1076,7 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT

@@ -1,6 +1,6 @@
 --- a/src/main/java/ca/spottedleaf/moonrise/common/list/IteratorSafeOrderedReferenceSet.java
 +++ b/src/main/java/ca/spottedleaf/moonrise/common/list/IteratorSafeOrderedReferenceSet.java
-@@ -18,7 +_,7 @@
+@@ -19,7 +_,7 @@
  
      private final double maxFragFactor;
  
@@ -8,17 +8,17 @@
 +    private final java.util.concurrent.atomic.AtomicInteger iteratorCount = new java.util.concurrent.atomic.AtomicInteger(); // Pufferfish - optimize mob spawning
  
      public IteratorSafeOrderedReferenceSet() {
-         this(16, 0.75f, 16, 0.2);
-@@ -79,7 +_,7 @@
+         this(Object.class);
+@@ -99,7 +_,7 @@
      }
  
      public int createRawIterator() {
 -        ++this.iteratorCount;
 +        this.iteratorCount.incrementAndGet(); // Pufferfish - optimize mob spawning
          if (this.indexMap.isEmpty()) {
-             return -1;
+             return Integer.MAX_VALUE;
          } else {
-@@ -100,7 +_,7 @@
+@@ -120,7 +_,7 @@
      }
  
      public void finishRawIterator() {
@@ -27,7 +27,7 @@
              if (this.getFragFactor() >= this.maxFragFactor) {
                  this.defrag();
              }
-@@ -117,7 +_,7 @@
+@@ -137,7 +_,7 @@
                  throw new IllegalStateException();
              }
              this.listElements[index] = null;
@@ -36,7 +36,7 @@
                  this.defrag();
              }
              //this.check();
-@@ -219,7 +_,7 @@
+@@ -235,7 +_,7 @@
      }
  
      public IteratorSafeOrderedReferenceSet.Iterator<E> iterator(final int flags) {

@@ -14,10 +14,10 @@
          this.group = group;
          this.category = category;
          this.result = result;
-@@ -72,6 +_,28 @@
- 
+@@ -73,6 +_,28 @@
      @Override
      public boolean matches(CraftingInput input, Level level) {
+         // Paper start - Improve exact choice recipe ingredients & unwrap ternary
 +        // Pufferfish start - Simpler ShapelessRecipes comparison for Vanilla
 +        if (!this.isBukkit) {
 +            java.util.List<Ingredient> ingredients = com.google.common.collect.Lists.newArrayList(this.ingredients.toArray(new Ingredient[0]));
@@ -42,4 +42,4 @@
 +
          if (input.ingredientCount() != this.ingredients.size()) {
              return false;
-         } else {
+         }

@@ -7,7 +7,7 @@
 +    api("io.sentry:sentry:5.4.0") // Pufferfish
  
      // Deprecate bungeecord-chat in favor of adventure
-     api("net.md-5:bungeecord-chat:$bungeeCordChatVersion-deprecated+build.19") {
+     api("net.md-5:bungeecord-chat:$bungeeCordChatVersion") {
 @@ -93,7 +_,7 @@
      testRuntimeOnly("org.junit.platform:junit-platform-launcher")
  }
