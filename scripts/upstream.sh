@@ -6,7 +6,7 @@ exit_on_error() {
 cd ..
 
 oldHash=$(grep "paperRef=" gradle.properties | cut -d "=" -f2)
-newHash=$(curl -s https://api.github.com/repos/PaperMC/paper/commits/update/1.21.5 | jq -r .sha)
+newHash=$(curl -s https://api.github.com/repos/PaperMC/paper/commits/main | jq -r .sha)
 
 if [ "$oldHash" = "$newHash" ]; then
     echo "Upstream has not updated!"
