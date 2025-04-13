@@ -1,3 +1,6 @@
+# requires curl
+# requires awk
+
 exit_on_error() {
     echo "$1"
     exit 1
@@ -6,7 +9,9 @@ exit_on_error() {
 cd ..
 
 oldHash=$(grep "paperRef=" gradle.properties | cut -d "=" -f2)
-newHash=$(curl -s https://api.github.com/repos/PaperMC/paper/commits/main | jq -r .sha)
+branch=$(links -dump https://github.com/PaperMC/Paper/branch_commits/$oldHash | awk -F " " '{print $NF}')
+cutBranch=$(echo $branch | cut -d' ' -f1)
+newHash=$(curl -s https://api.github.com/repos/PaperMC/Paper/commits/$cutBranch | jq -r .sha)
 
 if [ "$oldHash" = "$newHash" ]; then
     echo "Upstream has not updated!"
@@ -20,7 +25,7 @@ sed -i "s/$oldHash/$newHash/g" gradle.properties
 ./gradlew applyAllPatches || exit_on_error "An error occurred when merging patches!"
 ./gradlew rebuildAllServerPatches || exit_on_error "An error occurred when rebuilding server patches!"
 ./gradlew rebuildPaperApiPatches || exit_on_error "An error occurred when rebuilding api patches!"
-./gradlew createMojmapPaperclipJar || exit_on_error "An error occurred when building!"
+./gradlew compileJava || exit_on_error "An error occurred when building!"
 
 git add .
 
