@@ -50,7 +50,7 @@
      implementation("ca.spottedleaf:concurrentutil:0.0.3")
      implementation("org.jline:jline-terminal-ffm:3.27.1") // use ffm on java 22+
      implementation("org.jline:jline-terminal-jni:3.27.1") // fall back to jni on java 21
-@@ -166,6 +_,14 @@
+@@ -171,6 +_,14 @@
      runtimeOnly("org.apache.maven.resolver:maven-resolver-connector-basic:1.9.18")
      runtimeOnly("org.apache.maven.resolver:maven-resolver-transport-http:1.9.18")
  
@@ -62,11 +62,11 @@
 +    // Pufferfish end
 +    implementation("com.github.technove:Flare:34637f3f87") // Pufferfish - flare
 +
-     testImplementation("io.github.classgraph:classgraph:4.8.47") // For mob goal test
-     testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
-     testImplementation("org.junit.platform:junit-platform-suite-engine:1.10.0")
-@@ -189,6 +_,13 @@
-     implementation("me.lucko:spark-paper:1.10.119-20241121.092015-1")
+     testImplementation("io.github.classgraph:classgraph:4.8.179") // For mob goal test
+     testImplementation("org.junit.jupiter:junit-jupiter:5.12.2")
+     testImplementation("org.junit.platform:junit-platform-suite-engine:1.12.2")
+@@ -194,6 +_,13 @@
+     implementation("me.lucko:spark-paper:1.10.133-20250413.112336-1")
  }
  
 +// Pufferfish Start - SIMD Optimizations
@@ -79,7 +79,7 @@
  tasks.jar {
      manifest {
          val git = Git(rootProject.layout.projectDirectory.path)
-@@ -201,14 +_,14 @@
+@@ -206,14 +_,14 @@
          val gitBranch = git.exec(providers, "rev-parse", "--abbrev-ref", "HEAD").get().trim()
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
@@ -99,7 +99,7 @@
              "Build-Number" to (build ?: ""),
              "Build-Time" to buildTime.toString(),
              "Git-Branch" to gitBranch,
-@@ -262,7 +_,7 @@
+@@ -267,7 +_,7 @@
      jvmArgumentProviders.add(provider)
  }
  
