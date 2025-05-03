@@ -9,7 +9,7 @@
 +                            this.nextTickTimeNanos = currentTime + l;
 +                            this.delayedTasksMaxNextTickTimeNanos = nextTickTimeNanos;
 +                        }
-+                        // Pufferfish end
++                    // Pufferfish end
                      this.startMeasuringTaskExecutionTime();
                      this.waitUntilNextTick();
                      this.finishMeasuringTaskExecutionTime();

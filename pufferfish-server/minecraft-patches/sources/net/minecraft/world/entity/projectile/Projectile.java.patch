@@ -33,7 +33,7 @@
 +        super.setPos(x, y, z);
 +    }
 +    // Pufferfish end
-+    
++
      public void setOwner(@Nullable Entity owner) {
          if (owner != null) {
              this.ownerUUID = owner.getUUID();

@@ -14,7 +14,7 @@
          this.group = group;
          this.category = category;
          this.result = result;
-@@ -73,6 +_,28 @@
+@@ -73,6 +_,27 @@
      @Override
      public boolean matches(CraftingInput input, Level level) {
          // Paper start - Improve exact choice recipe ingredients & unwrap ternary
@@ -39,7 +39,6 @@
 +            return ingredients.isEmpty();
 +        }
 +        // Pufferfish end
-+
          if (input.ingredientCount() != this.ingredients.size()) {
              return false;
          }

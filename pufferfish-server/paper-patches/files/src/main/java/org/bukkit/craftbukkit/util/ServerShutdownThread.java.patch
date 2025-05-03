@@ -1,12 +1,14 @@
 --- a/src/main/java/org/bukkit/craftbukkit/util/ServerShutdownThread.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/ServerShutdownThread.java
-@@ -12,6 +_,9 @@
+@@ -11,6 +_,11 @@
+ 
      @Override
      public void run() {
-         try {
-+            gg.pufferfish.pufferfish.flare.ProfilingManager.stop();
-+        } catch (Throwable t) {} // Pufferfish - shut down Flare if it's running
++        // Pufferfish start - shut down Flare if it's running
 +        try {
++            gg.pufferfish.pufferfish.flare.ProfilingManager.stop();
++        } catch (Throwable t) {}
++        // Pufferfish end
+         try {
              // Paper start - try to shutdown on main
              server.safeShutdown(false, false);
-             for (int i = 1000; i > 0 && !server.hasStopped(); i -= 100) {

@@ -1,16 +1,16 @@
 --- a/net/minecraft/world/entity/boss/wither/WitherBoss.java
 +++ b/net/minecraft/world/entity/boss/wither/WitherBoss.java
-@@ -134,6 +_,13 @@
-         super.setCustomName(name);
+@@ -135,6 +_,13 @@
          this.bossEvent.setName(this.getDisplayName());
      }
-+     
+ 
 +    // Pufferfish start - optimize suffocation
 +    @Override
 +    public boolean shouldCheckForSuffocation() {
 +        return true;
 +    }
 +    // Pufferfish end
- 
++
      @Override
      public SoundEvent getAmbientSound() {
+         return SoundEvents.WITHER_AMBIENT;

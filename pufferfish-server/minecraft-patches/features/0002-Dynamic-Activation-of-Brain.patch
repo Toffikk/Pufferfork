@@ -27,10 +27,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 diff --git a/io/papermc/paper/entity/activation/ActivationRange.java b/io/papermc/paper/entity/activation/ActivationRange.java
-index a4cfccf915b1200ba071482329a3b35531bfdfd5..50f82248c140316ceb5ed7f5fe89ef786c4c85da 100644
+index a4cfccf915b1200ba071482329a3b35531bfdfd5..ba7828c30f727a3d57d7d91c18289b570c65d84b 100644
 --- a/io/papermc/paper/entity/activation/ActivationRange.java
 +++ b/io/papermc/paper/entity/activation/ActivationRange.java
-@@ -33,6 +33,11 @@ import net.minecraft.world.entity.schedule.Activity;
+@@ -33,6 +33,10 @@ import net.minecraft.world.entity.schedule.Activity;
  import net.minecraft.world.level.Level;
  import net.minecraft.world.phys.AABB;
  import org.spigotmc.SpigotWorldConfig;
@@ -38,15 +38,13 @@ index a4cfccf915b1200ba071482329a3b35531bfdfd5..50f82248c140316ceb5ed7f5fe89ef78
 +import net.minecraft.world.phys.Vec3;
 +import java.util.List;
 +// Pufferfish end
-+ 
  
  public final class ActivationRange {
  
-@@ -159,6 +164,25 @@ public final class ActivationRange {
+@@ -159,6 +163,23 @@ public final class ActivationRange {
                  }
  
                  ActivationRange.activateEntity(entity);
-+
 +                // Pufferfish start - DAB
 +                if (gg.pufferfish.pufferfish.PufferfishConfig.dearEnabled && entity.getType().dabEnabled) {
 +                    if (!entity.activatedPriorityReset) {
@@ -64,11 +62,10 @@ index a4cfccf915b1200ba071482329a3b35531bfdfd5..50f82248c140316ceb5ed7f5fe89ef78
 +                    entity.activatedPriority = 1;
 +                }
 +                // Pufferfish end
-+
              }
          }
      }
-@@ -170,11 +194,11 @@ public final class ActivationRange {
+@@ -170,11 +191,11 @@ public final class ActivationRange {
       */
      private static void activateEntity(final Entity entity) {
          if (MinecraftServer.currentTick > entity.activatedTick) {
@@ -83,7 +80,7 @@ index a4cfccf915b1200ba071482329a3b35531bfdfd5..50f82248c140316ceb5ed7f5fe89ef78
              }
          }
 diff --git a/net/minecraft/server/level/ServerLevel.java b/net/minecraft/server/level/ServerLevel.java
-index 089074c07762315ebfce888efad1e8ccc2fca157..0291960642289a96ec88fb70c2a5ebc49726d97b 100644
+index dde4bf807286001511e9b27bfa90cf24ce75c9b9..ea30f5e05e9eb03aa68664c65bbf588f6c61065e 100644
 --- a/net/minecraft/server/level/ServerLevel.java
 +++ b/net/minecraft/server/level/ServerLevel.java
 @@ -788,6 +788,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
@@ -95,7 +92,7 @@ index 089074c07762315ebfce888efad1e8ccc2fca157..0291960642289a96ec88fb70c2a5ebc4
                              if (!tickRateManager.isEntityFrozen(entity)) {
                                  profilerFiller.push("checkDespawn");
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index 0abddb09bb83a628ed5ac446f880f8dfcca0d432..9aa7f90a4e8822375b657d460a8f5763f4cdfa84 100644
+index dfe63c8135a0df712615ad2c5e3aa0991a1786a8..e5bf9439135d1b1f70aaf9c393910ae14530dbea 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
 @@ -351,6 +351,8 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -158,10 +155,10 @@ index 36d6f688d5268ef5a89633bae5fff41f0a3a5ca1..696db06b4dbd054fb4199afaeda142b4
              profilerFiller.pop();
          }
 diff --git a/net/minecraft/world/entity/ai/behavior/VillagerPanicTrigger.java b/net/minecraft/world/entity/ai/behavior/VillagerPanicTrigger.java
-index f6c673b1abe53afcb14fd68d590431027ed29f67..c9179e127b122771e4b5c931d175736fbde3ed12 100644
+index f6c673b1abe53afcb14fd68d590431027ed29f67..600d5e81b1e0c1fd5305e426a8e796f591b722c2 100644
 --- a/net/minecraft/world/entity/ai/behavior/VillagerPanicTrigger.java
 +++ b/net/minecraft/world/entity/ai/behavior/VillagerPanicTrigger.java
-@@ -36,7 +36,12 @@ public class VillagerPanicTrigger extends Behavior<Villager> {
+@@ -36,7 +36,11 @@ public class VillagerPanicTrigger extends Behavior<Villager> {
  
      @Override
      protected void tick(ServerLevel level, Villager owner, long gameTime) {
@@ -171,7 +168,6 @@ index f6c673b1abe53afcb14fd68d590431027ed29f67..c9179e127b122771e4b5c931d175736f
 +        if (--owner.nextGolemPanic < gameTime) {
 +            owner.nextGolemPanic = -1;
 +            // Pufferfish end
-+
              owner.spawnGolemIfNeeded(level, gameTime, 3);
          }
      }

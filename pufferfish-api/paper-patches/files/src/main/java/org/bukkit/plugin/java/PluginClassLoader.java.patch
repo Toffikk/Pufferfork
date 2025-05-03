@@ -1,15 +1,13 @@
 --- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-@@ -49,7 +_,8 @@
+@@ -49,6 +_,7 @@
      private java.util.logging.Logger logger; // Paper - add field
      private io.papermc.paper.plugin.provider.classloader.PluginClassLoaderGroup classLoaderGroup; // Paper
      public io.papermc.paper.plugin.provider.entrypoint.DependencyContext dependencyContext; // Paper
--
 +    private boolean closed = false; // Pufferfish
-+    
+ 
      static {
          ClassLoader.registerAsParallelCapable();
-     }
 @@ -204,7 +_,7 @@
          }
          Class<?> result = classes.get(name);
@@ -19,22 +17,21 @@
              String path = name.replace('.', '/').concat(".class");
              JarEntry entry = jar.getJarEntry(path);
  
-@@ -250,7 +_,7 @@
-             classes.put(name, result);
+@@ -251,6 +_,7 @@
              this.setClass(name, result); // Paper
          }
--
+ 
 +        if (result == null) throw new ClassNotFoundException(name); // Pufferfish
          return result;
      }
  
-@@ -265,7 +_,9 @@
+@@ -265,7 +_,8 @@
              // Paper end
              super.close();
          } finally {
+-            jar.close();
 +            this.closed = true; // Pufferfish
-             jar.close();
-+            
++            jar.close();  
          }
      }
  

@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/level/chunk/LevelChunk.java
 +++ b/net/minecraft/world/level/chunk/LevelChunk.java
-@@ -86,6 +_,19 @@
+@@ -86,6 +_,17 @@
      private final LevelChunkTicks<Block> blockTicks;
      private final LevelChunkTicks<Fluid> fluidTicks;
      private LevelChunk.UnsavedListener unsavedListener = chunkPos -> {};
@@ -15,8 +15,6 @@
 +        return false;
 +    }
 +    // Pufferfish end
-+
-+
      // CraftBukkit start
      public boolean mustNotSave;
      public boolean needsDecoration;

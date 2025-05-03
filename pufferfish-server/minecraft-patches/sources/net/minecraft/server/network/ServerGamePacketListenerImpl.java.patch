@@ -1,6 +1,6 @@
 --- a/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -1223,6 +_,7 @@
+@@ -1225,6 +_,7 @@
  
      @Override
      public void handleEditBook(ServerboundEditBookPacket packet) {

@@ -59,15 +59,13 @@ index 163e9a0e179dc88be93614ff66ee2be3eccc694f..78cdf669328fc1ec5e9943033a11d220
  
              if (cloader instanceof PluginClassLoader) {
 diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-index b527e056a121a86720423c7f048a4c81aadf8d66..6a238647e351b20e89efb9d00bdfebca61d1c3b4 100644
+index 5ea85039128b7e740defd5c7683567211cc00322..24b8a013fa3900c10e32a3beaa34ead251d98cae 100644
 --- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-@@ -197,7 +197,8 @@ public final class PluginClassLoader extends URLClassLoader implements io.paperm
- 
+@@ -198,6 +198,7 @@ public final class PluginClassLoader extends URLClassLoader implements io.paperm
          throw new ClassNotFoundException(name);
      }
--
-+    
+ 
 +    public boolean _airplane_hasClass(@NotNull String name) { return this.classes.containsKey(name); } // Pufferfish
      @Override
      protected Class<?> findClass(String name) throws ClassNotFoundException {
