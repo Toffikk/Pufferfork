@@ -29,10 +29,10 @@ index 115b0911aa4db1523a28fd919ba7c86ef034a562..ffd9d1dfad5b8c6b825bc66e0498f5ad
      public static <S extends MinecraftServer> S spin(Function<Thread, S> threadFunction) {
          AtomicReference<S> atomicReference = new AtomicReference<>();
 diff --git a/net/minecraft/server/dedicated/DedicatedServer.java b/net/minecraft/server/dedicated/DedicatedServer.java
-index a33cca7da4fe1e948762b38c3bcfb40f1468f3f9..f407b72e1d37d63c5670b5e945d129fe5e430fa4 100644
+index ea0ded4b7d1411f94a1879711638cf12e2255c39..cc3c84ee13b4cc3582efe68a2fe46f483347be6e 100644
 --- a/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -310,6 +310,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -309,6 +309,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
                  LOGGER.info("JMX monitoring enabled");
              }
  
