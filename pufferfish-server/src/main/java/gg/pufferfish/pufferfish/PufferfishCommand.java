@@ -31,8 +31,8 @@ public class PufferfishCommand {
 
     public static void registerCommands() {
         // dirty hack
-        registerInternalCommand(create(), "pufferfish", PufferfishVersionCommand.DESCRIPTION, List.of("version"), Set.of());
-        registerInternalCommand(create(), "pufferfish", PufferfishReloadCommand.DESCRIPTION, List.of("reload"), Set.of());
+        registerInternalCommand(create(), "pufferfish", PufferfishVersionCommand.DESCRIPTION, List.of("pufferfish version"), Set.of());
+        registerInternalCommand(create(), "pufferfish", PufferfishReloadCommand.DESCRIPTION, List.of("pufferfish reload"), Set.of());
         registerInternalCommand(create(), "pufferfish", DESCRIPTION, List.of("pufferfish"), Set.of()); // has to always be declared last otherwise other descriptions bleed over
     }
 
