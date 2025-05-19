@@ -46,7 +46,7 @@ public class PufferfishVersionFetcher implements VersionFetcher {
 	}
 	
 	@Override
-	public @NotNull Component getVersionMessage(final @NotNull String serverVersion) {
+	public @NotNull Component getVersionMessage() {
 		@NotNull Component component;
 
 		if (ServerBuildInfo.buildInfo().buildNumber().isPresent()) {
