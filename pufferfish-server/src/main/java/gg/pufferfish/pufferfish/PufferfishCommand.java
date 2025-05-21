@@ -1,19 +1,17 @@
 package gg.pufferfish.pufferfish;
 
-import java.util.List;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandRegistrationFlag;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
-import com.mojang.brigadier.Command;
 import io.papermc.paper.command.brigadier.Commands;
-import net.minecraft.server.MinecraftServer;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
+import java.util.List;
 import java.util.Set;
 
 public class PufferfishCommand {
     public static final String DESCRIPTION = "The pufferfish command";
 
-    public static LiteralCommandNode<CommandSourceStack> create() {
+    // We have to do this here otherwise the commands break
+    public static LiteralCommandNode<CommandSourceStack> create() { // register the proper command
         final PufferfishVersionCommand command_ver = new PufferfishVersionCommand();
         final PufferfishReloadCommand command_rel = new PufferfishReloadCommand();
 
@@ -30,12 +28,12 @@ public class PufferfishCommand {
             .build();
     }
 
-    public static LiteralCommandNode<CommandSourceStack> createHidden() {
+    public static LiteralCommandNode<CommandSourceStack> createHidden() { // dirty hack to display help info for subcommands with descriptions
         final PufferfishVersionCommand command_ver = new PufferfishVersionCommand();
         final PufferfishReloadCommand command_rel = new PufferfishReloadCommand();
 
         return Commands.literal("pufferfish")
-            .requires(source -> false)
+            .requires(source -> false) // makes the command invisible to console and players; only shows up in the help menu
             .then(Commands.literal("version")
                 .executes(command_ver::versionCommand)
             )
@@ -45,9 +43,9 @@ public class PufferfishCommand {
             .build();
     }
     public static void registerCommands() {
-        // dirty hack
-        registerInternalCommand(createHidden(), "pufferfish", PufferfishVersionCommand.DESCRIPTION, List.of("pufferfish version"), Set.of());
-        registerInternalCommand(createHidden(), "pufferfish", PufferfishReloadCommand.DESCRIPTION, List.of("pufferfish reload"), Set.of());
+        // more hackiness
+        registerInternalCommand(createHidden(), "pufferfish", PufferfishVersionCommand.DESCRIPTION, List.of("pufferfish version"), Set.of()); // has to be done this way `"pufferfish (subcommand)"` to get this to display correctly in the help menu
+        registerInternalCommand(createHidden(), "pufferfish", PufferfishReloadCommand.DESCRIPTION, List.of("pufferfish reload"), Set.of()); 
         registerInternalCommand(create(), "pufferfish", DESCRIPTION, List.of("pufferfish"), Set.of()); // has to always be declared last otherwise other descriptions bleed over
     }
 
