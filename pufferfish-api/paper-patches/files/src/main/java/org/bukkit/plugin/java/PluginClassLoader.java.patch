@@ -15,9 +15,9 @@
 -        if (result == null) {
 +        if (result == null && !this.closed) { // Pufferfish
              String path = name.replace('.', '/').concat(".class");
-             JarEntry entry = jar.getJarEntry(path);
- 
-@@ -251,6 +_,7 @@
+             // Add details to zip file errors - help debug classloading
+             JarEntry entry;
+@@ -260,6 +_,7 @@
              this.setClass(name, result); // Paper
          }
  
@@ -25,7 +25,7 @@
          return result;
      }
  
-@@ -265,7 +_,8 @@
+@@ -274,7 +_,8 @@
              // Paper end
              super.close();
          } finally {
