@@ -5,7 +5,7 @@ Subject: [PATCH] Fix version fetcher
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
-index bad941054349efe53756d6ab53ba7f6872de8e6f..1b65ee65d9eea066221805f5c34ccadfe2c1f202 100644
+index d0554ed6631535815e5932930911e3fe1dee8710..fb4983ceb16929eca0a10308bdd365ab0996d09a 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 @@ -35,7 +35,7 @@ public class PaperVersionFetcher implements VersionFetcher {
@@ -17,16 +17,18 @@ index bad941054349efe53756d6ab53ba7f6872de8e6f..1b65ee65d9eea066221805f5c34ccadf
  
      @Override
      public long getCacheTime() {
-@@ -49,7 +49,7 @@ public class PaperVersionFetcher implements VersionFetcher {
+@@ -49,7 +49,9 @@ public class PaperVersionFetcher implements VersionFetcher {
          if (build.buildNumber().isEmpty() && build.gitCommit().isEmpty()) {
              updateMessage = text("You are running a development version without access to version information", color(0xFF5300));
          } else {
 -            updateMessage = getUpdateStatusMessage("PaperMC/Paper", build);
-+            updateMessage = getUpdateStatusMessage("Toffikk/Pufferfish", build);
++            updateMessage = text("Check " + DOWNLOAD_PAGE + " for available updates, due to a new version being in the works", NamedTextColor.GREEN)
++                                .hoverEvent(text("Click to open", NamedTextColor.WHITE))
++                                .clickEvent(ClickEvent.openUrl(DOWNLOAD_PAGE)); // github version fetching is funky so override it until 1.21.6 is released
          }
          final @Nullable Component history = this.getHistory();
  
-@@ -60,14 +60,10 @@ public class PaperVersionFetcher implements VersionFetcher {
+@@ -60,14 +62,10 @@ public class PaperVersionFetcher implements VersionFetcher {
          int distance = DISTANCE_ERROR;
  
          final OptionalInt buildNumber = build.buildNumber();
@@ -66,7 +68,7 @@ index 790bad0494454ca12ee152e3de6da3da634d9b20..edf7ea1ca28102163f9a29f6134883b7
              SharedConstants.getCurrentVersion().getName(),
              getManifestAttribute(manifest, ATTRIBUTE_BUILD_NUMBER)
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index fdeb055a2e3fb12bf5ca05b0ad77735e56d01c04..fe0f6e799c2cdd1fbf30e5446f8a02a39346b324 100644
+index 344ceed4b533ced5c83f415f1ac2a6b6fe71c0e5..26ec3df841826f5446605bf379198e8bfb101bda 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 @@ -485,7 +485,8 @@ public final class CraftMagicNumbers implements UnsafeValues {
