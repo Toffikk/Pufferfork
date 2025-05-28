@@ -1,15 +1,14 @@
 --- a/net/minecraft/world/entity/Mob.java
 +++ b/net/minecraft/world/entity/Mob.java
-@@ -203,10 +_,12 @@
-         return this.lookControl;
+@@ -315,9 +_,11 @@
+         }
      }
  
 +    int _pufferfish_inactiveTickDisableCounter = 0; // Pufferfish - throttle inactive goal selector ticking
-     // Paper start
      @Override
-     public void inactiveTick() {
-         super.inactiveTick();
+     public void tick() {
+         super.tick();
 +        boolean isThrottled = gg.pufferfish.pufferfish.PufferfishConfig.throttleInactiveGoalSelectorTick && _pufferfish_inactiveTickDisableCounter++ % 20 != 0; // Pufferfish - throttle inactive goal selector ticking
-         if (this.goalSelector.inactiveTick()) {
-             this.goalSelector.tick();
+         if (!this.level().isClientSide && this.tickCount % 5 == 0) {
+             this.updateControlFlags();
          }

@@ -1,10 +1,10 @@
 --- a/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -1225,6 +_,7 @@
+@@ -1339,6 +_,7 @@
  
      @Override
-     public void handleEditBook(ServerboundEditBookPacket packet) {
+     public void handlePaddleBoat(ServerboundPaddleBoatPacket packet) {
 +        if (!gg.pufferfish.pufferfish.PufferfishConfig.enableBooks && !this.player.getBukkitEntity().hasPermission("pufferfish.usebooks")) return; // Pufferfish - Add option to disable books
-         // Paper start - Book size limits
-         final io.papermc.paper.configuration.type.number.IntOr.Disabled pageMax = io.papermc.paper.configuration.GlobalConfiguration.get().itemValidation.bookSize.pageMax;
-         if (!this.cserver.isPrimaryThread() && pageMax.enabled()) {
+         PacketUtils.ensureRunningOnSameThread(packet, this, this.player.level());
+         if (this.player.getControlledVehicle() instanceof AbstractBoat abstractBoat) {
+             abstractBoat.setPaddleState(packet.getLeft(), packet.getRight());
