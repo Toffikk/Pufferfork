@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/entity/Mob.java
 +++ b/net/minecraft/world/entity/Mob.java
-@@ -315,9 +_,11 @@
+@@ -373,9 +_,11 @@
          }
      }
  

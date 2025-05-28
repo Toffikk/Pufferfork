@@ -1,8 +1,8 @@
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
-@@ -397,6 +_,7 @@
-     public void remove(Entity.RemovalReason reason) {
-         this.setRemoved(reason);
+@@ -687,6 +_,7 @@
+         this.setRemoved(reason, eventCause);
+         // CraftBukkit end
      }
 +    public final BlockPos.MutableBlockPos cachedBlockPos = new BlockPos.MutableBlockPos(); // Pufferfish - reduce entity allocations
  

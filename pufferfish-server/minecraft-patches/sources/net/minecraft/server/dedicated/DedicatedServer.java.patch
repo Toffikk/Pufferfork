@@ -1,10 +1,10 @@
 --- a/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -131,6 +_,7 @@
+@@ -160,6 +_,7 @@
              this.setPreventProxyConnections(properties.preventProxyConnections);
              this.setLocalIp(properties.serverIp);
          }
 +        gg.pufferfish.pufferfish.PufferfishConfig.load(); // Pufferfish - Rebranding
  
-         this.setPvpAllowed(properties.pvp);
-         this.setFlightAllowed(properties.allowFlight);
+         // Spigot start
+         this.setPlayerList(new DedicatedPlayerList(this, this.registries(), this.playerDataStorage));
