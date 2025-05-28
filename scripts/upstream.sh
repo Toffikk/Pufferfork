@@ -22,10 +22,10 @@ echo "Updating paper: $oldHash -> $newHash"
 
 sed -i "s/$oldHash/$newHash/g" gradle.properties
 
-./gradlew applyAllPatches || exit_on_error "An error occurred when merging patches!"
-./gradlew rebuildAllServerPatches || exit_on_error "An error occurred when rebuilding server patches!"
+./gradlew applyMinecraftSourcePatchesFuzzy -x pufferfish-server:applyPaperMinecraftFeaturePatches || exit_on_error "An error occurred when merging patches!" # revert 
+./gradlew rebuildMinecraftSourcePatches -x pufferfish-server:applyPaperMinecraftFeaturePatches || exit_on_error "An error occurred when rebuilding server patches!" # revert!
 ./gradlew rebuildPaperApiPatches || exit_on_error "An error occurred when rebuilding api patches!"
-./gradlew compileJava || exit_on_error "An error occurred when building!"
+#./gradlew compileJava || exit_on_error "An error occurred when building!"
 
 git add .
 
