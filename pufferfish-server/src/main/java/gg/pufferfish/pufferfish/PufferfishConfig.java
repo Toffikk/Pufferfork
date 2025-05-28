@@ -230,6 +230,7 @@ public class PufferfishConfig {
     }
 
 
+	/* # uncomment when dab is applied
     public static boolean dearEnabled;
     public static int startDistance;
     public static int startDistanceSquared;
@@ -261,6 +262,7 @@ public class PufferfishConfig {
 
         setComment("dab", "Optimizes entity brains when", "they're far away from the player");
     }
+	*/
     
     public static boolean throttleInactiveGoalSelectorTick;
 	private static void inactiveGoalSelectorThrottle() {
