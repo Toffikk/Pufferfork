@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/entity/projectile/Projectile.java
 +++ b/net/minecraft/world/entity/projectile/Projectile.java
-@@ -53,6 +_,36 @@
+@@ -50,6 +_,36 @@
          super(entityType, level);
      }
  
@@ -34,6 +34,6 @@
 +    }
 +    // Pufferfish end
 +
-     public void setOwner(@Nullable Entity owner) {
-         if (owner != null) {
-             this.ownerUUID = owner.getUUID();
+     protected void setOwner(@Nullable EntityReference<Entity> owner) {
+         this.owner = owner;
+     }

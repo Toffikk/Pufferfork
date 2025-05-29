@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
-@@ -687,6 +_,7 @@
+@@ -592,6 +_,7 @@
          this.setRemoved(reason, eventCause);
          // CraftBukkit end
      }
