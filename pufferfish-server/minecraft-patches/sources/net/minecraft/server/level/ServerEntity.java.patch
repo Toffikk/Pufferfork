@@ -1,6 +1,6 @@
 --- a/net/minecraft/server/level/ServerEntity.java
 +++ b/net/minecraft/server/level/ServerEntity.java
-@@ -164,7 +_,10 @@
+@@ -181,7 +_,10 @@
                      packet = ClientboundEntityPositionSyncPacket.of(this.entity);
                      flag3 = true;
                      flag4 = true;
@@ -12,7 +12,7 @@
                      if (flag2) {
                          packet = new ClientboundMoveEntityPacket.Pos(this.entity.getId(), (short)l, (short)l1, (short)l2, this.entity.onGround());
                          flag3 = true;
-@@ -177,6 +_,7 @@
+@@ -194,6 +_,7 @@
                      flag3 = true;
                      flag4 = true;
                  }
