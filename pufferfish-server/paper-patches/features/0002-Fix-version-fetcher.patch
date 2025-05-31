@@ -5,7 +5,7 @@ Subject: [PATCH] Fix version fetcher
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
-index bad941054349efe53756d6ab53ba7f6872de8e6f..1b65ee65d9eea066221805f5c34ccadfe2c1f202 100644
+index d0554ed6631535815e5932930911e3fe1dee8710..e14b33d00a53c2385d54616d035af06cd972a8a1 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 @@ -35,7 +35,7 @@ public class PaperVersionFetcher implements VersionFetcher {
@@ -41,32 +41,8 @@ index bad941054349efe53756d6ab53ba7f6872de8e6f..1b65ee65d9eea066221805f5c34ccadf
          }
  
          return switch (distance) {
-diff --git a/src/main/java/io/papermc/paper/ServerBuildInfoImpl.java b/src/main/java/io/papermc/paper/ServerBuildInfoImpl.java
-index 790bad0494454ca12ee152e3de6da3da634d9b20..edf7ea1ca28102163f9a29f6134883b75b082e0a 100644
---- a/src/main/java/io/papermc/paper/ServerBuildInfoImpl.java
-+++ b/src/main/java/io/papermc/paper/ServerBuildInfoImpl.java
-@@ -31,6 +31,7 @@ public record ServerBuildInfoImpl(
-     private static final String ATTRIBUTE_GIT_COMMIT = "Git-Commit";
- 
-     private static final String BRAND_PAPER_NAME = "Paper";
-+    private static final String BRAND_PUFFERFISH_NAME = "Pufferfish"; // Pufferfish - rebrand
- 
-     private static final String BUILD_DEV = "DEV";
- 
-@@ -42,9 +43,9 @@ public record ServerBuildInfoImpl(
-         this(
-             getManifestAttribute(manifest, ATTRIBUTE_BRAND_ID)
-                 .map(Key::key)
--                .orElse(BRAND_PAPER_ID),
-+                .orElse(Key.key("toffikk", "pufferfish")), // Pufferfish - rebrand
-             getManifestAttribute(manifest, ATTRIBUTE_BRAND_NAME)
--                .orElse(BRAND_PAPER_NAME),
-+                .orElse(BRAND_PUFFERFISH_NAME), // Pufferfish - rebrand
-             SharedConstants.getCurrentVersion().getId(),
-             SharedConstants.getCurrentVersion().getName(),
-             getManifestAttribute(manifest, ATTRIBUTE_BUILD_NUMBER)
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index fdeb055a2e3fb12bf5ca05b0ad77735e56d01c04..fe0f6e799c2cdd1fbf30e5446f8a02a39346b324 100644
+index 344ceed4b533ced5c83f415f1ac2a6b6fe71c0e5..26ec3df841826f5446605bf379198e8bfb101bda 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 @@ -485,7 +485,8 @@ public final class CraftMagicNumbers implements UnsafeValues {
