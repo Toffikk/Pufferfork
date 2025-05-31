@@ -8,7 +8,7 @@
 +    /**
 +     * The brand id for Pufferfish.
 +     */
-+    Key BRAND_PUFFERFISH_ID = Key.key("pufferfish-gg", "pufferfish");
++    Key BRAND_PUFFERFISH_ID = Key.key("pufferfish", "pufferfish");
 +    // Pufferfish end
 +
      /**
