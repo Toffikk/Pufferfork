@@ -17,18 +17,16 @@ index d0554ed6631535815e5932930911e3fe1dee8710..e14b33d00a53c2385d54616d035af06c
  
      @Override
      public long getCacheTime() {
-@@ -49,7 +49,9 @@ public class PaperVersionFetcher implements VersionFetcher {
+@@ -49,7 +49,7 @@ public class PaperVersionFetcher implements VersionFetcher {
          if (build.buildNumber().isEmpty() && build.gitCommit().isEmpty()) {
              updateMessage = text("You are running a development version without access to version information", color(0xFF5300));
          } else {
 -            updateMessage = getUpdateStatusMessage("PaperMC/Paper", build);
-+            updateMessage = text("Check " + DOWNLOAD_PAGE + " for available updates, due to a new version being in the works", NamedTextColor.GREEN)
-+                                .hoverEvent(text("Click to open", NamedTextColor.WHITE))
-+                                .clickEvent(ClickEvent.openUrl(DOWNLOAD_PAGE)); // github version fetching is funky so override it until 1.21.6 is released
++            updateMessage = getUpdateStatusMessage("Toffikk/Pufferfish", build);
          }
          final @Nullable Component history = this.getHistory();
  
-@@ -60,14 +62,10 @@ public class PaperVersionFetcher implements VersionFetcher {
+@@ -60,14 +60,10 @@ public class PaperVersionFetcher implements VersionFetcher {
          int distance = DISTANCE_ERROR;
  
          final OptionalInt buildNumber = build.buildNumber();
