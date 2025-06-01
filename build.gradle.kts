@@ -11,18 +11,18 @@ paperweight {
 
         patchFile {
             path = "paper-server/build.gradle.kts"
-            outputFile = file("pufferfish-server/build.gradle.kts")
-            patchFile = file("pufferfish-server/build.gradle.kts.patch")
+            outputFile = file("pufferfork-server/build.gradle.kts")
+            patchFile = file("pufferfork-server/build.gradle.kts.patch")
         }
         patchFile {
             path = "paper-api/build.gradle.kts"
-            outputFile = file("pufferfish-api/build.gradle.kts")
-            patchFile = file("pufferfish-api/build.gradle.kts.patch")
+            outputFile = file("pufferfork-api/build.gradle.kts")
+            patchFile = file("pufferfork-api/build.gradle.kts.patch")
         }
         patchDir("paperApi") {
             upstreamPath = "paper-api"
             excludes = setOf("build.gradle.kts")
-            patchesDir = file("pufferfish-api/paper-patches")
+            patchesDir = file("pufferfork-api/paper-patches")
             outputDir = file("paper-api")
         }
     }

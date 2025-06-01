@@ -8,7 +8,7 @@ public class PufferfishLogger extends Logger {
     public static final PufferfishLogger LOGGER = new PufferfishLogger();
 
     private PufferfishLogger() {
-        super("Pufferfish", null);
+        super("Pufferfork", null);
 
         setParent(Bukkit.getLogger());
         setLevel(Level.ALL);

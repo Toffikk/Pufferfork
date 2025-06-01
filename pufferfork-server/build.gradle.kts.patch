@@ -8,16 +8,16 @@
 +        //oldPaperCommit = "a033e3b9ef78cfe85be807ac3fd1dd956274d4db"
      }
 +
-+    val pufferfish = forks.register("pufferfish") {
++    val pufferfork = forks.register("pufferfork") {
 +        upstream.patchDir("paperServer") {
 +            upstreamPath = "paper-server"
 +            excludes = setOf("src/minecraft", "patches", "build.gradle.kts")
-+            patchesDir = rootDirectory.dir("pufferfish-server/paper-patches")
++            patchesDir = rootDirectory.dir("pufferfork-server/paper-patches")
 +            outputDir = rootDirectory.dir("paper-server")
 +        }
 +     }
 +
-+    activeFork = pufferfish
++    activeFork = pufferfork
  
      spigot {
 -        buildDataRef = "702e1a0a5072b2c4082371d5228cb30525687efc"
@@ -55,7 +55,7 @@
  
  dependencies {
 -    implementation(project(":paper-api"))
-+    implementation(project(":pufferfish-api")) // Pufferfish
++    implementation(project(":pufferfork-api")) // Pufferfork
      implementation("ca.spottedleaf:concurrentutil:0.0.3")
      implementation("org.jline:jline-terminal-ffm:3.27.1") // use ffm on java 22+
      implementation("org.jline:jline-terminal-jni:3.27.1") // fall back to jni on java 21
@@ -93,18 +93,18 @@
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
 -            "Implementation-Title" to "Paper",
-+            "Implementation-Title" to "Pufferfish",
++            "Implementation-Title" to "Pufferfork",
              "Implementation-Version" to implementationVersion,
              "Implementation-Vendor" to date,
 -            "Specification-Title" to "Paper",
-+            "Specification-Title" to "Pufferfish",
++            "Specification-Title" to "Pufferfork",
              "Specification-Version" to project.version,
 -            "Specification-Vendor" to "Paper Team",
 -            "Brand-Id" to "papermc:paper",
 -            "Brand-Name" to "Paper",
-+            "Specification-Vendor" to "Pufferfish Studios LLC",
-+            "Brand-Id" to "pufferfish:pufferfish",
-+            "Brand-Name" to "Pufferfish",
++            "Specification-Vendor" to "Pufferfish Studios LLC (originally), Toffikk",
++            "Brand-Id" to "toffikk:pufferfork",
++            "Brand-Name" to "Pufferfork",
              "Build-Number" to (build ?: ""),
              "Build-Time" to buildTime.toString(),
              "Git-Branch" to gitBranch,

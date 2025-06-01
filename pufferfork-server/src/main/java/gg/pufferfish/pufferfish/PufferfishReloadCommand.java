@@ -14,12 +14,12 @@ import net.minecraft.server.MinecraftServer;
 import org.bukkit.command.CommandSender;
 
 public class PufferfishReloadCommand {
-    public static final String DESCRIPTION = "Reloads the pufferfish configuration files";
+    public static final String DESCRIPTION = "Reloads the pufferfork configuration files";
 
     final TextComponent prefix = Component.text()
             .color(TextColor.color(0x12fff6))
             .decoration(TextDecoration.BOLD, true)
-            .append(Component.text(" Pufferfish » "))
+            .append(Component.text(" Pufferfork » "))
             .build();
 
     public int reloadCommand(final CommandContext<CommandSourceStack> context) {

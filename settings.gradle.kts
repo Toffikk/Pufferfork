@@ -9,6 +9,6 @@ plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 }
 
-rootProject.name = "pufferfish"
+rootProject.name = "pufferfork"
 
-include("pufferfish-api", "pufferfish-server")
+include("pufferfork-api", "pufferfork-server")

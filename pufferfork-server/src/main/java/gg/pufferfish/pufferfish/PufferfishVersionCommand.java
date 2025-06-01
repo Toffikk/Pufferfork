@@ -19,7 +19,7 @@ public class PufferfishVersionCommand {
     final TextComponent prefix = Component.text()
             .color(TextColor.color(0x12fff6))
             .decoration(TextDecoration.BOLD, true)
-            .append(Component.text(" Pufferfish » "))
+            .append(Component.text(" Pufferfork » "))
             .build();
 
         public int versionCommand(final CommandContext<CommandSourceStack> context) {

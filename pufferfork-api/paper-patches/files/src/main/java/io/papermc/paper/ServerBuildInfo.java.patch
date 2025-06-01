@@ -4,12 +4,12 @@
       */
      Key BRAND_PAPER_ID = Key.key("papermc", "paper");
  
-+    // Pufferfish start - rebrand
++    // Pufferfork start - rebrand
 +    /**
-+     * The brand id for Pufferfish.
++     * The brand id for Pufferfork.
 +     */
-+    Key BRAND_PUFFERFISH_ID = Key.key("pufferfish", "pufferfish");
-+    // Pufferfish end
++    Key BRAND_PUFFERFORK_ID = Key.key("toffikk", "pufferfork");
++    // Pufferfork end
 +
      /**
       * Gets the {@code ServerBuildInfo}.

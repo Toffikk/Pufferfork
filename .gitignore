@@ -6,10 +6,10 @@ build
 
 /run
 
-/pufferfish-server/build.gradle.kts
-/pufferfish-server/src/minecraft
+/pufferfork-server/build.gradle.kts
+/pufferfork-server/src/minecraft
 /paper-server
-/pufferfish-api/build.gradle.kts
+/pufferfork-api/build.gradle.kts
 /paper-api
 /paper-api-generator
 
