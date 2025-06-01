@@ -1,6 +1,6 @@
 --- a/paper-server/build.gradle.kts
 +++ b/paper-server/build.gradle.kts
-@@ -25,8 +_,19 @@
+@@ -25,12 +_,23 @@
      gitFilePatches = false
  
      updatingMinecraft {
@@ -20,7 +20,13 @@
 +    activeFork = pufferfish
  
      spigot {
-         buildDataRef = "702e1a0a5072b2c4082371d5228cb30525687efc"
+-        buildDataRef = "702e1a0a5072b2c4082371d5228cb30525687efc"
+-        packageVersion = "v1_21_R4" // also needs to be updated in MappingEnvironment
++        buildDataRef = ""
++        packageVersion = "" // also needs to be updated in MappingEnvironment
+     }
+ 
+     reobfPackagesToFix.addAll(
 @@ -108,7 +_,21 @@
      }
  }
