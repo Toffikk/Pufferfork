@@ -14,7 +14,7 @@
 +            entity.discard(org.bukkit.event.entity.EntityRemoveEvent.Cause.DISCARD); // Pufferfish - Remove lambda from ticking guard (diff on change ServerLevel.tick)
              // Paper end - Prevent block entity and entity crashes
          }
-+        this.moonrise$midTickTasks(); // Paper - rewrite chunk system // Pufferfish - Remove lambda from ticking guard (diff on change ServerLevel.tick)
++        //this.moonrise$midTickTasks(); // Paper - rewrite chunk system // Pufferfish - Remove lambda from ticking guard (diff on change ServerLevel.tick)
      }
  
      // Paper start - Option to prevent armor stands from doing entity lookups
