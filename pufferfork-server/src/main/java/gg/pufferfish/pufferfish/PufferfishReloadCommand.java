@@ -46,7 +46,7 @@ public class PufferfishReloadCommand {
                 .color(TextColor.color(0xe8f9f9))
                 .append(commandSender)
                 .append(prefix)
-                .append(Component.text("Pufferfish configuration has been reloaded."))
+                .append(Component.text("Pufferfork configuration has been reloaded."))
                 .build();
 
             sender.sendMessage(reloadComponent);
