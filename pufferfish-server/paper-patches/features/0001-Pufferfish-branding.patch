@@ -56,10 +56,10 @@ index 74ffdc823e66fc5ec027c4b7c462382bcbfe2be2..76b3695bcc30306c68d5b029b96daa5f
              SharedConstants.getCurrentVersion().name(),
              getManifestAttribute(manifest, ATTRIBUTE_BUILD_NUMBER)
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index a287ad5cce532229f2a514956d34a9358175bc45..344ceed4b533ced5c83f415f1ac2a6b6fe71c0e5 100644
+index 5508b1a4ec0eb795dbca4604f2c03cbc1cb9ee25..9205ea194e5468c7bb70c860037069f50b07565d 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-@@ -485,7 +485,7 @@ public final class CraftMagicNumbers implements UnsafeValues {
+@@ -486,7 +486,7 @@ public final class CraftMagicNumbers implements UnsafeValues {
  
      @Override
      public com.destroystokyo.paper.util.VersionFetcher getVersionFetcher() {
