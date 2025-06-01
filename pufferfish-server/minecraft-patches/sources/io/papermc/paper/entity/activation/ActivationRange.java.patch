@@ -1,6 +1,6 @@
 --- a/io/papermc/paper/entity/activation/ActivationRange.java
 +++ b/io/papermc/paper/entity/activation/ActivationRange.java
-@@ -215,7 +_,7 @@
+@@ -221,7 +_,7 @@
          }
          // special cases.
          if (entity instanceof final LivingEntity living) {
