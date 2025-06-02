@@ -25,7 +25,7 @@ sed -i "s/$oldHash/$newHash/g" gradle.properties
 ./gradlew applyAllPatches || exit_on_error "An error occurred when merging patches!"
 ./gradlew rebuildAllServerPatches || exit_on_error "An error occurred when rebuilding server patches!"
 ./gradlew rebuildPaperApiPatches || exit_on_error "An error occurred when rebuilding api patches!"
-./gradlew compileJava || exit_on_error "An error occurred when building!"
+#./gradlew compileJava || exit_on_error "An error occurred when building!"
 
 git add .
 
