@@ -70,7 +70,7 @@ public class PufferfishConfig {
 		getString("info.version", "1.0");
 		setComment("info",
 				"Pufferfork Configuration",
-				"DM me for support on discord: karmuss",
+				"DM me for support on discord: karmuss; or preferably open an issue on the issue tracker",
 				"Download new builds on the github releases page");
 		
 		for (Method method : PufferfishConfig.class.getDeclaredMethods()) {
@@ -100,7 +100,7 @@ public class PufferfishConfig {
 		if (SIMDDetection.isEnabled) {
 			PufferfishLogger.LOGGER.info("SIMD operations detected as functional. Will replace some operations with faster versions.");
 		} else if (SIMDDetection.versionLimited) {
-			PufferfishLogger.LOGGER.warning("Will not enable SIMD! These optimizations are only safely supported on Java 17-21.");
+			PufferfishLogger.LOGGER.warning("Will not enable SIMD! These optimizations are only safely supported on Java 17-21. (LTS releases)");
 		} else {
 			PufferfishLogger.LOGGER.warning("SIMD operations are available for your server, but are not configured!");
 			PufferfishLogger.LOGGER.warning("To enable additional optimizations, add \"--add-modules=jdk.incubator.vector\" to your startup flags, BEFORE the \"-jar\".");
@@ -170,7 +170,8 @@ public class PufferfishConfig {
 	public static String sentryDsn;
 	private static void sentry() {
 		String sentryEnvironment = System.getenv("SENTRY_DSN");
-		String sentryConfig = getString("sentry-dsn", "", "Sentry DSN for improved error logging, leave blank to disable", "Obtain from https://sentry.io/");
+		String sentryConfig = getString("misc.sentry-dsn", "");
+		setComment("misc.sentry-dsn", " ", "Sentry DSN for improved error logging, leave blank to disable", "Obtain from https://sentry.io/");
 		
 		sentryDsn = sentryEnvironment == null ? sentryConfig : sentryEnvironment;
 		if (sentryDsn != null && !sentryDsn.isBlank()) {
@@ -180,7 +181,9 @@ public class PufferfishConfig {
 	
 	public static boolean enableBooks;
 	private static void books() {
-		enableBooks = getBoolean("enable-books", true,
+		enableBooks = getBoolean("enable-books", true);
+		setComment("enable-books",
+				" ",
 				"Whether or not books should be writeable.",
 				"Servers that anticipate being a target for duping may want to consider",
 				"disabling this option.",
@@ -189,15 +192,18 @@ public class PufferfishConfig {
 
 	public static boolean tpsCatchup;
 	private static void tpsCatchup() {
-		tpsCatchup = getBoolean("tps-catchup", true,
-				"If this setting is true, the server will run faster after a lag spike in",
+		tpsCatchup = getBoolean("misc.tps-catchup", true);
+		setComment("misc.tps-catchup",
+				" ", "If this setting is true, the server will run faster after a lag spike in",
 				"an attempt to maintain 20 TPS. This option (defaults to true per",
 				"spigot/paper) can cause mobs to move fast after a lag spike.");
 	}
 	
 	public static boolean enableSuffocationOptimization;
 	private static void suffocationOptimization() {
-		enableSuffocationOptimization = getBoolean("enable-suffocation-optimization", true,
+		enableSuffocationOptimization = getBoolean("enable-suffocation-optimization", true);
+		setComment("enable-suffocation-optimization",
+				" ",
 				"Optimizes the suffocation check by selectively skipping",
 				"the check in a way that still appears vanilla. This should",
 				"be left enabled on most servers, but is provided as a",
@@ -207,12 +213,15 @@ public class PufferfishConfig {
 	public static boolean enableAsyncMobSpawning;
 	public static boolean asyncMobSpawningInitialized;
 	private static void asyncMobSpawning() {
-		boolean temp = getBoolean("enable-async-mob-spawning", true,
+		boolean temp = getBoolean("enable-async-mob-spawning", true);
+		setComment("enable-async-mob-spawning",
+				" ",
 				"Whether or not asynchronous mob spawning should be enabled.",
 				"On servers with many entities, this can improve performance by up to 15%. You must have",
 				"paper's per-player-mob-spawns setting set to true for this to work.",
 				"One quick note - this does not actually spawn mobs async (that would be very unsafe).",
-				"This just offloads some expensive calculations that are required for mob spawning.");
+				"This just offloads some expensive calculations that are required for mob spawning.",
+				"This setting comes with its own negative impacts on gameplay, however most of the time unnoticeable");
 		
 		// This prevents us from changing the value during a reload.
 		if (!asyncMobSpawningInitialized) {
@@ -224,10 +233,15 @@ public class PufferfishConfig {
     public static int maxProjectileLoadsPerTick;
     public static int maxProjectileLoadsPerProjectile;
     private static void projectileLoading() {
-        maxProjectileLoadsPerTick = getInt("projectile.max-loads-per-tick", 10, "Controls how many chunks are allowed", "to be sync loaded by projectiles in a tick.");
-        maxProjectileLoadsPerProjectile = getInt("projectile.max-loads-per-projectile", 10, "Controls how many chunks a projectile", "can load in its lifetime before it gets", "automatically removed.");
+        maxProjectileLoadsPerTick = getInt("projectile.max-loads-per-tick", 10);
 
-        setComment("projectile", "Optimizes projectile settings");
+		setComment("projectile.max-loads-per-tick", " ", "Controls how many chunks are allowed", "to be sync loaded by projectiles in a tick.");
+
+        maxProjectileLoadsPerProjectile = getInt("projectile.max-loads-per-projectile", 10);
+
+		setComment("projectile.max-loads-per-projectile", " ", "Controls how many chunks a projectile", "can load in its lifetime before it gets", "automatically removed.");
+
+        setComment("projectile", " ", "Optimizes projectile settings");
     }
 
 
@@ -258,15 +272,18 @@ public class PufferfishConfig {
 
     private static void dynamicActivationOfBrains() throws IOException {
         dearEnabled = getBoolean("dab.enabled", "activation-range.enabled", true);
-        startDistance = getInt("dab.start-distance", "activation-range.start-distance", 12,
-                "This value determines how far away an entity has to be",
-                "from the player to start being effected by DEAR.");
+        startDistance = getInt("dab.start-distance", "activation-range.start-distance", 12);
+		setComment("dab.start-distance",
+                " ", "This value determines how far away an entity has to be",
+                "from the player to start being effected by DAB.");
         startDistanceSquared = startDistance * startDistance;
-        maximumActivationPrio = getInt("dab.max-tick-freq", "activation-range.max-tick-freq", 20,
-                "This value defines how often in ticks, the furthest entity",
+        maximumActivationPrio = getInt("dab.max-tick-freq", "activation-range.max-tick-freq", 20);
+		setComment("dab.max-tick-freq",
+                " ", "This value defines how often in ticks, the furthest entity",
                 "will get their pathfinders and behaviors ticked. 20 = 1s");
-        activationDistanceMod = getInt("dab.activation-dist-mod", "activation-range.activation-dist-mod", 8,
-                "This value defines how much distance modifies an entity's",
+        activationDistanceMod = getInt("dab.activation-dist-mod", "activation-range.activation-dist-mod", 8);
+		setComment("dab.activation-dist-mod",
+                " ", "This value defines how much distance modifies an entity's",
                 "tick frequency. freq = (distanceToPlayer^2) / (2^value)",
                 "If you want further away entities to tick less often, use 7.",
                 "If you want further away entities to tick more often, try 9.");
@@ -276,25 +293,28 @@ public class PufferfishConfig {
             	entry.getKey().dabEnabled = true; // reset all, before setting the ones to true
         }
 	}
-        getStringList("dab.blacklisted-entities", "activation-range.blacklisted-entities", Collections.emptyList(), "A list of entities to ignore for activation")
+        getStringList("dab.blacklisted-entities", "activation-range.blacklisted-entities", Collections.emptyList())
                 .forEach(name -> EntityType.byString(name).ifPresentOrElse(entityType -> {
                     entityType.dabEnabled = false;
                 }, () -> MinecraftServer.LOGGER.warn("Unknown entity \"" + name + "\"")));
-
-        setComment("dab", "Optimizes entity brains when", "they're far away from the player");
+		setComment("dab.blacklisted-entities", " ", "A list of entities to ignore for activation");
+        setComment("dab", " ", "Optimizes entity brains when", "they're far away from the player", "Please note that this comes at a huge risk of breaking", "things such as plugins and/or mob farms", "Enable at your own discretion!", "For more information refer to the wiki on github");
     }
     
     public static boolean throttleInactiveGoalSelectorTick;
 	private static void inactiveGoalSelectorThrottle() {
-		throttleInactiveGoalSelectorTick = getBoolean("inactive-goal-selector-throttle", "inactive-goal-selector-disable", true,
+		throttleInactiveGoalSelectorTick = getBoolean("inactive-goal-selector-throttle", "inactive-goal-selector-disable", true);
+		setComment("inactive-goal-selector-throttle",
+				" ",
 				"Throttles the AI goal selector in entity inactive ticks.",
 				"This can improve performance by a few percent, but has minor gameplay implications.");
 	}
 
 	public static boolean allowEndCrystalRespawn;
 	private static void allowEndCrystalRespawn() {
-		allowEndCrystalRespawn = getBoolean("allow-end-crystal-respawn", true,
-				"Allows end crystals to respawn the ender dragon.",
+		allowEndCrystalRespawn = getBoolean("misc.allow-end-crystal-respawn", true);
+		setComment("misc.allow-end-crystal-respawn",
+				" ", "Allows end crystals to respawn the ender dragon.",
 				"On servers that expect end crystal fights in the end dimension, disabling this",
 				"will prevent the server from performing an expensive search to attempt respawning",
 				"the ender dragon whenever a player places an end crystal.");
@@ -302,9 +322,9 @@ public class PufferfishConfig {
 
     public static URI profileWebUrl;
     private static void profilerOptions() {
-        profileWebUrl = URI.create(getString("flare.url", "https://flare.airplane.gg", "Sets the server to use for profiles."));
+        profileWebUrl = URI.create(getString("flare.url", "https://flare.airplane.gg", "\nSets the server to use for profiles."));
 
-        setComment("flare", "Configures Flare, the built-in profiler");
+        setComment("flare", " ", "Configures Flare, the built-in profiler");
     }
 
 
@@ -320,7 +340,7 @@ public class PufferfishConfig {
             }
         }
 
-        setComment("web-services", "Options for connecting to Pufferfish/Airplane's online utilities");
+        setComment("web-services", " ", "Options for connecting to Pufferfish/Airplane's online utilities");
 
     }
 
@@ -328,7 +348,8 @@ public class PufferfishConfig {
     public static boolean disableMethodProfiler;
     private static void miscSettings() {
         disableMethodProfiler = getBoolean("misc.disable-method-profiler", true);
-        setComment("misc", "Settings for things that don't belong elsewhere");
+		setComment("misc.disable-method-profiler", " ", "Disables the built-in mojang profiler, can provide very small performance gains");
+		setComment("misc", " ", "Settings for things that don't belong elsewhere");
     }
 
 }
