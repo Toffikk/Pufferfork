@@ -251,6 +251,7 @@ public class PufferfishConfig {
         EntityType.PIGLIN,
         EntityType.WARDEN,
         EntityType.VILLAGER,
+		EntityType.CREAKING,
 		EntityType.HAPPY_GHAST
     ).collect(Collectors.toMap(key -> key, key -> true));
 
