@@ -271,7 +271,7 @@ public class PufferfishConfig {
     ).collect(Collectors.toMap(key -> key, key -> true));
 
     private static void dynamicActivationOfBrains() throws IOException {
-        dearEnabled = getBoolean("dab.enabled", "activation-range.enabled", true);
+        dearEnabled = getBoolean("dab.enabled", "activation-range.enabled", false); // disable by default
         startDistance = getInt("dab.start-distance", "activation-range.start-distance", 12);
 		setComment("dab.start-distance",
                 " ", "This value determines how far away an entity has to be",
@@ -298,7 +298,7 @@ public class PufferfishConfig {
                     entityType.dabEnabled = false;
                 }, () -> MinecraftServer.LOGGER.warn("Unknown entity \"" + name + "\"")));
 		setComment("dab.blacklisted-entities", " ", "A list of entities to ignore for activation");
-        setComment("dab", " ", "Optimizes entity brains when", "they're far away from the player", "Please note that this comes at a huge risk of breaking", "things such as plugins and/or mob farms", "Enable at your own discretion!", "For more information refer to the wiki on github");
+        setComment("dab", " ", "Optimizes entity brains when", "they're far away from the player", "Please note that this comes at a huge risk of breaking", "things such as plugins and/or mob farms and it's disabled by default since 1.21.6", "Enable at your own discretion!", "For more information refer to the wiki page on github", "https://github.com/Toffikk/Pufferfork/wiki/DAB-%E2%80%90-Dynamic-Activation-of-Brain-(formerly-DEAR)");
     }
     
     public static boolean throttleInactiveGoalSelectorTick;
