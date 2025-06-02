@@ -25,9 +25,11 @@ import org.bukkit.command.SimpleCommandMap;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.List;
+import java.util.stream.Stream;
 import java.net.URI;
 import java.util.Collections;
+import java.util.stream.Collectors;
+import java.util.Map;
 
 public class PufferfishConfig {
 	
@@ -235,6 +237,23 @@ public class PufferfishConfig {
     public static int maximumActivationPrio;
     public static int activationDistanceMod;
 
+	public static final Map<EntityType<?>, Boolean> enabledForEntities = Stream.of(
+        EntityType.ZOGLIN,
+        EntityType.PIGLIN_BRUTE,
+        EntityType.ALLAY,
+        EntityType.AXOLOTL,
+        EntityType.CAMEL,
+        EntityType.FROG,
+        EntityType.TADPOLE,
+        EntityType.GOAT,
+        EntityType.SNIFFER,
+        EntityType.HOGLIN,
+        EntityType.PIGLIN,
+        EntityType.WARDEN,
+        EntityType.VILLAGER,
+		EntityType.HAPPY_GHAST
+    ).collect(Collectors.toMap(key -> key, key -> true));
+
     private static void dynamicActivationOfBrains() throws IOException {
         dearEnabled = getBoolean("dab.enabled", "activation-range.enabled", true);
         startDistance = getInt("dab.start-distance", "activation-range.start-distance", 12,
@@ -250,9 +269,11 @@ public class PufferfishConfig {
                 "If you want further away entities to tick less often, use 7.",
                 "If you want further away entities to tick more often, try 9.");
 
-        for (EntityType<?> entityType : BuiltInRegistries.ENTITY_TYPE) {
-            entityType.dabEnabled = true; // reset all, before setting the ones to true
+        for (final Map.Entry<EntityType<?>, Boolean> entry : enabledForEntities.entrySet()) {
+			if (entry.getValue()) {
+            	entry.getKey().dabEnabled = true; // reset all, before setting the ones to true
         }
+	}
         getStringList("dab.blacklisted-entities", "activation-range.blacklisted-entities", Collections.emptyList(), "A list of entities to ignore for activation")
                 .forEach(name -> EntityType.byString(name).ifPresentOrElse(entityType -> {
                     entityType.dabEnabled = false;
