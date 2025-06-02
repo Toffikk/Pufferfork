@@ -252,6 +252,7 @@ public class PufferfishConfig {
         EntityType.WARDEN,
         EntityType.VILLAGER,
 		EntityType.CREAKING,
+		EntityType.BREEZE,
 		EntityType.HAPPY_GHAST
     ).collect(Collectors.toMap(key -> key, key -> true));
 
