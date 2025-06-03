@@ -17,10 +17,10 @@ and, in my opinion, worth the low risk of minor mob-spawning-related
 inconsistencies.
 
 diff --git a/net/minecraft/server/MinecraftServer.java b/net/minecraft/server/MinecraftServer.java
-index 115b0911aa4db1523a28fd919ba7c86ef034a562..ffd9d1dfad5b8c6b825bc66e0498f5ad416495f1 100644
+index 0c3cfb58ef785c0bdc68ce08761fc2605a55f793..582cf9a19793697afde2e82097f98dc3268559fc 100644
 --- a/net/minecraft/server/MinecraftServer.java
 +++ b/net/minecraft/server/MinecraftServer.java
-@@ -302,6 +302,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -303,6 +303,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      public boolean isIteratingOverLevels = false; // Paper - Throw exception on world create while being ticked
      private final Set<String> pluginsBlockingSleep = new java.util.HashSet<>(); // Paper - API to allow/disallow tick sleeping
      public static final long SERVER_INIT = System.nanoTime(); // Paper - Lag compensation
@@ -29,7 +29,7 @@ index 115b0911aa4db1523a28fd919ba7c86ef034a562..ffd9d1dfad5b8c6b825bc66e0498f5ad
      public static <S extends MinecraftServer> S spin(Function<Thread, S> threadFunction) {
          AtomicReference<S> atomicReference = new AtomicReference<>();
 diff --git a/net/minecraft/server/dedicated/DedicatedServer.java b/net/minecraft/server/dedicated/DedicatedServer.java
-index ea0ded4b7d1411f94a1879711638cf12e2255c39..cc3c84ee13b4cc3582efe68a2fe46f483347be6e 100644
+index 12ec15908d6b60144a6ac3ca64daa88e32d0c314..10da4f2205fc7c5e1724cda6384d93721cf49480 100644
 --- a/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -309,6 +309,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -41,7 +41,7 @@ index ea0ded4b7d1411f94a1879711638cf12e2255c39..cc3c84ee13b4cc3582efe68a2fe46f48
          }
      }
 diff --git a/net/minecraft/server/level/ServerChunkCache.java b/net/minecraft/server/level/ServerChunkCache.java
-index 59e8a5e1b35c81883c9b1ca00c6e55d77584d8cc..44ab96a64c21292c27c8b7dfcba87fed93bf41b7 100644
+index 7d78d270b7a076f595301acd9b3c6275e804496e..eb03766b8b12201649c763f000448ef9ce23a015 100644
 --- a/net/minecraft/server/level/ServerChunkCache.java
 +++ b/net/minecraft/server/level/ServerChunkCache.java
 @@ -184,6 +184,8 @@ public class ServerChunkCache extends ChunkSource implements ca.spottedleaf.moon
