@@ -54,12 +54,12 @@ subprojects {
         isPreserveFileTimestamps = false
         isReproducibleFileOrder = true
     }
-    tasks.withType<JavaCompile> {
+    tasks.withType<JavaCompile>().configureEach {
         options.encoding = Charsets.UTF_8.name()
         options.release = 21
         options.isFork = true
 	options.compilerArgs.addAll(listOf("-Xlint:-deprecation", "-Xlint:-removal"))
-	
+	options.forkOptions.memoryMaximumSize = "6g"
     }
     tasks.withType<Javadoc> {
         options.encoding = Charsets.UTF_8.name()
