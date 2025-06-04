@@ -1,6 +1,6 @@
 --- a/paper-server/build.gradle.kts
 +++ b/paper-server/build.gradle.kts
-@@ -25,12 +_,23 @@
+@@ -25,8 +_,19 @@
      gitFilePatches = false
  
      updatingMinecraft {
@@ -20,14 +20,8 @@
 +    activeFork = pufferfork
  
      spigot {
--        buildDataRef = "702e1a0a5072b2c4082371d5228cb30525687efc"
--        packageVersion = "v1_21_R4" // also needs to be updated in MappingEnvironment
-+        buildDataRef = ""
-+        packageVersion = "" // also needs to be updated in MappingEnvironment
-     }
- 
-     reobfPackagesToFix.addAll(
-@@ -108,7 +_,21 @@
+         enabled = false
+@@ -109,7 +_,21 @@
      }
  }
  
@@ -50,7 +44,7 @@
  configurations.named(log4jPlugins.compileClasspathConfigurationName) {
      extendsFrom(configurations.compileClasspath.get())
  }
-@@ -130,7 +_,7 @@
+@@ -131,7 +_,7 @@
  }
  
  dependencies {
@@ -59,7 +53,7 @@
      implementation("ca.spottedleaf:concurrentutil:0.0.3")
      implementation("org.jline:jline-terminal-ffm:3.27.1") // use ffm on java 22+
      implementation("org.jline:jline-terminal-jni:3.27.1") // fall back to jni on java 21
-@@ -171,6 +_,14 @@
+@@ -172,6 +_,14 @@
      runtimeOnly("org.apache.maven.resolver:maven-resolver-connector-basic:1.9.18")
      runtimeOnly("org.apache.maven.resolver:maven-resolver-transport-http:1.9.18")
  
@@ -74,7 +68,7 @@
      testImplementation("io.github.classgraph:classgraph:4.8.179") // For mob goal test
      testImplementation("org.junit.jupiter:junit-jupiter:5.12.2")
      testImplementation("org.junit.platform:junit-platform-suite-engine:1.12.2")
-@@ -194,6 +_,13 @@
+@@ -195,6 +_,13 @@
      implementation("me.lucko:spark-paper:1.10.133-20250413.112336-1")
  }
  
@@ -88,7 +82,7 @@
  tasks.jar {
      manifest {
          val git = Git(rootProject.layout.projectDirectory.path)
-@@ -206,14 +_,14 @@
+@@ -207,14 +_,14 @@
          val gitBranch = git.exec(providers, "rev-parse", "--abbrev-ref", "HEAD").get().trim()
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
@@ -108,7 +102,7 @@
              "Build-Number" to (build ?: ""),
              "Build-Time" to buildTime.toString(),
              "Git-Branch" to gitBranch,
-@@ -267,7 +_,7 @@
+@@ -273,7 +_,7 @@
      jvmArgumentProviders.add(provider)
  }
  
