@@ -31,7 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 Co-authored-by: Nassim Jahnke <nassim@njahnke.dev>
 
 diff --git a/io/papermc/paper/entity/activation/ActivationRange.java b/io/papermc/paper/entity/activation/ActivationRange.java
-index b1ed3c967c05afc8686c3de4a5d1a003cf57f8fd..a37e1a3250ca4921cb8264fc22a3f71a3da4ad87 100644
+index b1ed3c967c05afc8686c3de4a5d1a003cf57f8fd..c039e8ce19611f32ddf9f216774d20166e649f28 100644
 --- a/io/papermc/paper/entity/activation/ActivationRange.java
 +++ b/io/papermc/paper/entity/activation/ActivationRange.java
 @@ -39,6 +39,7 @@ import net.minecraft.world.phys.AABB;
@@ -42,7 +42,7 @@ index b1ed3c967c05afc8686c3de4a5d1a003cf57f8fd..a37e1a3250ca4921cb8264fc22a3f71a
  
  public final class ActivationRange {
  
-@@ -165,10 +166,25 @@ public final class ActivationRange {
+@@ -165,6 +166,22 @@ public final class ActivationRange {
                  }
  
                  ActivationRange.activateEntity(entity);
@@ -65,12 +65,8 @@ index b1ed3c967c05afc8686c3de4a5d1a003cf57f8fd..a37e1a3250ca4921cb8264fc22a3f71a
              }
          }
      }
--
-     /**
-      * Tries to activate an entity.
-      *
 diff --git a/net/minecraft/world/entity/EntityType.java b/net/minecraft/world/entity/EntityType.java
-index 98586dfc562cf6909df0f4bfa1c19e35b3172abe..09eb0660704f3669acb18193a4ce2744c1a368a6 100644
+index 7996e42100ab8b7a13ed8b021c02d527d2d62979..b8c03ce1dcc6c9e9c86f4f67176deb73a3c03a55 100644
 --- a/net/minecraft/world/entity/EntityType.java
 +++ b/net/minecraft/world/entity/EntityType.java
 @@ -185,6 +185,7 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT
