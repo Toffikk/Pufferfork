@@ -1,0 +1,264 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Paul Sauve <paul@technove.co>
+Date: Fri, 15 Jan 2021 19:05:01 -0600
+Subject: [PATCH] Dynamic Activation of Brain
+
+This replaces the current method of ticking an inactive entity's
+pathfinder 1/4 times with a new method that's dynamic based off how far
+away it is from a player. If an entity is within 32 blocks, it gets
+ticked every tick. If it's within 45 blocks, it gets ticked every other
+tick. If it's within 55 blocks, it gets ticked once every three ticks.
+(these numbers have since been changed, but the idea is the same.)
+
+Airplane
+Copyright (C) 2020 Technove LLC
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+// note - reworked based on kennytv's pr to paper to apply to all entities that have brain; see https://github.com/PaperMC/Paper/pull/9712
+
+Co-authored-by: Nassim Jahnke <nassim@njahnke.dev>
+
+diff --git a/io/papermc/paper/entity/activation/ActivationRange.java b/io/papermc/paper/entity/activation/ActivationRange.java
+index b1ed3c967c05afc8686c3de4a5d1a003cf57f8fd..c039e8ce19611f32ddf9f216774d20166e649f28 100644
+--- a/io/papermc/paper/entity/activation/ActivationRange.java
++++ b/io/papermc/paper/entity/activation/ActivationRange.java
+@@ -39,6 +39,7 @@ import net.minecraft.world.phys.AABB;
+ import org.spigotmc.SpigotWorldConfig;
+ import java.util.List;
+ import java.util.Set;
++import net.minecraft.world.phys.Vec3; // Pufferfork - DAB
+ 
+ public final class ActivationRange {
+ 
+@@ -165,6 +166,22 @@ public final class ActivationRange {
+                 }
+ 
+                 ActivationRange.activateEntity(entity);
++
++                // Pufferfork start - DAB
++                if (entity instanceof LivingEntity livingEntity) {
++                    if (gg.pufferfish.pufferfish.PufferfishConfig.dearEnabled && livingEntity.getType().dabEnabled) {
++                        Vec3 playerVec = player.position();
++                        Vec3 entityVec = entity.position();
++                        final double diffX = playerVec.x - entityVec.x, diffY = playerVec.y - entityVec.y, diffZ = playerVec.z - entityVec.z;
++                        final int squaredDistance = (int) (diffX * diffX + diffY * diffY + diffZ * diffZ);
++                        livingEntity.activatedPriority = squaredDistance > gg.pufferfish.pufferfish.PufferfishConfig.startDistanceSquared ?
++                            Math.max(1, Math.min(squaredDistance >> gg.pufferfish.pufferfish.PufferfishConfig.activationDistanceMod, livingEntity.activatedPriority)) :
++                            1;
++                    } else {
++                        livingEntity.activatedPriority = 1;
++                    }
++                    // Pufferfork end
++                }
+             }
+         }
+     }
+diff --git a/net/minecraft/world/entity/EntityType.java b/net/minecraft/world/entity/EntityType.java
+index 7996e42100ab8b7a13ed8b021c02d527d2d62979..b8c03ce1dcc6c9e9c86f4f67176deb73a3c03a55 100644
+--- a/net/minecraft/world/entity/EntityType.java
++++ b/net/minecraft/world/entity/EntityType.java
+@@ -185,6 +185,7 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT
+     public static final Codec<EntityType<?>> CODEC = BuiltInRegistries.ENTITY_TYPE.byNameCodec();
+     private static final float MAGIC_HORSE_WIDTH = 1.3964844F;
+     private static final int DISPLAY_TRACKING_RANGE = 10;
++    public boolean dabEnabled; // Pufferfork - DAB
+     public static final EntityType<Boat> ACACIA_BOAT = register(
+         "acacia_boat",
+         EntityType.Builder.of(boatFactory(() -> Items.ACACIA_BOAT), MobCategory.MISC)
+diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
+index 739bf8e987a7ce98a1de7083fb41bcd874510695..68892b9a647c33475f575210b3152b312c25cd2f 100644
+--- a/net/minecraft/world/entity/LivingEntity.java
++++ b/net/minecraft/world/entity/LivingEntity.java
+@@ -287,6 +287,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+     public net.kyori.adventure.util.TriState frictionState = net.kyori.adventure.util.TriState.NOT_SET; // Paper - Friction API
+     public int shieldBlockingDelay = this.level().paperConfig().misc.shieldBlockingDelay; // Paper - Make shield blocking delay configurable
+     // CraftBukkit end
++    public int activatedPriority; // Pufferfork - DAB
+ 
+     protected LivingEntity(EntityType<? extends LivingEntity> entityType, Level level) {
+         super(entityType, level);
+@@ -300,6 +301,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+         this.setYRot((float)(Math.random() * (float) (Math.PI * 2)));
+         this.yHeadRot = this.getYRot();
+         this.brain = this.makeBrain(EMPTY_BRAIN);
++        this.activatedPriority = gg.pufferfish.pufferfish.PufferfishConfig.maximumActivationPrio; // Pufferfork - DAB (golf score)
+     }
+ 
+     @Contract(
+diff --git a/net/minecraft/world/entity/Mob.java b/net/minecraft/world/entity/Mob.java
+index 667d1bdd9d0b907edb6cbb576a555bad84a21387..a48945809dd94087e1d72a8962291b81e6ce2150 100644
+--- a/net/minecraft/world/entity/Mob.java
++++ b/net/minecraft/world/entity/Mob.java
+@@ -210,10 +210,10 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+     @Override
+     public void inactiveTick() {
+         super.inactiveTick();
+-        if (this.goalSelector.inactiveTick()) {
++        if (this.goalSelector.inactiveTick(this.activatedPriority, true)) { // Pufferfork - DAB (pass activated priority)
+             this.goalSelector.tick();
+         }
+-        if (this.targetSelector.inactiveTick()) {
++        if (this.targetSelector.inactiveTick(this.activatedPriority, true)) { // Pufferfork - DAB (pass activated priority)
+             this.targetSelector.tick();
+         }
+     }
+@@ -750,16 +750,20 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+         int i = this.tickCount + this.getId();
+         if (i % 2 != 0 && this.tickCount > 1) {
+             profilerFiller.push("targetSelector");
++            if (this.targetSelector.inactiveTick(this.activatedPriority, false)) // Pufferfork - DAB (use this to alternate ticking)
+             this.targetSelector.tickRunningGoals(false);
+             profilerFiller.pop();
+             profilerFiller.push("goalSelector");
++            if (this.goalSelector.inactiveTick(this.activatedPriority, false)) // Pufferfork - DAB (use this to alternate ticking)
+             this.goalSelector.tickRunningGoals(false);
+             profilerFiller.pop();
+         } else {
+             profilerFiller.push("targetSelector");
++            if (this.targetSelector.inactiveTick(this.activatedPriority, false)) // Pufferfork - DAB (use this to alternate ticking)
+             this.targetSelector.tick();
+             profilerFiller.pop();
+             profilerFiller.push("goalSelector");
++            if (this.goalSelector.inactiveTick(this.activatedPriority, false)) // Pufferfork - DAB (use this to alternate ticking)
+             this.goalSelector.tick();
+             profilerFiller.pop();
+         }
+diff --git a/net/minecraft/world/entity/ai/Brain.java b/net/minecraft/world/entity/ai/Brain.java
+index 98652c2c549bd7657a606d25ba4fe3cffa0548da..1f960e5cbec0048d0936d107dab464a4d12a637d 100644
+--- a/net/minecraft/world/entity/ai/Brain.java
++++ b/net/minecraft/world/entity/ai/Brain.java
+@@ -55,6 +55,12 @@ public class Brain<E extends LivingEntity> {
+     private final Set<Activity> activeActivities = Sets.newHashSet();
+     private Activity defaultActivity = Activity.IDLE;
+     private long lastScheduleUpdate = -9999L;
++    // Pufferfork start - DAB
++    private int behaviorTick;
++    private boolean dirtyMemories = true;
++    private boolean dirtyActivities = true;
++    private boolean active;
++    // Pufferfork end - DAB
+ 
+     public static <E extends LivingEntity> Brain.Provider<E> provider(
+         Collection<? extends MemoryModuleType<?>> memoryTypes, Collection<? extends SensorType<? extends Sensor<? super E>>> sensorTypes
+@@ -161,6 +167,7 @@ public class Brain<E extends LivingEntity> {
+     }
+ 
+     public void clearMemories() {
++        this.dirtyMemories = true; // Pufferfork - DAB
+         this.memories.keySet().forEach(memoryModuleType -> this.memories.put((MemoryModuleType<?>)memoryModuleType, Optional.empty()));
+     }
+ 
+@@ -185,6 +192,7 @@ public class Brain<E extends LivingEntity> {
+             if (memory.isPresent() && this.isEmptyCollection(memory.get().getValue())) {
+                 this.eraseMemory(memoryType);
+             } else {
++                this.dirtyMemories = true; // Pufferfork - DAB
+                 this.memories.put(memoryType, memory);
+             }
+         }
+@@ -290,6 +298,7 @@ public class Brain<E extends LivingEntity> {
+ 
+     private void setActiveActivity(Activity activity) {
+         if (!this.isActive(activity)) {
++            this.dirtyActivities = true; // Pufferfork - DAB
+             this.eraseMemoriesForOtherActivitesThan(activity);
+             this.activeActivities.clear();
+             this.activeActivities.addAll(this.coreActivities);
+@@ -321,12 +330,14 @@ public class Brain<E extends LivingEntity> {
+     }
+ 
+     public void setActiveActivityToFirstValid(List<Activity> activities) {
++        if (!this.dirtyMemories) return; // Pufferfork - DAB; assumes that this is always called with the same list
+         for (Activity activity : activities) {
+             if (this.activityRequirementsAreMet(activity)) {
+                 this.setActiveActivity(activity);
+                 break;
+             }
+         }
++        this.dirtyMemories = false; // Pufferfork - DAB
+     }
+ 
+     public void setDefaultActivity(Activity newFallbackActivity) {
+@@ -372,6 +383,7 @@ public class Brain<E extends LivingEntity> {
+         Set<Pair<MemoryModuleType<?>, MemoryStatus>> memorieStatuses,
+         Set<MemoryModuleType<?>> memoryTypes
+     ) {
++        this.dirtyMemories = true; // Pufferfork - DAB; just in case
+         this.activityRequirements.put(activity, memorieStatuses);
+         if (!memoryTypes.isEmpty()) {
+             this.activityMemoriesToEraseWhenStopped.put(activity, memoryTypes);
+@@ -408,6 +420,7 @@ public class Brain<E extends LivingEntity> {
+     }
+ 
+     public void tick(ServerLevel level, E entity) {
++        this.active = this.behaviorTick++ % entity.activatedPriority == 0; // Pufferfork - DAB
+         this.forgetOutdatedMemories();
+         this.tickSensors(level, entity);
+         this.startEachNonRunningBehavior(level, entity);
+@@ -415,7 +428,13 @@ public class Brain<E extends LivingEntity> {
+     }
+ 
+     private void tickSensors(ServerLevel level, E brainHolder) {
+-        for (Sensor<? super E> sensor : this.sensors.values()) {
++        // Pufferfork start - DAB
++        for (final Map.Entry<SensorType<? extends Sensor<? super E>>, Sensor<? super E>> entry : this.sensors.entrySet()) {
++            if (!this.active && entry.getKey() != SensorType.IS_IN_WATER) {
++                continue;
++            }
++            final Sensor<? super E> sensor = entry.getValue();
++            // Pufferfork end
+             sensor.tick(level, brainHolder);
+         }
+     }
+@@ -442,6 +461,12 @@ public class Brain<E extends LivingEntity> {
+     }
+ 
+     private void startEachNonRunningBehavior(ServerLevel level, E entity) {
++        // Pufferfork start - DAB
++        if (!this.dirtyActivities) {
++            return;
++        }
++        this.dirtyActivities = false;
++        // Pufferfork end
+         long gameTime = level.getGameTime();
+ 
+         for (Map<Activity, Set<BehaviorControl<? super E>>> map : this.availableBehaviorsByPriority.values()) {
+@@ -462,6 +487,7 @@ public class Brain<E extends LivingEntity> {
+         long gameTime = level.getGameTime();
+ 
+         for (BehaviorControl<? super E> behaviorControl : this.getRunningBehaviors()) {
++            if (!this.active && !(behaviorControl instanceof net.minecraft.world.entity.ai.behavior.Swim)) continue; // Pufferfork - DAB
+             behaviorControl.tickOrStop(level, entity, gameTime);
+         }
+     }
+diff --git a/net/minecraft/world/entity/ai/goal/GoalSelector.java b/net/minecraft/world/entity/ai/goal/GoalSelector.java
+index 859b859d29b637200cf7c9a0bd52d9f712413e3d..5b26295438d6c003c51f8c5e81b7cce9f15c6595 100644
+--- a/net/minecraft/world/entity/ai/goal/GoalSelector.java
++++ b/net/minecraft/world/entity/ai/goal/GoalSelector.java
+@@ -36,9 +36,12 @@ public class GoalSelector {
+     }
+ 
+     // Paper start - EAR 2
+-    public boolean inactiveTick() {
++    public boolean inactiveTick(int tickRate, boolean inactive) { // Pufferfish start - DAB
++        if (inactive && !gg.pufferfish.pufferfish.PufferfishConfig.dearEnabled) tickRate = 4; // reset to Paper's
++        tickRate = Math.min(tickRate, 3);
+         this.curRate++;
+-        return this.curRate % 3 == 0; // TODO newGoalRate was already unused in 1.20.4, check if this is correct
++        return this.curRate % tickRate == 0; // TODO newGoalRate was already unused in 1.20.4, check if this is correct
++        // Pufferfish end
+     }
+ 
+     public boolean hasTasks() {

@@ -1,0 +1,10 @@
+--- a/net/minecraft/server/network/ServerGamePacketListenerImpl.java
++++ b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
+@@ -2146,6 +_,7 @@
+ 
+     @Override
+     public void handlePaddleBoat(ServerboundPaddleBoatPacket packet) {
++        if (!gg.pufferfish.pufferfish.PufferfishConfig.enableBooks && !this.player.getBukkitEntity().hasPermission("pufferfish.usebooks")) return; // Pufferfish - Add option to disable books
+         PacketUtils.ensureRunningOnSameThread(packet, this, this.player.level());
+         if (this.player.getControlledVehicle() instanceof AbstractBoat abstractBoat) {
+             abstractBoat.setPaddleState(packet.getLeft(), packet.getRight());

@@ -11,18 +11,18 @@ paperweight {
 
         patchFile {
             path = "paper-server/build.gradle.kts"
-            outputFile = file("pufferfish-server/build.gradle.kts")
-            patchFile = file("pufferfish-server/build.gradle.kts.patch")
+            outputFile = file("pufferfork-server/build.gradle.kts")
+            patchFile = file("pufferfork-server/build.gradle.kts.patch")
         }
         patchFile {
             path = "paper-api/build.gradle.kts"
-            outputFile = file("pufferfish-api/build.gradle.kts")
-            patchFile = file("pufferfish-api/build.gradle.kts.patch")
+            outputFile = file("pufferfork-api/build.gradle.kts")
+            patchFile = file("pufferfork-api/build.gradle.kts.patch")
         }
         patchDir("paperApi") {
             upstreamPath = "paper-api"
             excludes = setOf("build.gradle.kts")
-            patchesDir = file("pufferfish-api/paper-patches")
+            patchesDir = file("pufferfork-api/paper-patches")
             outputDir = file("paper-api")
         }
     }
@@ -54,11 +54,12 @@ subprojects {
         isPreserveFileTimestamps = false
         isReproducibleFileOrder = true
     }
-    tasks.withType<JavaCompile> {
+    tasks.withType<JavaCompile>().configureEach {
         options.encoding = Charsets.UTF_8.name()
         options.release = 21
         options.isFork = true
 	options.compilerArgs.addAll(listOf("-Xlint:-deprecation", "-Xlint:-removal"))
+	options.forkOptions.memoryMaximumSize = "6g"
     }
     tasks.withType<Javadoc> {
         options.encoding = Charsets.UTF_8.name()
