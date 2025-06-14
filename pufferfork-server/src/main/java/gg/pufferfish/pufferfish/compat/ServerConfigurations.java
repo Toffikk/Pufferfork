@@ -1,6 +1,5 @@
 package gg.pufferfish.pufferfish.compat;
 
-import co.aikar.timings.TimingsManager;
 import com.google.common.io.Files;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -13,6 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Properties;
 import java.util.stream.Collectors;
@@ -23,7 +23,8 @@ public class ServerConfigurations {
       "server.properties",
       "bukkit.yml",
       "spigot.yml",
-      // "paper.yml", // TODO: Figure out what to do with this.
+      "config/paper-global.yml",
+      "config/paper-world-defaults.yml",
       "pufferfish.yml"
     };
 
@@ -32,12 +33,19 @@ public class ServerConfigurations {
         for (String file : configurationFiles) {
             files.put(file, getCleanCopy(file));
         }
+        net.minecraft.server.MinecraftServer server = net.minecraft.server.MinecraftServer.getServer();
+        for (net.minecraft.server.level.ServerLevel serverLevel : server.getAllLevels()) {
+            File worldDir = server.getWorldPath(net.minecraft.world.level.storage.LevelResource.ROOT).resolve(serverLevel.getWorld().getName()).toFile();
+            File paperWorldConfig = new File(worldDir, "paper-world.yml");
+                files.put(paperWorldConfig.getPath(), getCleanCopy(paperWorldConfig.getPath()));
+        }
         return files;
     }
 
     public static String getCleanCopy(String configName) throws IOException {
         File file = new File(configName);
-        List<String> hiddenConfigs = TimingsManager.hiddenConfigs;
+        List<String> hiddenConfigs = new ArrayList<String>();
+        hiddenConfigs.add("proxies.velocity.secret");
 
         switch (Files.getFileExtension(configName)) {
             case "properties": {
