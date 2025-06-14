@@ -35,17 +35,20 @@ public class ServerConfigurations {
         }
         net.minecraft.server.MinecraftServer server = net.minecraft.server.MinecraftServer.getServer();
         for (net.minecraft.server.level.ServerLevel serverLevel : server.getAllLevels()) {
-            File worldDir = server.getWorldPath(net.minecraft.world.level.storage.LevelResource.ROOT).resolve(serverLevel.getWorld().getName()).toFile();
+            File worldDir = serverLevel.getWorld().getWorldFolder();
             File paperWorldConfig = new File(worldDir, "paper-world.yml");
                 files.put(paperWorldConfig.getPath(), getCleanCopy(paperWorldConfig.getPath()));
         }
         return files;
     }
 
+    @SuppressWarnings("deprecation")
     public static String getCleanCopy(String configName) throws IOException {
         File file = new File(configName);
-        List<String> hiddenConfigs = new ArrayList<String>();
-        hiddenConfigs.add("proxies.velocity.secret");
+        List<String> hiddenConfigs = new ArrayList<>(List.of(
+            "proxies.velocity.secret",
+            "web-services.token"
+        ));
 
         switch (Files.getFileExtension(configName)) {
             case "properties": {
