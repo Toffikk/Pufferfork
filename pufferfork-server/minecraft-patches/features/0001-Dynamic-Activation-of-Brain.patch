@@ -98,13 +98,13 @@ index 739bf8e987a7ce98a1de7083fb41bcd874510695..68892b9a647c33475f575210b3152b31
  
      @Contract(
 diff --git a/net/minecraft/world/entity/Mob.java b/net/minecraft/world/entity/Mob.java
-index 667d1bdd9d0b907edb6cbb576a555bad84a21387..a48945809dd94087e1d72a8962291b81e6ce2150 100644
+index 3d851567a12ac9269ef336ef5c653f8ba0081b7d..ceb051789742dc8d53084abd7caaa573e596faba 100644
 --- a/net/minecraft/world/entity/Mob.java
 +++ b/net/minecraft/world/entity/Mob.java
-@@ -210,10 +210,10 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
-     @Override
+@@ -212,10 +212,10 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
      public void inactiveTick() {
          super.inactiveTick();
+         boolean isThrottled = gg.pufferfish.pufferfish.PufferfishConfig.throttleInactiveGoalSelectorTick && _pufferfish_inactiveTickDisableCounter++ % 20 != 0; // Pufferfish - throttle inactive goal selector ticking setting
 -        if (this.goalSelector.inactiveTick()) {
 +        if (this.goalSelector.inactiveTick(this.activatedPriority, true)) { // Pufferfork - DAB (pass activated priority)
              this.goalSelector.tick();
