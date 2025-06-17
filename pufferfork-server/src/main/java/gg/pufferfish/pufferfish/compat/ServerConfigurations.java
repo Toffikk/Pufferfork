@@ -37,7 +37,10 @@ public class ServerConfigurations {
         for (net.minecraft.server.level.ServerLevel serverLevel : server.getAllLevels()) {
             File worldDir = serverLevel.getWorld().getWorldFolder();
             File paperWorldConfig = new File(worldDir, "paper-world.yml");
-                files.put(paperWorldConfig.getPath(), getCleanCopy(paperWorldConfig.getPath()));
+            String cleanConfig = getCleanCopy(paperWorldConfig.getPath());
+            if (!cleanConfig.isEmpty()) {
+                files.put(paperWorldConfig.getPath(), cleanConfig);
+            }
         }
         return files;
     }
@@ -47,7 +50,8 @@ public class ServerConfigurations {
         File file = new File(configName);
         List<String> hiddenConfigs = new ArrayList<>(List.of(
             "proxies.velocity.secret",
-            "web-services.token"
+            "web-services.token",
+            "sentry-dsn"
         ));
 
         switch (Files.getFileExtension(configName)) {
@@ -79,7 +83,11 @@ public class ServerConfigurations {
                         configuration.set(key, null);
                     }
                 }
-                return configuration.saveToString();
+                if (configuration.getKeys(false).size() == 1) {
+                    return "";
+                } else {
+                    return configuration.saveToString();
+                }
             }
             default:
                 throw new IllegalArgumentException("Bad file type " + configName);
