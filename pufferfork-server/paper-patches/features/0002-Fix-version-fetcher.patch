@@ -42,10 +42,10 @@ index d0554ed6631535815e5932930911e3fe1dee8710..537f1e61a44c4dff1a2f74cf6b8ce650
  
          return switch (distance) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index 5b25c9b21b4cc6378129cca98c9a1f5c0cb28218..ce689949b2349cde9040972128ea6593ae9787d6 100644
+index b2ccdc9bd2f7d830db1c530f9339e291e9e633f8..62965ede865833bf57055ce4d5d1d164fa3cf202 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-@@ -491,7 +491,8 @@ public final class CraftMagicNumbers implements UnsafeValues {
+@@ -481,7 +481,8 @@ public final class CraftMagicNumbers implements UnsafeValues {
  
      @Override
      public com.destroystokyo.paper.util.VersionFetcher getVersionFetcher() {

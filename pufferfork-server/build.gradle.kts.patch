@@ -1,13 +1,9 @@
 --- a/paper-server/build.gradle.kts
 +++ b/paper-server/build.gradle.kts
-@@ -25,8 +_,19 @@
+@@ -24,6 +_,17 @@
+     minecraftVersion = providers.gradleProperty("mcVersion")
      gitFilePatches = false
  
-     updatingMinecraft {
--        oldPaperCommit = "a033e3b9ef78cfe85be807ac3fd1dd956274d4db"
-+        //oldPaperCommit = "a033e3b9ef78cfe85be807ac3fd1dd956274d4db"
-     }
-+
 +    val pufferfork = forks.register("pufferfork") {
 +        upstream.patchDir("paperServer") {
 +            upstreamPath = "paper-server"
@@ -18,10 +14,11 @@
 +     }
 +
 +    activeFork = pufferfork
- 
++
      spigot {
          enabled = false
-@@ -109,7 +_,21 @@
+         buildDataRef = "702e1a0a5072b2c4082371d5228cb30525687efc"
+@@ -105,7 +_,21 @@
      }
  }
  
@@ -44,7 +41,7 @@
  configurations.named(log4jPlugins.compileClasspathConfigurationName) {
      extendsFrom(configurations.compileClasspath.get())
  }
-@@ -131,7 +_,7 @@
+@@ -127,7 +_,7 @@
  }
  
  dependencies {
@@ -53,7 +50,7 @@
      implementation("ca.spottedleaf:concurrentutil:0.0.3")
      implementation("org.jline:jline-terminal-ffm:3.27.1") // use ffm on java 22+
      implementation("org.jline:jline-terminal-jni:3.27.1") // fall back to jni on java 21
-@@ -172,6 +_,14 @@
+@@ -168,6 +_,14 @@
      runtimeOnly("org.apache.maven.resolver:maven-resolver-connector-basic:1.9.18")
      runtimeOnly("org.apache.maven.resolver:maven-resolver-transport-http:1.9.18")
  
@@ -68,7 +65,7 @@
      testImplementation("io.github.classgraph:classgraph:4.8.179") // For mob goal test
      testImplementation("org.junit.jupiter:junit-jupiter:5.12.2")
      testImplementation("org.junit.platform:junit-platform-suite-engine:1.12.2")
-@@ -195,6 +_,13 @@
+@@ -191,6 +_,13 @@
      implementation("me.lucko:spark-paper:1.10.133-20250413.112336-1")
  }
  
@@ -82,7 +79,7 @@
  tasks.jar {
      manifest {
          val git = Git(rootProject.layout.projectDirectory.path)
-@@ -207,14 +_,14 @@
+@@ -203,14 +_,14 @@
          val gitBranch = git.exec(providers, "rev-parse", "--abbrev-ref", "HEAD").get().trim()
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
@@ -102,7 +99,7 @@
              "Build-Number" to (build ?: ""),
              "Build-Time" to buildTime.toString(),
              "Git-Branch" to gitBranch,
-@@ -273,7 +_,7 @@
+@@ -269,7 +_,7 @@
      jvmArgumentProviders.add(provider)
  }
  
