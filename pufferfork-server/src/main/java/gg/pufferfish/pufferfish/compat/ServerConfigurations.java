@@ -45,13 +45,34 @@ public class ServerConfigurations {
         return files;
     }
 
+    public static boolean matchesRegex(String key, List<String> patterns) {
+        for (String configKey : patterns) {
+            String regex = configKey.replace(".", "\\.").replace("*", ".*");
+            if (key.matches(regex)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @SuppressWarnings("deprecation")
     public static String getCleanCopy(String configName) throws IOException {
         File file = new File(configName);
         List<String> hiddenConfigs = new ArrayList<>(List.of(
             "proxies.velocity.secret",
             "web-services.token",
-            "sentry-dsn"
+            "misc.sentry-dsn",
+            "database",
+            "server-ip",
+            "motd",
+            "resource-pack",
+            "level-seed",
+            "rcon.password",
+            "rcon.ip",
+            "feature-seeds",
+            "world-settings.*.feature-seeds",
+            "world-settings.*.seed-*",
+            "seed-*"
         ));
 
         switch (Files.getFileExtension(configName)) {
@@ -60,8 +81,8 @@ public class ServerConfigurations {
                 try (FileInputStream inputStream = new FileInputStream(file)) {
                     properties.load(inputStream);
                 }
-                for (String hiddenConfig : hiddenConfigs) {
-                    properties.remove(hiddenConfig);
+                for (String hiddenConfig : properties.stringPropertyNames()) {
+                    if (matchesRegex(hiddenConfig, hiddenConfigs)) properties.remove(hiddenConfig);
                 }
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 properties.store(outputStream, "");
@@ -79,7 +100,7 @@ public class ServerConfigurations {
                 }
                 configuration.options().header(null);
                 for (String key : configuration.getKeys(true)) {
-                    if (hiddenConfigs.contains(key)) {
+                    if (matchesRegex(key, hiddenConfigs)) {
                         configuration.set(key, null);
                     }
                 }
