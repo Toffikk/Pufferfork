@@ -1,9 +1,8 @@
 package gg.pufferfish.pufferfish.compat;
 
 import com.google.common.io.Files;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
-
+import org.simpleyaml.configuration.file.YamlFile;
+import org.simpleyaml.exceptions.InvalidConfigurationException;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,39 +15,60 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Properties;
 import java.util.stream.Collectors;
+import java.util.regex.Pattern;
 
 public class ServerConfigurations {
 
-    public static final String[] configurationFiles = new String[]{
+    public static final List<String> configurationFiles = List.of(
       "server.properties",
       "bukkit.yml",
       "spigot.yml",
       "config/paper-global.yml",
       "config/paper-world-defaults.yml",
       "pufferfish.yml"
-    };
+    );
+
+    public static final List<String> hiddenConfigs = List.of(
+        "proxies.velocity.secret",
+        "web-services.token",
+        "misc.sentry-dsn",
+        "database",
+        "server-ip",
+        "motd",
+        "resource-pack",
+        "level-seed",
+        "rcon.password",
+        "rcon.ip",
+        "feature-seeds",
+        "world-settings.*.feature-seeds",
+        "world-settings.*.seed-*",
+        "seed-*"
+    );
+
+    private static final List<Pattern> regexPatterns = hiddenConfigs.stream()
+        .map(s -> Pattern.compile(s.replace(".", "\\.").replace("*", ".*")))
+        .collect(Collectors.toList());
 
     public static Map<String, String> getCleanCopies() throws IOException {
-        Map<String, String> files = new HashMap<>(configurationFiles.length);
+        Map<String, String> files = new HashMap<>(configurationFiles.size());
         for (String file : configurationFiles) {
             files.put(file, getCleanCopy(file));
         }
         net.minecraft.server.MinecraftServer server = net.minecraft.server.MinecraftServer.getServer();
         for (net.minecraft.server.level.ServerLevel serverLevel : server.getAllLevels()) {
             File worldDir = serverLevel.getWorld().getWorldFolder();
-            File paperWorldConfig = new File(worldDir, "paper-world.yml");
-            String cleanConfig = getCleanCopy(paperWorldConfig.getPath());
+            String paperWorldConfig = new File(worldDir, "paper-world.yml").getPath();
+            String cleanConfig = getCleanCopy(paperWorldConfig);
             if (!cleanConfig.isEmpty()) {
-                files.put(paperWorldConfig.getPath(), cleanConfig);
+                files.put(paperWorldConfig, cleanConfig);
             }
         }
         return files;
     }
 
-    public static boolean matchesRegex(String key, List<String> patterns) {
-        for (String configKey : patterns) {
-            String regex = configKey.replace(".", "\\.").replace("*", ".*");
-            if (key.matches(regex)) {
+    public static boolean matchesRegex(String key) {
+        for (Pattern pattern : regexPatterns) {
+            if (pattern.matcher(key).matches()) {
                 return true;
             }
         }
@@ -58,22 +78,6 @@ public class ServerConfigurations {
     @SuppressWarnings("deprecation")
     public static String getCleanCopy(String configName) throws IOException {
         File file = new File(configName);
-        List<String> hiddenConfigs = new ArrayList<>(List.of(
-            "proxies.velocity.secret",
-            "web-services.token",
-            "misc.sentry-dsn",
-            "database",
-            "server-ip",
-            "motd",
-            "resource-pack",
-            "level-seed",
-            "rcon.password",
-            "rcon.ip",
-            "feature-seeds",
-            "world-settings.*.feature-seeds",
-            "world-settings.*.seed-*",
-            "seed-*"
-        ));
 
         switch (Files.getFileExtension(configName)) {
             case "properties": {
@@ -82,7 +86,7 @@ public class ServerConfigurations {
                     properties.load(inputStream);
                 }
                 for (String hiddenConfig : properties.stringPropertyNames()) {
-                    if (matchesRegex(hiddenConfig, hiddenConfigs)) properties.remove(hiddenConfig);
+                    if (matchesRegex(hiddenConfig)) properties.remove(hiddenConfig);
                 }
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 properties.store(outputStream, "");
@@ -92,15 +96,17 @@ public class ServerConfigurations {
                   .collect(Collectors.joining("\n"));
             }
             case "yml": {
-                YamlConfiguration configuration = new YamlConfiguration();
+                YamlFile configuration = new YamlFile(file);
                 try {
-                    configuration.load(file);
+                    configuration.load();
                 } catch (InvalidConfigurationException e) {
                     throw new IOException(e);
                 }
-                configuration.options().header(null);
+
+                configuration.options().copyHeader(false);
+                
                 for (String key : configuration.getKeys(true)) {
-                    if (matchesRegex(key, hiddenConfigs)) {
+                    if (matchesRegex(key)) {
                         configuration.set(key, null);
                     }
                 }
