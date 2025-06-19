@@ -13,6 +13,7 @@ import gg.pufferfish.pufferfish.flare.collectors.StatCollector;
 import gg.pufferfish.pufferfish.flare.collectors.TPSCollector;
 import gg.pufferfish.pufferfish.flare.collectors.WorldCountCollector;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
 import oshi.hardware.GlobalMemory;
@@ -39,6 +40,7 @@ public class ProfilingManager {
     public static synchronized boolean isProfiling() {
         return currentFlare != null && currentFlare.isRunning();
     }
+
 
     public static synchronized String getProfilingUri() {
         return Objects.requireNonNull(currentFlare).getURI().map(URI::toString).orElse("Flare is not running");
@@ -76,36 +78,36 @@ public class ProfilingManager {
             VirtualMemory virtualMemory = memory.getVirtualMemory();
 
             FlareBuilder builder = new FlareBuilder()
-                    .withProfileType(profileType)
-                    .withMemoryProfiling(true)
-                    .withAuth(FlareAuth.fromTokenAndUrl(PufferfishConfig.accessToken, PufferfishConfig.profileWebUrl))
+                .withProfileType(profileType)
+                .withMemoryProfiling(true)
+                .withAuth(FlareAuth.fromTokenAndUrl(PufferfishConfig.accessToken, PufferfishConfig.profileWebUrl))
 
-                    .withFiles(ServerConfigurations.getCleanCopies())
-                    .withVersion("Primary Version", Bukkit.getVersion())
-                    .withVersion("Bukkit Version", Bukkit.getBukkitVersion())
-                    .withVersion("Minecraft Version", Bukkit.getMinecraftVersion())
+                .withFiles(ServerConfigurations.getCleanCopies())
+                .withVersion("Primary Version", Bukkit.getVersion())
+                .withVersion("Bukkit Version", Bukkit.getBukkitVersion())
+                .withVersion("Minecraft Version", Bukkit.getMinecraftVersion())
 
-                    .withGraphCategories(CustomCategories.ENTITIES_AND_CHUNKS, CustomCategories.MC_PERF)
-                    .withCollectors(new TPSCollector(), new WorldCountCollector(), new GCEventCollector(), new StatCollector())
-                    .withClassIdentifier(PluginLookup::getPluginForClass)
+                .withGraphCategories(CustomCategories.ENTITIES_AND_CHUNKS, CustomCategories.MC_PERF)
+                .withCollectors(new TPSCollector(), new WorldCountCollector(), new GCEventCollector(), new StatCollector())
+                .withClassIdentifier(PluginLookup::getPluginForClass)
 
-                    .withHardware(new FlareBuilder.HardwareBuilder()
-                            .setCoreCount(processor.getPhysicalProcessorCount())
-                            .setThreadCount(processor.getLogicalProcessorCount())
-                            .setCpuModel(processorIdentifier.getName())
-                            .setCpuFrequency(processor.getMaxFreq())
+                .withHardware(new FlareBuilder.HardwareBuilder()
+                    .setCoreCount(processor.getPhysicalProcessorCount())
+                    .setThreadCount(processor.getLogicalProcessorCount())
+                    .setCpuModel(processorIdentifier.getName())
+                    .setCpuFrequency(processor.getMaxFreq())
 
-                            .setTotalMemory(memory.getTotal())
-                            .setTotalSwap(virtualMemory.getSwapTotal())
-                            .setTotalVirtual(virtualMemory.getVirtualMax())
-                    )
+                    .setTotalMemory(memory.getTotal())
+                    .setTotalSwap(virtualMemory.getSwapTotal())
+                    .setTotalVirtual(virtualMemory.getVirtualMax())
+                )
 
-                    .withOperatingSystem(new FlareBuilder.OperatingSystemBuilder()
-                            .setManufacturer(os.getManufacturer())
-                            .setFamily(os.getFamily())
-                            .setVersion(os.getVersionInfo().toString())
-                            .setBitness(os.getBitness())
-                    );
+                .withOperatingSystem(new FlareBuilder.OperatingSystemBuilder()
+                    .setManufacturer(os.getManufacturer())
+                    .setFamily(os.getFamily())
+                    .setVersion(os.getVersionInfo().toString())
+                    .setBitness(os.getBitness())
+                );
 
             currentFlare = builder.build();
         } catch (IOException e) {
@@ -115,13 +117,16 @@ public class ProfilingManager {
 
         try {
             currentFlare.start();
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                player.updateCommands();
+            }
         } catch (IllegalStateException e) {
             PufferfishLogger.LOGGER.log(Level.WARNING, "Error starting Flare:", e);
             throw new UserReportableException("Failed to start Flare, check logs for further details.");
         }
 
         currentTask = ses.schedule(ProfilingManager::stop, 15, TimeUnit.MINUTES);
-        PufferfishLogger.LOGGER.log(Level.INFO, "Flare has been started: " + getProfilingUri());
+
         return true;
     }
 
@@ -133,9 +138,12 @@ public class ProfilingManager {
             currentFlare = null;
             return true;
         }
-        PufferfishLogger.LOGGER.log(Level.INFO, "Flare has been stopped: " + getProfilingUri());
+
         try {
             currentFlare.stop();
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                player.updateCommands();
+            }
         } catch (IllegalStateException e) {
             PufferfishLogger.LOGGER.log(Level.WARNING, "Error occurred stopping Flare", e);
         }
@@ -148,6 +156,7 @@ public class ProfilingManager {
         }
 
         currentTask = null;
+
         return true;
     }
 

@@ -18,7 +18,7 @@ public class FlareSetup {
         initialized = true;
         try {
             for (String warning : FlareInitializer.initialize()) {
-                MinecraftServer.LOGGER.warn("Flare warning: " + warning);
+                MinecraftServer.LOGGER.warn("Flare warning: {}", warning);
             }
             supported = true;
         } catch (InitializationException e) {
