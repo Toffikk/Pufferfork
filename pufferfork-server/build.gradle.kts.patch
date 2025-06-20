@@ -16,8 +16,8 @@
 +    activeFork = pufferfork
 +
      spigot {
-         enabled = false
-         buildDataRef = "702e1a0a5072b2c4082371d5228cb30525687efc"
+         enabled = true
+         buildDataRef = "281ac0de7a76d808753ede97d11b034bc801b63d"
 @@ -105,7 +_,21 @@
      }
  }
