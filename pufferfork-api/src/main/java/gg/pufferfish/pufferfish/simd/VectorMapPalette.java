@@ -7,13 +7,27 @@ import jdk.incubator.vector.VectorMask;
 import jdk.incubator.vector.VectorSpecies;
 import org.bukkit.map.MapPalette;
 
-@Deprecated
 public class VectorMapPalette {
 	
 	private static final VectorSpecies<Integer> I_SPEC = IntVector.SPECIES_PREFERRED;
 	private static final VectorSpecies<Float> F_SPEC = FloatVector.SPECIES_PREFERRED;
+	private static final FloatVector[] cachedCompReds;
+	private static final FloatVector[] cachedCompGreens;
+	private static final FloatVector[] cachedCompBlues;
 	
-	@Deprecated
+	static {
+		int paletteColors = MapPalette.colors.length;
+		cachedCompReds = new FloatVector[paletteColors];
+		cachedCompGreens = new FloatVector[paletteColors];
+		cachedCompBlues = new FloatVector[paletteColors];
+		
+		for (int c = 4; c < paletteColors; c++) {
+			cachedCompReds[c] = FloatVector.broadcast(F_SPEC, MapPalette.colors[c].getRed());
+			cachedCompGreens[c] = FloatVector.broadcast(F_SPEC, MapPalette.colors[c].getGreen());
+			cachedCompBlues[c] = FloatVector.broadcast(F_SPEC, MapPalette.colors[c].getBlue());
+		}
+	}
+
 	public static void matchColorVectorized(int[] in, byte[] out) {
 		int speciesLength = I_SPEC.length();
 		int i;
@@ -43,9 +57,9 @@ public class VectorMapPalette {
 			for (int c = 4; c < MapPalette.colors.length; c++) {
 				// We're using 32-bit floats here because it's 2x faster and nobody will know the difference.
 				// For correctness, the original algorithm uses 64-bit floats instead. Completely unnecessary.
-				FloatVector compReds = FloatVector.broadcast(F_SPEC, MapPalette.colors[c].getRed());
-				FloatVector compGreens = FloatVector.broadcast(F_SPEC, MapPalette.colors[c].getGreen());
-				FloatVector compBlues = FloatVector.broadcast(F_SPEC, MapPalette.colors[c].getBlue());
+				FloatVector compReds = cachedCompReds[c];
+				FloatVector compGreens = cachedCompGreens[c];
+				FloatVector compBlues = cachedCompBlues[c];
 				
 				FloatVector rMean = reds.add(compReds).div(2.0f);
 				FloatVector rDiff = reds.sub(compReds);

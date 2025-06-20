@@ -8,7 +8,6 @@ import jdk.incubator.vector.VectorSpecies;
 /**
  * Basically, java is annoying and we have to push this out to its own class.
  */
-@Deprecated
 public class SIMDChecker {
 	private final VectorSpecies<Integer> ISPEC;
     private final VectorSpecies<Float> FSPEC;
@@ -19,10 +18,9 @@ public class SIMDChecker {
         this.FSPEC = FSPEC;
     }
 
-	@Deprecated
 	public boolean canEnable(Logger logger) {
 		try {
-			if (SIMDDetection.getJavaVersion() < 17 || SIMDDetection.getJavaVersion() > 21) {
+			if (SIMDDetection.getJavaVersion() < 17 || SIMDDetection.getJavaVersion() > 23) {
 				return false;
 			} else {
 				SIMDDetection.testRun = true;

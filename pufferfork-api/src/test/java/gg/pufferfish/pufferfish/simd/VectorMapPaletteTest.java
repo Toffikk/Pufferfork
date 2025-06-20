@@ -168,4 +168,26 @@ class VectorMapPaletteTest {
 
         return weightR * r * r + weightG * g * g + weightB * b * b;
     }
+
+    @Test
+    void matchColorVectorized_randomColorsMatchVanilla() {
+        int length = 1024;
+        int[] inputColors = new int[length];
+        byte[] vanillaOutput = new byte[length];
+        byte[] simdOutput = new byte[length];
+
+        Random rand = new Random(12345);
+        for (int i = 0; i < length; i++) {
+            int alpha = rand.nextInt(256);
+            int red = rand.nextInt(256);
+            int green = rand.nextInt(256);
+            int blue = rand.nextInt(256);
+            inputColors[i] = (alpha << 24) | (red << 16) | (green << 8) | blue;
+            vanillaOutput[i] = MapPalette.matchColor(new Color(inputColors[i], true));
+        }
+
+        VectorMapPalette.matchColorVectorized(inputColors, simdOutput);
+
+        assertArrayEquals(vanillaOutput, simdOutput);
+    }
 }
