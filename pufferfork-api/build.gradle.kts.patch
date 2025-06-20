@@ -75,3 +75,11 @@
                  include("**/doc-files/**")
              }
              into("build/docs/javadoc")
+@@ -218,6 +_,7 @@
+     val provider = objects.newInstance<MockitoAgentProvider>()
+     provider.fileCollection.from(mockitoAgent)
+     jvmArgumentProviders.add(provider)
++    jvmArgs = (jvmArgs ?: emptyList()) + listOf("--add-modules", "jdk.incubator.vector")
+ }
+ 
+ // Compile tests with -parameters for better junit parameterized test names

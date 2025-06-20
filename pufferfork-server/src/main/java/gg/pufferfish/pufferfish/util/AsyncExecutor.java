@@ -50,7 +50,7 @@ public class AsyncExecutor implements Runnable {
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
 			} catch (Exception e) {
-				PufferfishLogger.LOGGER.log(Level.SEVERE, e, () -> "Failed to execute async job for thread " + thread.getName());
+				PufferfishLogger.LOGGER.error("Failed to execute async job for thread {}", thread.getName(), e);
 			}
 		}
 	}

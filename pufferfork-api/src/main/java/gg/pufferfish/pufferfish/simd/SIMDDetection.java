@@ -1,6 +1,8 @@
 package gg.pufferfish.pufferfish.simd;
 
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import jdk.incubator.vector.FloatVector;
+import jdk.incubator.vector.IntVector;
 
 @Deprecated
 public class SIMDDetection {
@@ -12,7 +14,8 @@ public class SIMDDetection {
 	@Deprecated
 	public static boolean canEnable(Logger logger) {
 		try {
-			return SIMDChecker.canEnable(logger);
+			SIMDChecker checker = new SIMDChecker(IntVector.SPECIES_PREFERRED, FloatVector.SPECIES_PREFERRED);
+			return checker.canEnable(logger);
 		} catch (NoClassDefFoundError | Exception ignored) {
 			return false;
 		}

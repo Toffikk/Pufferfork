@@ -29,7 +29,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 
 public class ProfilingManager {
 
@@ -111,7 +110,7 @@ public class ProfilingManager {
 
             currentFlare = builder.build();
         } catch (IOException e) {
-            PufferfishLogger.LOGGER.log(Level.WARNING, "Failed to read configuration files:", e);
+            PufferfishLogger.LOGGER.warn("Failed to read configuration files:", e);
             throw new UserReportableException("Failed to load configuration files, check logs for further details.");
         }
 
@@ -121,7 +120,7 @@ public class ProfilingManager {
                 player.updateCommands();
             }
         } catch (IllegalStateException e) {
-            PufferfishLogger.LOGGER.log(Level.WARNING, "Error starting Flare:", e);
+            PufferfishLogger.LOGGER.warn("Error starting Flare:", e);
             throw new UserReportableException("Failed to start Flare, check logs for further details.");
         }
 
@@ -145,14 +144,14 @@ public class ProfilingManager {
                 player.updateCommands();
             }
         } catch (IllegalStateException e) {
-            PufferfishLogger.LOGGER.log(Level.WARNING, "Error occurred stopping Flare", e);
+            PufferfishLogger.LOGGER.warn("Error occurred stopping Flare", e);
         }
         currentFlare = null;
 
         try {
             currentTask.cancel(true);
         } catch (Throwable t) {
-            PufferfishLogger.LOGGER.log(Level.WARNING, "Error occurred stopping Flare", t);
+            PufferfishLogger.LOGGER.warn("Error occurred stopping Flare", t);
         }
 
         currentTask = null;

@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.Collections;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.MinecraftServer;
-import org.apache.logging.log4j.Level;
 import org.bukkit.configuration.ConfigurationSection;
 import net.minecraft.world.entity.EntityType;
 import java.lang.reflect.Method;
@@ -14,7 +13,6 @@ import java.lang.reflect.Modifier;
 import java.util.List;
 import gg.pufferfish.pufferfish.flare.FlareCommand;
 import net.minecraft.server.MinecraftServer;
-import org.apache.logging.log4j.Level;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.jetbrains.annotations.Nullable;
@@ -99,12 +97,12 @@ public class PufferfishConfig {
 		if (SIMDDetection.isEnabled) {
 			PufferfishLogger.LOGGER.info("SIMD operations detected as functional. Will replace some operations with faster versions.");
 		} else if (SIMDDetection.versionLimited) {
-			PufferfishLogger.LOGGER.warning("Will not enable SIMD! These optimizations are only safely supported on Java 17-21. (LTS releases)");
+			PufferfishLogger.LOGGER.warn("Will not enable SIMD! These optimizations are only safely supported on Java 17-21. (LTS releases)");
 		} else {
-			PufferfishLogger.LOGGER.warning("SIMD operations are available for your server, but are not configured!");
-			PufferfishLogger.LOGGER.warning("To enable additional optimizations, add \"--add-modules=jdk.incubator.vector\" to your startup flags, BEFORE the \"-jar\".");
-			PufferfishLogger.LOGGER.warning("If you have already added this flag, then SIMD operations are not supported on your JVM or CPU.");
-			PufferfishLogger.LOGGER.warning("Debug: Java: " + System.getProperty("java.version") + ", test run: " + SIMDDetection.testRun);
+			PufferfishLogger.LOGGER.warn("SIMD operations are available for your server, but are not configured!");
+			PufferfishLogger.LOGGER.warn("To enable additional optimizations, add \"--add-modules=jdk.incubator.vector\" to your startup flags, BEFORE the \"-jar\".");
+			PufferfishLogger.LOGGER.warn("If you have already added this flag, then SIMD operations are not supported on your JVM or CPU.");
+			PufferfishLogger.LOGGER.warn("Debug: Java: " + System.getProperty("java.version") + ", test run: " + SIMDDetection.testRun);
 		}
 	}
 	

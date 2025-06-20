@@ -59,7 +59,7 @@
 +        exclude(group="org.yaml", module="snakeyaml")
 +    }
 +    // Pufferfish end
-+    implementation("net.serlith:Flare:4.0.0") // Pufferfish - flare
++    implementation("net.serlith:Flare:4.0.3") // Pufferfish - flare
 +
      testImplementation("io.github.classgraph:classgraph:4.8.179") // For mob goal test
      testImplementation("org.junit.jupiter:junit-jupiter:5.12.2")
