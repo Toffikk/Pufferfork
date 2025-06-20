@@ -1,0 +1,18 @@
+--- a/src/main/java/org/bukkit/craftbukkit/scheduler/CraftScheduler.java
++++ b/src/main/java/org/bukkit/craftbukkit/scheduler/CraftScheduler.java
+@@ -473,6 +_,7 @@
+                 try {
+                     task.run();
+                 } catch (final Throwable throwable) {
++                    gg.pufferfish.pufferfish.sentry.SentryContext.setPluginContext(task.getOwner()); // Pufferfork - taken from pufferfish-gg/pufferfish/pull/64
+                     // Paper start
+                     final String logMessage = String.format(
+                         "Task #%s for %s generated an exception",
+@@ -482,6 +_,7 @@
+                             Level.WARNING,
+                         logMessage,
+                             throwable);
++                        gg.pufferfish.pufferfish.sentry.SentryContext.removePluginContext(); // Pufferfork - taken from pufferfish-gg/pufferfish/pull/64
+                     org.bukkit.Bukkit.getServer().getPluginManager().callEvent(
+                         new com.destroystokyo.paper.event.server.ServerExceptionEvent(new com.destroystokyo.paper.exception.ServerSchedulerException(logMessage, throwable, task)));
+                     // Paper end

@@ -16,6 +16,7 @@ import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.Logger;
 import org.apache.logging.log4j.core.appender.AbstractAppender;
 import org.apache.logging.log4j.core.filter.AbstractFilter;
+import org.apache.logging.log4j.core.config.Property;
 
 public class PufferfishSentryAppender extends AbstractAppender {
 	
@@ -23,7 +24,7 @@ public class PufferfishSentryAppender extends AbstractAppender {
 	private static final Gson GSON = new Gson();
 	
 	public PufferfishSentryAppender() {
-		super("PufferfishSentryAdapter", new SentryFilter(), null);
+		super("PufferfishSentryAdapter", new SentryFilter(), null, true, Property.EMPTY_ARRAY);
 	}
 	
 	@Override
@@ -52,8 +53,10 @@ public class PufferfishSentryAppender extends AbstractAppender {
 		event.setThrowable(e.getThrown());
 		event.setLevel(getLevel(e.getLevel()));
 		event.setLogger(e.getLoggerName());
+		event.setTag("Logger", e.getLoggerName()); // Pufferfork - taken from pufferfish-gg/pufferfish/pull/64
 		event.setTransaction(e.getLoggerName());
 		event.setExtra("thread_name", e.getThreadName());
+		event.setMessage(sentryMessage);
 		
 		boolean hasContext = e.getContextData() != null;
 		
@@ -68,6 +71,12 @@ public class PufferfishSentryAppender extends AbstractAppender {
 			event.setExtra("plugin.name", e.getContextData().getValue("pufferfishsentry_pluginname"));
 			event.setExtra("plugin.version", e.getContextData().getValue("pufferfishsentry_pluginversion"));
 			event.setTransaction(e.getContextData().getValue("pufferfishsentry_pluginname"));
+			// Pufferfork stark - taken from pufferfish-gg/pufferfish/pull/64
+			event.setTag("Plugin", e.getContextData().getValue("pufferfishsentry_pluginname"));
+			// Command errors handling is very intricate, we remove the context here,
+			// it is removed at the end of the command execution if it was successful
+			SentryContext.removePluginContext();
+			// Pufferfork end
 		}
 		
 		if (hasContext && e.getContextData().containsKey("pufferfishsentry_eventdata")) {
@@ -92,20 +101,13 @@ public class PufferfishSentryAppender extends AbstractAppender {
 	}
 	
 	private SentryLevel getLevel(Level level) {
-		switch (level.getStandardLevel()) {
-			case TRACE:
-			case DEBUG:
-				return SentryLevel.DEBUG;
-			case WARN:
-				return SentryLevel.WARNING;
-			case ERROR:
-				return SentryLevel.ERROR;
-			case FATAL:
-				return SentryLevel.FATAL;
-			case INFO:
-			default:
-				return SentryLevel.INFO;
-		}
+       return switch (level.getStandardLevel()) {
+            case TRACE, DEBUG -> SentryLevel.DEBUG;
+            case WARN -> SentryLevel.WARNING;
+            case ERROR -> SentryLevel.ERROR;
+            case FATAL -> SentryLevel.FATAL;
+            default -> SentryLevel.INFO;
+        };
 	}
 	
 	private static class SentryFilter extends AbstractFilter {
