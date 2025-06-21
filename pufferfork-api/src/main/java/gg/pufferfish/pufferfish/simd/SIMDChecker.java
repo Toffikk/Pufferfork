@@ -20,7 +20,7 @@ public class SIMDChecker {
 
 	public boolean canEnable(Logger logger) {
 		try {
-			if (SIMDDetection.getJavaVersion() < 17 || SIMDDetection.getJavaVersion() > 23) {
+			if (SIMDDetection.getJavaVersion() < SIMDDetection.MIN_JAVA_VERSION || SIMDDetection.getJavaVersion() > SIMDDetection.MAX_JAVA_VERSION) {
 				return false;
 			} else {
 				SIMDDetection.testRun = true;

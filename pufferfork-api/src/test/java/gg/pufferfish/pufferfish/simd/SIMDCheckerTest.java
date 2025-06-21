@@ -29,7 +29,7 @@ class SIMDCheckerTest {
     @Test
     void canEnable_returnsFalse_forOutOfRangeJavaVersion() {
         try (MockedStatic<SIMDDetection> mockedDetection = Mockito.mockStatic(SIMDDetection.class)) {
-            mockedDetection.when(SIMDDetection::getJavaVersion).thenReturn(16);
+            mockedDetection.when(SIMDDetection::getJavaVersion).thenReturn(SIMDDetection.MIN_JAVA_VERSION - 1);
             SIMDChecker checker = new SIMDChecker(IntVector.SPECIES_PREFERRED, FloatVector.SPECIES_PREFERRED);
             boolean result = checker.canEnable(mockLogger);
             assertFalse(result);
@@ -37,7 +37,7 @@ class SIMDCheckerTest {
             verifyNoInteractions(mockLogger);
         }
         try (MockedStatic<SIMDDetection> mockedDetection = Mockito.mockStatic(SIMDDetection.class)) {
-            mockedDetection.when(SIMDDetection::getJavaVersion).thenReturn(24);
+            mockedDetection.when(SIMDDetection::getJavaVersion).thenReturn(SIMDDetection.MAX_JAVA_VERSION + 1);
             SIMDChecker checker = new SIMDChecker(IntVector.SPECIES_PREFERRED, FloatVector.SPECIES_PREFERRED);
             boolean result = checker.canEnable(mockLogger);
             assertFalse(result);
@@ -48,7 +48,7 @@ class SIMDCheckerTest {
     @Test
     void canEnable_logsInfo_andReturnsTrue_whenSupported() {
         try (MockedStatic<SIMDDetection> mockedDetection = Mockito.mockStatic(SIMDDetection.class)) {
-            mockedDetection.when(SIMDDetection::getJavaVersion).thenReturn(23);
+            mockedDetection.when(SIMDDetection::getJavaVersion).thenReturn(SIMDDetection.MAX_JAVA_VERSION);
 
             SIMDChecker checker = new SIMDChecker(IntVector.SPECIES_PREFERRED, FloatVector.SPECIES_PREFERRED);
             boolean result = checker.canEnable(mockLogger);
@@ -63,7 +63,7 @@ class SIMDCheckerTest {
     @Test
     void canEnable_warns_ifElementSizeTooSmall() {
         try (MockedStatic<SIMDDetection> mockedDetection = Mockito.mockStatic(SIMDDetection.class)) {
-            mockedDetection.when(SIMDDetection::getJavaVersion).thenReturn(23);
+            mockedDetection.when(SIMDDetection::getJavaVersion).thenReturn(SIMDDetection.MAX_JAVA_VERSION);
             VectorSpecies<Integer> ISPEC = mock(VectorSpecies.class);
             VectorSpecies<Float> FSPEC = mock(VectorSpecies.class);
             Logger logger = mock(Logger.class);
@@ -85,7 +85,7 @@ class SIMDCheckerTest {
     @Test
     void canEnable_returnsTrue_forValidElementSizes() {
         try (MockedStatic<SIMDDetection> mockedDetection = Mockito.mockStatic(SIMDDetection.class)) {
-            mockedDetection.when(SIMDDetection::getJavaVersion).thenReturn(23);
+            mockedDetection.when(SIMDDetection::getJavaVersion).thenReturn(SIMDDetection.MAX_JAVA_VERSION);
             VectorSpecies<Integer> ISPEC = mock(VectorSpecies.class);
             VectorSpecies<Float> FSPEC = mock(VectorSpecies.class);
             Logger logger = mock(Logger.class);
