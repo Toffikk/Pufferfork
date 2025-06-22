@@ -87,9 +87,10 @@ public class PufferfishConfig {
 		config.save(configFile);
 		
 		// Attempt to detect vectorization
+		final boolean isLimitDisabled = System.getProperty("Pufferfish.disableSIMDVersionLimit") != null;
 		try {
 			SIMDDetection.isEnabled = SIMDDetection.canEnable(PufferfishLogger.LOGGER);
-			SIMDDetection.versionLimited = SIMDDetection.getJavaVersion() < SIMDDetection.MIN_JAVA_VERSION || SIMDDetection.getJavaVersion() > SIMDDetection.MAX_JAVA_VERSION;
+			SIMDDetection.versionLimited = isLimitDisabled ? false : SIMDDetection.getJavaVersion() < SIMDDetection.MIN_JAVA_VERSION || SIMDDetection.getJavaVersion() > SIMDDetection.MAX_JAVA_VERSION;
 		} catch (NoClassDefFoundError | Exception ignored) {
 			ignored.printStackTrace();
 		}
@@ -98,11 +99,15 @@ public class PufferfishConfig {
 			PufferfishLogger.LOGGER.info("SIMD operations detected as functional. Will replace some operations with faster versions.");
 		} else if (SIMDDetection.versionLimited) {
 			PufferfishLogger.LOGGER.warn("Will not enable SIMD! These optimizations are only safely supported on Java {}-{}", SIMDDetection.MIN_JAVA_VERSION, SIMDDetection.MAX_JAVA_VERSION);
+		} else if (isLimitDisabled) {
+			PufferfishLogger.LOGGER.warn("SIMD has been enabled on your platform via specified system property. Do note that this configuration is UNSUPPORTED and that performance/stability regressions CAN OCCUR!");
+			PufferfishLogger.LOGGER.warn("These optimizations are only safely supported on Java {}-{}", SIMDDetection.MIN_JAVA_VERSION, SIMDDetection.MAX_JAVA_VERSION);
+			PufferfishLogger.LOGGER.warn("Debug: Java: " + System.getProperty("java.version") + ", test run: " + SIMDDetection.testRun + ", version check override: " + isLimitDisabled);
 		} else {
 			PufferfishLogger.LOGGER.warn("SIMD operations are available for your server, but are not configured!");
 			PufferfishLogger.LOGGER.warn("To enable additional optimizations, add \"--add-modules=jdk.incubator.vector\" to your startup flags, BEFORE the \"-jar\".");
 			PufferfishLogger.LOGGER.warn("If you have already added this flag, then SIMD operations are not supported on your JVM or CPU.");
-			PufferfishLogger.LOGGER.warn("Debug: Java: " + System.getProperty("java.version") + ", test run: " + SIMDDetection.testRun);
+			PufferfishLogger.LOGGER.warn("Debug: Java: " + System.getProperty("java.version") + ", test run: " + SIMDDetection.testRun + ", version check override: " + isLimitDisabled);
 		}
 	}
 	
