@@ -9,7 +9,7 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SuppressWarnings({"deprecation", "removal"})
-class VectorMapPaletteTest {
+public class VectorMapPaletteTest {
 
     /* Possibly have to recheck this on minecraft updates
      * or look into generation?
