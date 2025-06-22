@@ -54,7 +54,7 @@ public class PufferfishConfig {
 	}
 	
 	public static void load() throws IOException {
-		File configFile = new File("pufferfish.yml");
+		File configFile = gg.pufferfish.pufferfish.compat.ServerConfigurations.pufferfishConfig;
 		
 		if (configFile.exists()) {
 			try {

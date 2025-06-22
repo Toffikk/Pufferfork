@@ -1,0 +1,34 @@
+--- a/src/main/java/org/bukkit/craftbukkit/Main.java
++++ b/src/main/java/org/bukkit/craftbukkit/Main.java
+@@ -17,6 +_,7 @@
+     public static final java.time.Instant BOOT_TIME = java.time.Instant.now(); // Paper - track initial start time
+     public static boolean useJline = true;
+     public static boolean useConsole = true;
++    public static OptionSet options = null; // Pufferfork - moved up for ServerConfigurations.java
+ 
+     // Paper start - Reset loggers after shutdown
+     static {
+@@ -158,6 +_,14 @@
+                         .defaultsTo(new File("paper.yml"))
+                         .describedAs("Yml file");
+ 
++                // Pufferfork start - add pufferfish config flag
++                this.acceptsAll(asList("pufferfish", "pufferfish-settings"), "File for Pufferfish settings")
++                        .withRequiredArg()
++                        .ofType(File.class)
++                        .defaultsTo(new File("pufferfish.yml"))
++                        .describedAs("Yml file");
++                // Pufferfork - end
++
+                 this.acceptsAll(asList("add-plugin", "add-extra-plugin-jar"), "Specify paths to extra plugin jars to be loaded in addition to those in the plugins folder. This argument can be specified multiple times, once for each extra plugin jar path.")
+                         .withRequiredArg()
+                         .ofType(File.class)
+@@ -172,7 +_,7 @@
+             }
+         };
+ 
+-        OptionSet options = null;
++        //OptionSet options = null;
+ 
+         try {
+             options = parser.parse(args);

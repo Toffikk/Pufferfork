@@ -16,16 +16,27 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.stream.Collectors;
 import java.util.regex.Pattern;
+import net.minecraft.server.MinecraftServer;
+import joptsimple.OptionSet;
+import net.minecraft.server.level.ServerLevel;
 
 public class ServerConfigurations {
 
+    private static final OptionSet options = org.bukkit.craftbukkit.Main.options;
+
+    private static final File properties = (File) options.valueOf("config");
+    private static final File bukkitConfig = (File) options.valueOf("bukkit-settings");
+    private static final File spigotConfig = (File) options.valueOf("spigot-settings");
+    private static final File paperConfigDir = (File) options.valueOf("paper-dir");
+    public static final File pufferfishConfig = (File) options.valueOf("pufferfish-settings"); // public so we can access it from the config class without repeated logic
+
     public static final List<String> configurationFiles = List.of(
-      "server.properties",
-      "bukkit.yml",
-      "spigot.yml",
-      "config/paper-global.yml",
-      "config/paper-world-defaults.yml",
-      "pufferfish.yml"
+        properties.getPath(),
+        bukkitConfig.getPath(),
+        spigotConfig.getPath(),
+        paperConfigDir.getPath() + "/paper-global.yml",
+        paperConfigDir.getPath() + "/paper-world-defaults.yml",
+        pufferfishConfig.getPath()
     );
 
     public static final List<String> hiddenConfigs = List.of(
@@ -54,8 +65,8 @@ public class ServerConfigurations {
         for (String file : configurationFiles) {
             files.put(file, getCleanCopy(file));
         }
-        net.minecraft.server.MinecraftServer server = net.minecraft.server.MinecraftServer.getServer();
-        for (net.minecraft.server.level.ServerLevel serverLevel : server.getAllLevels()) {
+        MinecraftServer server = MinecraftServer.getServer();
+        for (ServerLevel serverLevel : server.getAllLevels()) {
             File worldDir = serverLevel.getWorld().getWorldFolder();
             String paperWorldConfig = new File(worldDir, "paper-world.yml").getPath();
             String cleanConfig = getCleanCopy(paperWorldConfig);
