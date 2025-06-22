@@ -6,8 +6,11 @@ import jdk.incubator.vector.IntVector;
 
 public class SIMDDetection {
 
-	// Look out for those
-	public static final int MAX_JAVA_VERSION = 23;
+	/*
+	 * Benchmark and run tests before changing the max java version
+	 */
+
+	public static final int MAX_JAVA_VERSION = 25;
 	public static final int MIN_JAVA_VERSION = 21;
 
 	public static boolean isEnabled = false;
