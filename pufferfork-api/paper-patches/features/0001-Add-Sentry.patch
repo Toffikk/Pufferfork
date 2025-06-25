@@ -59,10 +59,10 @@ index 163e9a0e179dc88be93614ff66ee2be3eccc694f..78cdf669328fc1ec5e9943033a11d220
  
              if (cloader instanceof PluginClassLoader) {
 diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-index 74aff5357e183b2b3b0b90e0919dc195721bd7e0..9ece31e7f42df24cc070a4e7ccf3056951623827 100644
+index 0bc98377ac5533c9d6fe1b99c99d86201971a100..b419678018a9bf8649d3071c38bfa3d0b46f2036 100644
 --- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-@@ -198,6 +198,7 @@ public final class PluginClassLoader extends URLClassLoader implements io.paperm
+@@ -206,6 +206,7 @@ public final class PluginClassLoader extends URLClassLoader implements io.paperm
          throw new ClassNotFoundException(name);
      }
  
