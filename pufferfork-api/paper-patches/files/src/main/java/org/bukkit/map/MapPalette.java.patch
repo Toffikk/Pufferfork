@@ -1,28 +1,11 @@
 --- a/src/main/java/org/bukkit/map/MapPalette.java
 +++ b/src/main/java/org/bukkit/map/MapPalette.java
-@@ -1,6 +_,7 @@
- package org.bukkit.map;
- 
- import com.google.common.base.Preconditions;
-+import gg.pufferfish.pufferfish.simd.SIMDDetection; // Pufferfish
- import java.awt.Color;
- import java.awt.Graphics2D;
- import java.awt.Image;
-@@ -35,7 +_,7 @@
-     }
- 
-     @NotNull
--    static final Color[] colors = {
-+    public static final Color[] colors = { // Pufferfish - public access
-         // Start generate - MapPalette#colors
-         // @GeneratedFrom 1.21.7-rc1
-         new Color(0x00000000, true),
 @@ -395,9 +_,15 @@
          temp.getRGB(0, 0, temp.getWidth(), temp.getHeight(), pixels, 0, temp.getWidth());
  
          byte[] result = new byte[temp.getWidth() * temp.getHeight()];
 +        // Pufferfish start
-+        if (!SIMDDetection.isEnabled) {
++        if (!gg.pufferfish.pufferfish.simd.SIMDDetection.isEnabled) {
          for (int i = 0; i < pixels.length; i++) {
              result[i] = matchColor(new Color(pixels[i], true));
          }
@@ -33,3 +16,22 @@
          return result;
      }
  
+@@ -500,4 +_,18 @@
+         @org.jetbrains.annotations.ApiStatus.Internal // Paper
+         byte matchColor(@NotNull Color color);
+     }
++
++    // Pufferfork start - public access to colors
++    /**
++     * Gets the palette's color map
++     * @return The color map
++     * @apiNote Internal Use Only
++     */
++    @org.jetbrains.annotations.ApiStatus.Internal
++    @Deprecated
++    @NotNull
++    public static final Color[] getColors() {
++        return colors;
++    }
++    // Pufferfork end
+ }
