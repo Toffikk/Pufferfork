@@ -11,20 +11,21 @@ public class VectorMapPalette {
 	
 	private static final VectorSpecies<Integer> I_SPEC = IntVector.SPECIES_PREFERRED;
 	private static final VectorSpecies<Float> F_SPEC = FloatVector.SPECIES_PREFERRED;
+	private static final int paletteSize = MapPalette.getColors().length;
+	private static final Color[] colors = MapPalette.getColors();
 	private static final FloatVector[] cachedCompReds;
 	private static final FloatVector[] cachedCompGreens;
 	private static final FloatVector[] cachedCompBlues;
 	
 	static {
-		int paletteColors = MapPalette.colors.length;
-		cachedCompReds = new FloatVector[paletteColors];
-		cachedCompGreens = new FloatVector[paletteColors];
-		cachedCompBlues = new FloatVector[paletteColors];
+		cachedCompReds = new FloatVector[paletteSize];
+		cachedCompGreens = new FloatVector[paletteSize];
+		cachedCompBlues = new FloatVector[paletteSize];
 		
-		for (int c = 4; c < paletteColors; c++) {
-			cachedCompReds[c] = FloatVector.broadcast(F_SPEC, MapPalette.colors[c].getRed());
-			cachedCompGreens[c] = FloatVector.broadcast(F_SPEC, MapPalette.colors[c].getGreen());
-			cachedCompBlues[c] = FloatVector.broadcast(F_SPEC, MapPalette.colors[c].getBlue());
+		for (int c = 4; c < paletteSize; c++) {
+			cachedCompReds[c] = FloatVector.broadcast(F_SPEC, colors[c].getRed());
+			cachedCompGreens[c] = FloatVector.broadcast(F_SPEC, colors[c].getGreen());
+			cachedCompBlues[c] = FloatVector.broadcast(F_SPEC, colors[c].getBlue());
 		}
 	}
 
@@ -54,7 +55,7 @@ public class VectorMapPalette {
 			modificationMask = modificationMask.and(alphas.lt(128).not());
 			FloatVector bestDistances = FloatVector.broadcast(F_SPEC, Float.MAX_VALUE);
 			
-			for (int c = 4; c < MapPalette.colors.length; c++) {
+			for (int c = 4; c < paletteSize; c++) {
 				// We're using 32-bit floats here because it's 2x faster and nobody will know the difference.
 				// For correctness, the original algorithm uses 64-bit floats instead. Completely unnecessary.
 				FloatVector compReds = cachedCompReds[c];
