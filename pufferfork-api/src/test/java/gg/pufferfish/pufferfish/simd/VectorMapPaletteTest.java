@@ -2,7 +2,7 @@ package gg.pufferfish.pufferfish.simd;
 
 import org.bukkit.map.MapPalette;
 import org.junit.jupiter.api.Test;
-
+import jdk.incubator.vector.IntVector;
 import java.awt.Color;
 import java.util.Random;
 
@@ -11,22 +11,23 @@ import static org.junit.jupiter.api.Assertions.*;
 @SuppressWarnings({"deprecation", "removal"})
 public class VectorMapPaletteTest {
 
-    /* Possibly have to recheck this on minecraft updates
-     * or look into generation?
-     */
-    /**
+    /*
      * Verify vectorized matching matches the output
      * for all colors in the original impl.
+     * 
      */
+    private static final Color[] colors = MapPalette.getColors();
+    private static final int paletteSize = colors.length;
+
     @Test
     void matchColorVectorized_matchesPaletteColors() {
-        int length = MapPalette.colors.length;
+        int length = paletteSize;
         int[] pixels = new int[length];
         byte[] vectorizedResult = new byte[length];
         byte[] originalResult = new byte[length];
 
         for (int i = 0; i < length; i++) {
-            Color c = MapPalette.colors[i];
+            Color c = colors[i];
             pixels[i] = (0xFF << 24) | (c.getRed() << 16) | (c.getGreen() << 8) | c.getBlue();
         }
 
@@ -146,8 +147,8 @@ public class VectorMapPaletteTest {
             int originalIdx = originalIndex >= 0 ? originalIndex : originalIndex + 256;
             int vectorizedIdx = vectorizedIndex >= 0 ? vectorizedIndex : vectorizedIndex + 256;
 
-            Color originalColor = MapPalette.colors[originalIdx];
-            Color vectorizedColor = MapPalette.colors[vectorizedIdx];
+            Color originalColor = colors[originalIdx];
+            Color vectorizedColor = colors[vectorizedIdx];
 
             double dist = getDistance(originalColor, vectorizedColor);
 
@@ -171,23 +172,34 @@ public class VectorMapPaletteTest {
 
     @Test
     void matchColorVectorized_randomColorsMatchVanilla() {
-        int length = 1024;
-        int[] inputColors = new int[length];
-        byte[] vanillaOutput = new byte[length];
-        byte[] simdOutput = new byte[length];
+        int speciesLength = IntVector.SPECIES_PREFERRED.length();
+        int[] lengths = { // test random lengths cuz why not? 
+            0,
+            1,
+            speciesLength,
+            speciesLength + 1,
+            2 * speciesLength,
+            2048
+        };
 
-        Random rand = new Random(12345);
-        for (int i = 0; i < length; i++) {
-            int alpha = rand.nextInt(256);
-            int red = rand.nextInt(256);
-            int green = rand.nextInt(256);
-            int blue = rand.nextInt(256);
-            inputColors[i] = (alpha << 24) | (red << 16) | (green << 8) | blue;
-            vanillaOutput[i] = MapPalette.matchColor(new Color(inputColors[i], true));
+        for (int length : lengths) {
+            int[] inputColors = new int[length];
+            byte[] vanillaOutput = new byte[length];
+            byte[] simdOutput = new byte[length];
+
+            Random random = new Random(12345);
+            for (int i = 0; i < length; i++) {
+                int alpha = random.nextInt(256);
+                int red = random.nextInt(256);
+                int green = random.nextInt(256);
+                int blue = random.nextInt(256);
+                inputColors[i] = (alpha << 24) | (red << 16) | (green << 8) | blue;
+                vanillaOutput[i] = MapPalette.matchColor(new Color(inputColors[i], true));
+            }
+
+            VectorMapPalette.matchColorVectorized(inputColors, simdOutput);
+
+            assertArrayEquals(vanillaOutput, simdOutput);
         }
-
-        VectorMapPalette.matchColorVectorized(inputColors, simdOutput);
-
-        assertArrayEquals(vanillaOutput, simdOutput);
     }
 }

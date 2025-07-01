@@ -5,7 +5,7 @@
          // special cases.
          if (entity instanceof final LivingEntity living) {
 -            if (living.onClimbable() || living.jumping || living.hurtTime > 0 || !living.activeEffects.isEmpty() || living.isFreezing()) {
-+            if (living.onClimbableCached() || living.jumping || living.hurtTime > 0 || !living.activeEffects.isEmpty() || living.isFreezing()) { // Pufferfish - Cache climbing check for activation (use cached)
++            if (living.blockPosition().equals(living.getLastClimbablePos().orElse(null)) || living.jumping || living.hurtTime > 0 || !living.activeEffects.isEmpty() || living.isFreezing()) { // Pufferfork - port Paper#12764
                  return 1;
              }
              if (entity instanceof final Mob mob && mob.getTarget() != null) {

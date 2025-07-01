@@ -11,8 +11,8 @@ public class VectorMapPalette {
 	
 	private static final VectorSpecies<Integer> I_SPEC = IntVector.SPECIES_PREFERRED;
 	private static final VectorSpecies<Float> F_SPEC = FloatVector.SPECIES_PREFERRED;
-	private static final int paletteSize = MapPalette.getColors().length;
 	private static final Color[] colors = MapPalette.getColors();
+	private static final int paletteSize = colors.length;
 	private static final FloatVector[] cachedCompReds;
 	private static final FloatVector[] cachedCompGreens;
 	private static final FloatVector[] cachedCompBlues;
@@ -93,6 +93,5 @@ public class VectorMapPalette {
 		for (; i < in.length; i++) {
 			out[i] = MapPalette.matchColor(new Color(in[i], true));
 		}
-	}
-	
+	}	
 }

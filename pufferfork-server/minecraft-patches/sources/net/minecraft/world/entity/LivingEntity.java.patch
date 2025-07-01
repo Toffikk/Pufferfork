@@ -28,23 +28,3 @@
      @Override
      protected float getBlockSpeedFactor() {
          return Mth.lerp((float)this.getAttributeValue(Attributes.MOVEMENT_EFFICIENCY), super.getBlockSpeedFactor(), 1.0F);
-@@ -2119,6 +_,19 @@
-     public Optional<BlockPos> getLastClimbablePos() {
-         return this.lastClimbablePos;
-     }
-+
-+    // Pufferfish start - Cache climbing check for activation
-+    private boolean cachedOnClimbable = false;
-+    private BlockPos lastClimbingPosition = null;
-+
-+    public boolean onClimbableCached() {
-+        if (!this.blockPosition().equals(this.lastClimbingPosition)) {
-+            this.cachedOnClimbable = this.onClimbable();
-+            this.lastClimbingPosition = this.blockPosition();
-+        }
-+        return this.cachedOnClimbable;
-+    }
-+    // Pufferfish end
- 
-     public boolean onClimbable() {
-         if (this.isSpectator()) {

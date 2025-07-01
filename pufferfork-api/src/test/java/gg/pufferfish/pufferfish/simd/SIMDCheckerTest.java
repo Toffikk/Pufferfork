@@ -14,11 +14,7 @@ import static org.mockito.Mockito.*;
 
 @SuppressWarnings({"deprecation", "removal", "unchecked"})
 class SIMDCheckerTest {
-
-    /*
-     * Modify tests that depend on java version on java updates!
-     */
-
+    
     private Logger mockLogger;
 
     @BeforeEach
