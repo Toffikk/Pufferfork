@@ -65,6 +65,7 @@ public class ServerConfigurations {
         for (String file : configurationFiles) {
             files.put(file, getCleanCopy(file));
         }
+
         MinecraftServer server = MinecraftServer.getServer();
         for (ServerLevel serverLevel : server.getAllLevels()) {
             File worldDir = serverLevel.getWorld().getWorldFolder();
@@ -86,7 +87,6 @@ public class ServerConfigurations {
         return false;
     }
 
-    @SuppressWarnings("deprecation")
     public static String getCleanCopy(String configName) throws IOException {
         File file = new File(configName);
 
