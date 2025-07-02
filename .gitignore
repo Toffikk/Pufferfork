@@ -12,5 +12,5 @@ build
 /pufferfork-api/build.gradle.kts
 /paper-api
 /paper-api-generator
-
+RELEASE.md
 .idea/
