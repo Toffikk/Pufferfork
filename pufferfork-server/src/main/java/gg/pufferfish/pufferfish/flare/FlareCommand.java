@@ -5,7 +5,6 @@ import co.technove.flare.internal.profiling.ProfileType;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 
-import gg.pufferfish.pufferfish.PufferfishCommand;
 import gg.pufferfish.pufferfish.PufferfishConfig;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;

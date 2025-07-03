@@ -34,8 +34,8 @@ public class PufferfishConfig {
 	private static int updates = 0;
 	
 	private static ConfigurationSection convertToBukkit(org.simpleyaml.configuration.ConfigurationSection section) {
-		ConfigurationSection newSection = new MemoryConfiguration();
-		for (String key : section.getKeys(false)) {
+		final ConfigurationSection newSection = new MemoryConfiguration();
+		for (final String key : section.getKeys(false)) {
 			if (section.isConfigurationSection(key)) {
 				newSection.set(key, convertToBukkit(section.getConfigurationSection(key)));
 			} else {
@@ -54,12 +54,12 @@ public class PufferfishConfig {
 	}
 	
 	public static void load() throws IOException {
-		File configFile = gg.pufferfish.pufferfish.compat.ServerConfigurations.pufferfishConfig;
+		final File configFile = gg.pufferfish.pufferfish.flare.collectors.config.ConfigCollector.pufferfishConfig;
 		
 		if (configFile.exists()) {
 			try {
 				config.load(configFile);
-			} catch (InvalidConfigurationException e) {
+			} catch (final InvalidConfigurationException e) {
 				throw new IOException(e);
 			}
 		}
@@ -70,13 +70,13 @@ public class PufferfishConfig {
 				"DM me for support on discord: karmuss; or preferably open an issue on the issue tracker",
 				"Download new builds on the github releases page");
 		
-		for (Method method : PufferfishConfig.class.getDeclaredMethods()) {
+		for (final Method method : PufferfishConfig.class.getDeclaredMethods()) {
 			if (Modifier.isStatic(method.getModifiers()) && Modifier.isPrivate(method.getModifiers()) && method.getParameterCount() == 0 &&
 					method.getReturnType() == Void.TYPE && !method.getName().startsWith("lambda")) {
 				method.setAccessible(true);
 				try {
 					method.invoke(null);
-				} catch (Throwable t) {
+				} catch (final Throwable t) {
 					MinecraftServer.LOGGER.warn("Failed to load configuration option from " + method.getName(), t);
 				}
 			}
@@ -91,7 +91,7 @@ public class PufferfishConfig {
 		try {
 			SIMDDetection.isEnabled = SIMDDetection.canEnable(PufferfishLogger.LOGGER);
 			SIMDDetection.versionLimited = isLimitDisabled ? false : SIMDDetection.getJavaVersion() < SIMDDetection.MIN_JAVA_VERSION || SIMDDetection.getJavaVersion() > SIMDDetection.MAX_JAVA_VERSION;
-		} catch (NoClassDefFoundError | Exception ignored) {
+		} catch (final NoClassDefFoundError | Exception ignored) {
 			ignored.printStackTrace();
 		}
 		

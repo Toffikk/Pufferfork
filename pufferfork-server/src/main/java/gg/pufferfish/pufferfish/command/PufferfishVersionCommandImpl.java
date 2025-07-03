@@ -1,4 +1,4 @@
-package gg.pufferfish.pufferfish;
+package gg.pufferfish.pufferfish.command;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -13,7 +13,7 @@ import com.mojang.brigadier.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.Bukkit;
 
-public class PufferfishVersionCommand {
+public class PufferfishVersionCommandImpl {
     public static final String DESCRIPTION = "Returns the server version";
 
     final TextComponent prefix = Component.text()
@@ -33,8 +33,8 @@ public class PufferfishVersionCommand {
                 .decoration(TextDecoration.BOLD, true)
                 .build();
 
-            TextComponent versionMessage = Component.text("This server is running " + Bukkit.getName() + " version " + Bukkit.getVersion() + " (Implementing API version " + Bukkit.getBukkitVersion() + ")");
-            TextComponent versionComponent = Component.text()
+            final TextComponent versionMessage = Component.text("This server is running " + Bukkit.getName() + " version " + Bukkit.getVersion() + " (Implementing API version " + Bukkit.getBukkitVersion() + ")");
+            final TextComponent versionComponent = Component.text()
                 .color(TextColor.color(0xe8f9f9))
                 .append(commandSender)
                 .append(prefix)

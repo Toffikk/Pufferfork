@@ -1,5 +1,8 @@
 package gg.pufferfish.pufferfish;
 
+ // here lies an unused class
+
+/*
 import com.destroystokyo.paper.VersionHistoryManager;
 import com.destroystokyo.paper.util.VersionFetcher;
 import com.google.gson.Gson;
@@ -130,3 +133,4 @@ public class PufferfishVersionFetcher implements VersionFetcher {
 		return Component.text("Previous version: " + oldVersion, NamedTextColor.GRAY, TextDecoration.ITALIC);
 	}
 }
+*/

@@ -1,4 +1,4 @@
-package gg.pufferfish.pufferfish;
+package gg.pufferfish.pufferfish.command;
 
 import java.io.IOException;
 import net.kyori.adventure.text.Component;
@@ -12,8 +12,9 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.Command;
 import net.minecraft.server.MinecraftServer;
 import org.bukkit.command.CommandSender;
+import gg.pufferfish.pufferfish.PufferfishConfig;
 
-public class PufferfishReloadCommand {
+public class PufferfishReloadCommandImpl {
     public static final String DESCRIPTION = "Reloads the pufferfork configuration files";
 
     final TextComponent prefix = Component.text()
@@ -28,7 +29,7 @@ public class PufferfishReloadCommand {
     }
 
     private void sendReloadCommand(final CommandSender sender) {
-            MinecraftServer console = MinecraftServer.getServer();
+            final MinecraftServer console = MinecraftServer.getServer();
             final TextComponent commandSender = Component.text()
                 .append(Component.text(sender.getName() + ":"))
                 .decoration(TextDecoration.BOLD, true)
@@ -36,13 +37,13 @@ public class PufferfishReloadCommand {
 
             try {
                 PufferfishConfig.load();
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 sender.sendMessage(Component.text("Failed to reload.", NamedTextColor.RED));
                 e.printStackTrace();
             }
             console.server.reloadCount++;
 
-            TextComponent reloadComponent = Component.text()
+            final TextComponent reloadComponent = Component.text()
                 .color(TextColor.color(0xe8f9f9))
                 .append(commandSender)
                 .append(prefix)

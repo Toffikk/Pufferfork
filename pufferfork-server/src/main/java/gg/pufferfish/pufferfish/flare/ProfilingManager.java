@@ -7,7 +7,7 @@ import co.technove.flare.exceptions.UserReportableException;
 import co.technove.flare.internal.profiling.ProfileType;
 import gg.pufferfish.pufferfish.PufferfishConfig;
 import gg.pufferfish.pufferfish.PufferfishLogger;
-import gg.pufferfish.pufferfish.compat.ServerConfigurations;
+import gg.pufferfish.pufferfish.flare.collectors.config.ConfigCollector;
 import gg.pufferfish.pufferfish.flare.collectors.GCEventCollector;
 import gg.pufferfish.pufferfish.flare.collectors.StatCollector;
 import gg.pufferfish.pufferfish.flare.collectors.TPSCollector;
@@ -81,7 +81,7 @@ public class ProfilingManager {
                 .withMemoryProfiling(true)
                 .withAuth(FlareAuth.fromTokenAndUrl(PufferfishConfig.accessToken, PufferfishConfig.profileWebUrl))
 
-                .withFiles(ServerConfigurations.getCleanCopies())
+                .withFiles(ConfigCollector.getCleanCopies())
                 .withVersion("Primary Version", Bukkit.getVersion())
                 .withVersion("Bukkit Version", Bukkit.getBukkitVersion())
                 .withVersion("Minecraft Version", Bukkit.getMinecraftVersion())
