@@ -1,0 +1,46 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Paul <paul@technove.co>
+Date: Fri, 2 Jul 2021 18:25:18 -0500
+Subject: [PATCH] Reduce entity allocations
+
+
+diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
+index 27ab1deb51330c90cef2112b2e28075b2719332d..fe89f4b3eaf73b9b166edb78ec573d410fd12cab 100644
+--- a/net/minecraft/world/entity/Entity.java
++++ b/net/minecraft/world/entity/Entity.java
+@@ -366,6 +366,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+     private final int despawnTime; // Paper - entity despawn time limit
+     public boolean activatedPriorityReset = false; // Pufferfish - DAB
+     public int activatedPriority = gg.pufferfish.pufferfish.PufferfishConfig.maximumActivationPrio; // Pufferfish - DAB (golf score)
++    public final BlockPos.MutableBlockPos cachedBlockPos = new BlockPos.MutableBlockPos(); // Pufferfish - reduce entity allocations
+     public int totalEntityAge; // Paper - age-like counter for all entities
+     public final io.papermc.paper.entity.activation.ActivationType activationType = io.papermc.paper.entity.activation.ActivationType.activationTypeFor(this); // Paper - EAR 2/tracking ranges
+     // Paper start - EAR 2
+diff --git a/net/minecraft/world/entity/ai/attributes/AttributeMap.java b/net/minecraft/world/entity/ai/attributes/AttributeMap.java
+index fdb02fc40579866167e8cc9bcefbd961588b53a6..53783c5b7d978f3210bb65b45549ac18b8edef09 100644
+--- a/net/minecraft/world/entity/ai/attributes/AttributeMap.java
++++ b/net/minecraft/world/entity/ai/attributes/AttributeMap.java
+@@ -18,9 +18,11 @@ public class AttributeMap {
+     private final Set<AttributeInstance> attributesToSync = new ObjectOpenHashSet<>();
+     private final Set<AttributeInstance> attributesToUpdate = new ObjectOpenHashSet<>();
+     private final AttributeSupplier supplier;
++    private final java.util.function.Function<Holder<Attribute>, AttributeInstance> createInstance; // Pufferfish
+ 
+     public AttributeMap(AttributeSupplier supplier) {
+         this.supplier = supplier;
++        this.createInstance = holder -> this.supplier.createInstance(this::onAttributeModified, holder); // Pufferfish
+     }
+ 
+     private void onAttributeModified(AttributeInstance instance) {
+@@ -42,9 +44,10 @@ public class AttributeMap {
+         return this.attributes.values().stream().filter(instance -> instance.getAttribute().value().isClientSyncable()).collect(Collectors.toList());
+     }
+ 
++
+     @Nullable
+     public AttributeInstance getInstance(Holder<Attribute> attribute) {
+-        return this.attributes.computeIfAbsent(attribute, holder -> this.supplier.createInstance(this::onAttributeModified, (Holder<Attribute>)holder));
++        return this.attributes.computeIfAbsent(attribute, createInstance);
+     }
+ 
+     public boolean hasAttribute(Holder<Attribute> attribute) {

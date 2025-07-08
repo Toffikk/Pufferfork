@@ -1,5 +1,11 @@
-pufferfish-api
-pufferfish-server
+pufferfish-api/build.gradle.kts
+pufferfish-api/bin
+pufferfish-server/build.gradle.kts
+pufferfish-server/src/minecraft
+pufferfish-server/bin
+
+paper-api
+paper-server
 paper-api-generator
 
 build/

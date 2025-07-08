@@ -1,0 +1,48 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Paul Sauve <paul@technove.co>
+Date: Sun, 13 Dec 2020 17:53:08 -0600
+Subject: [PATCH] Only check for spooky season once an hour
+
+Airplane
+Copyright (C) 2020 Technove LLC
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+diff --git a/net/minecraft/world/entity/ambient/Bat.java b/net/minecraft/world/entity/ambient/Bat.java
+index 912b099a51269f92f250c7d6094ad41817749f93..435833b0672d21d3ad791ab3f197755e23c6dd7f 100644
+--- a/net/minecraft/world/entity/ambient/Bat.java
++++ b/net/minecraft/world/entity/ambient/Bat.java
+@@ -245,12 +245,21 @@ public class Bat extends AmbientCreature {
+         }
+     }
+ 
++    // Pufferfish start - only check for spooky season once an hour
++    private static boolean isSpookySeason = false;
++    private static final int ONE_HOUR = 20 * 60 * 60;
++    private static int lastSpookyCheck = -ONE_HOUR;
+     private static boolean isHalloween() {
++        if (net.minecraft.server.MinecraftServer.currentTick - lastSpookyCheck > ONE_HOUR) {
+         LocalDate localDate = LocalDate.now();
+         int i = localDate.get(ChronoField.DAY_OF_MONTH);
+         int i1 = localDate.get(ChronoField.MONTH_OF_YEAR);
+-        return i1 == 10 && i >= 20 || i1 == 11 && i <= 3;
++        isSpookySeason = i1 == 10 && i >= 20 || i1 == 11 && i <= 3;
++        lastSpookyCheck = net.minecraft.server.MinecraftServer.currentTick;
++        }
++        return isSpookySeason;
+     }
++    // Pufferfish end
+ 
+     private void setupAnimationStates() {
+         if (this.isResting()) {

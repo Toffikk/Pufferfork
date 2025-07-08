@@ -1,0 +1,23 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Kevin Raneri <kevin.raneri@gmail.com>
+Date: Tue, 30 May 2023 22:22:31 -0400
+Subject: [PATCH] Option to disable end crystal dragon respawning
+
+On servers that expect end crystal fights in the end dimension,
+disabling this will prevent the server from performing an expensive
+search to attempt respawning the ender dragon whenever a player places
+an end crystal.
+
+diff --git a/net/minecraft/world/item/EndCrystalItem.java b/net/minecraft/world/item/EndCrystalItem.java
+index 05ec512839898f96d9769bb0d00f6ba11dda0c4b..37a1531d57cc7da0e9c914301787be45799677e4 100644
+--- a/net/minecraft/world/item/EndCrystalItem.java
++++ b/net/minecraft/world/item/EndCrystalItem.java
+@@ -50,7 +50,7 @@ public class EndCrystalItem extends Item {
+                         level.addFreshEntity(endCrystal);
+                         level.gameEvent(context.getPlayer(), GameEvent.ENTITY_PLACE, blockPos);
+                         EndDragonFight dragonFight = ((ServerLevel)level).getDragonFight();
+-                        if (dragonFight != null) {
++                        if (dragonFight != null && gg.pufferfish.pufferfish.PufferfishConfig.allowEndCrystalRespawn) { // Pufferfish
+                             dragonFight.tryRespawn(aboveBlockPos); // Paper - Perf: Do crystal-portal proximity check before entity lookup
+                         }
+                     }

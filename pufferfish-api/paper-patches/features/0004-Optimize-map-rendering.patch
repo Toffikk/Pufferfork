@@ -1,0 +1,45 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Kevin Raneri <kevin.raneri@gmail.com>
+Date: Tue, 8 Feb 2022 12:53:02 -0500
+Subject: [PATCH] Optimize map rendering
+
+This patch does not add any API that should be used by plugins. Any
+classes and methods added by this patch should NOT be used in plugins.
+
+diff --git a/src/main/java/org/bukkit/map/MapPalette.java b/src/main/java/org/bukkit/map/MapPalette.java
+index 2b9e4aa8cf35e7106e510e547954ee7e1bcf3d81..68b10b5f2ba6b89088e36082090e5c965c75692d 100644
+--- a/src/main/java/org/bukkit/map/MapPalette.java
++++ b/src/main/java/org/bukkit/map/MapPalette.java
+@@ -1,6 +1,7 @@
+ package org.bukkit.map;
+ 
+ import com.google.common.base.Preconditions;
++import gg.pufferfish.pufferfish.simd.SIMDDetection; // Pufferfish
+ import java.awt.Color;
+ import java.awt.Graphics2D;
+ import java.awt.Image;
+@@ -35,7 +36,7 @@ public final class MapPalette {
+     }
+ 
+     @NotNull
+-    static final Color[] colors = {
++    public static final Color[] colors = { // Pufferfish - public access
+         // Start generate - MapPalette#colors
+         // @GeneratedFrom 1.21.7
+         new Color(0x00000000, true),
+@@ -395,9 +396,15 @@ public final class MapPalette {
+         temp.getRGB(0, 0, temp.getWidth(), temp.getHeight(), pixels, 0, temp.getWidth());
+ 
+         byte[] result = new byte[temp.getWidth() * temp.getHeight()];
++        // Pufferfish start
++        if (!SIMDDetection.isEnabled) {
+         for (int i = 0; i < pixels.length; i++) {
+             result[i] = matchColor(new Color(pixels[i], true));
+         }
++        } else {
++            gg.pufferfish.pufferfish.simd.VectorMapPalette.matchColorVectorized(pixels, result);
++        }
++        // Pufferfish end
+         return result;
+     }
+ 
