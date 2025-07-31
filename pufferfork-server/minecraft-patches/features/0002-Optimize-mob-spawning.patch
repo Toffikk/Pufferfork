@@ -17,7 +17,7 @@ and, in my opinion, worth the low risk of minor mob-spawning-related
 inconsistencies.
 
 diff --git a/net/minecraft/server/MinecraftServer.java b/net/minecraft/server/MinecraftServer.java
-index dcd85759618a29a1335feeca293986d49fecf600..344dfca4bd22fb96ddf448e6c51991d67ff6f3c0 100644
+index f84b90cd0fc78847df8beee879a692fa7d3af3e0..2ff89a70f120a440ce9dfdaa67d75028acd578a2 100644
 --- a/net/minecraft/server/MinecraftServer.java
 +++ b/net/minecraft/server/MinecraftServer.java
 @@ -303,6 +303,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -29,7 +29,7 @@ index dcd85759618a29a1335feeca293986d49fecf600..344dfca4bd22fb96ddf448e6c51991d6
      public static <S extends MinecraftServer> S spin(Function<Thread, S> threadFunction) {
          ca.spottedleaf.dataconverter.minecraft.datatypes.MCTypeRegistry.init(); // Paper - rewrite data converter system
 diff --git a/net/minecraft/server/dedicated/DedicatedServer.java b/net/minecraft/server/dedicated/DedicatedServer.java
-index 12ec15908d6b60144a6ac3ca64daa88e32d0c314..10da4f2205fc7c5e1724cda6384d93721cf49480 100644
+index 20350fa481be37c3d6220a535f13ed5449c8389f..c3af8efb53da7154712af7631864053bd2754402 100644
 --- a/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -309,6 +309,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -41,7 +41,7 @@ index 12ec15908d6b60144a6ac3ca64daa88e32d0c314..10da4f2205fc7c5e1724cda6384d9372
          }
      }
 diff --git a/net/minecraft/server/level/ServerChunkCache.java b/net/minecraft/server/level/ServerChunkCache.java
-index 7d78d270b7a076f595301acd9b3c6275e804496e..eb03766b8b12201649c763f000448ef9ce23a015 100644
+index 2882cd829d4d8e1f8615f085f6908efcdf68ac62..b4618eae403b7587a2214ae9a21359c72c6c145f 100644
 --- a/net/minecraft/server/level/ServerChunkCache.java
 +++ b/net/minecraft/server/level/ServerChunkCache.java
 @@ -184,6 +184,8 @@ public class ServerChunkCache extends ChunkSource implements ca.spottedleaf.moon
@@ -154,16 +154,3 @@ index 7d78d270b7a076f595301acd9b3c6275e804496e..eb03766b8b12201649c763f000448ef9
              }
          }
      }
-diff --git a/net/minecraft/world/level/entity/EntityTickList.java b/net/minecraft/world/level/entity/EntityTickList.java
-index 423779a2b690f387a4f0bd07b97b50e0baefda76..f61b53be6c89706095630b571424baf86cf48fb7 100644
---- a/net/minecraft/world/level/entity/EntityTickList.java
-+++ b/net/minecraft/world/level/entity/EntityTickList.java
-@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
- import net.minecraft.world.entity.Entity;
- 
- public class EntityTickList {
--    private final ca.spottedleaf.moonrise.common.list.IteratorSafeOrderedReferenceSet<net.minecraft.world.entity.Entity> entities = new ca.spottedleaf.moonrise.common.list.IteratorSafeOrderedReferenceSet<>(); // Paper - rewrite chunk system
-+    public final ca.spottedleaf.moonrise.common.list.IteratorSafeOrderedReferenceSet<net.minecraft.world.entity.Entity> entities = new ca.spottedleaf.moonrise.common.list.IteratorSafeOrderedReferenceSet<>(); // Paper - rewrite chunk system // Pufferfish - optimize mob spawning (private -> public)
- 
-     private void ensureActiveIsNotIterated() {
-         // Paper - rewrite chunk system
