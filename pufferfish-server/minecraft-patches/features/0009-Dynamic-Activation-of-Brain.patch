@@ -78,7 +78,7 @@ index ae2bb9a73106febfe5f0d090abd4252bbb5fd27e..46c03573fdc0b6bb008428310da01d08
              }
          }
 diff --git a/net/minecraft/server/level/ServerLevel.java b/net/minecraft/server/level/ServerLevel.java
-index 72405159592f6c1becb69cd94f3f6bf43800f531..21d9302cb9ebd0cdcc3f65532acecdfdc3fa209c 100644
+index 6f285bea4b2824ae47f5cedfc1a4021220d582df..c971bf7c966aa0825c549ed88f2c7f8fb9e58156 100644
 --- a/net/minecraft/server/level/ServerLevel.java
 +++ b/net/minecraft/server/level/ServerLevel.java
 @@ -792,6 +792,7 @@ public class ServerLevel extends Level implements ServerEntityGetter, WorldGenLe
@@ -90,7 +90,7 @@ index 72405159592f6c1becb69cd94f3f6bf43800f531..21d9302cb9ebd0cdcc3f65532acecdfd
                              if (!tickRateManager.isEntityFrozen(entity)) {
                                  profilerFiller.push("checkDespawn");
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index 3d2c0a4d3a1f9d3e5cc6cd0cdb988ae1205de821..27ab1deb51330c90cef2112b2e28075b2719332d 100644
+index dbf498e194b6af248ecdf06da697cfa42da467ff..1f6c59f5fb132b1ca5c17280e29ac0e3184d0d03 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
 @@ -364,6 +364,8 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -115,10 +115,10 @@ index cdf71340278e05e58bbb4ed51a432336de46e549..c2d383a7054f4de8e5fff6dac316562d
      private Component description;
      private final Optional<ResourceKey<LootTable>> lootTable;
 diff --git a/net/minecraft/world/entity/Mob.java b/net/minecraft/world/entity/Mob.java
-index 0470c4bbf8be7e48ce8dfa4910c3b9f5ebb23360..a1ec18b3e5df1b211aca0767bf6331eaa43e348e 100644
+index e0b3cb2b2694768803ed347a1026b881fd624951..321dbb40fbe944eae329b8e9faae24c459d25603 100644
 --- a/net/minecraft/world/entity/Mob.java
 +++ b/net/minecraft/world/entity/Mob.java
-@@ -210,10 +210,10 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+@@ -211,10 +211,10 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
      @Override
      public void inactiveTick() {
          super.inactiveTick();
@@ -131,7 +131,7 @@ index 0470c4bbf8be7e48ce8dfa4910c3b9f5ebb23360..a1ec18b3e5df1b211aca0767bf6331ea
              this.targetSelector.tick();
          }
      }
-@@ -748,16 +748,20 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+@@ -761,16 +761,20 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
          int i = this.tickCount + this.getId();
          if (i % 2 != 0 && this.tickCount > 1) {
              profilerFiller.push("targetSelector");
