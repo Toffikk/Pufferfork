@@ -1,6 +1,6 @@
 --- a/src/main/java/org/bukkit/map/MapPalette.java
 +++ b/src/main/java/org/bukkit/map/MapPalette.java
-@@ -395,9 +_,15 @@
+@@ -394,9 +_,15 @@
          temp.getRGB(0, 0, temp.getWidth(), temp.getHeight(), pixels, 0, temp.getWidth());
  
          byte[] result = new byte[temp.getWidth() * temp.getHeight()];
@@ -16,7 +16,7 @@
          return result;
      }
  
-@@ -500,4 +_,18 @@
+@@ -511,4 +_,18 @@
          @org.jetbrains.annotations.ApiStatus.Internal // Paper
          byte matchColor(@NotNull Color color);
      }

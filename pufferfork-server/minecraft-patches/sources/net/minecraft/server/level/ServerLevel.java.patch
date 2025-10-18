@@ -1,6 +1,6 @@
 --- a/net/minecraft/server/level/ServerLevel.java
 +++ b/net/minecraft/server/level/ServerLevel.java
-@@ -808,7 +_,19 @@
+@@ -836,7 +_,19 @@
                                      }
  
                                      profilerFiller.push("tick");
@@ -21,7 +21,7 @@
                                      profilerFiller.pop();
                                  }
                              }
-@@ -943,7 +_,7 @@
+@@ -982,7 +_,7 @@
          int minBlockZ = pos.getMinBlockZ();
          ProfilerFiller profilerFiller = Profiler.get();
          profilerFiller.push("thunder");
