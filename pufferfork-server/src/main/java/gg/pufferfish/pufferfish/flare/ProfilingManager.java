@@ -106,7 +106,11 @@ public class ProfilingManager {
                     .setFamily(os.getFamily())
                     .setVersion(os.getVersionInfo().toString())
                     .setBitness(os.getBitness())
-                );
+                )
+
+                .withExceptionRunnable(() -> {
+                    FlareCommand.broadcastException();
+                });
 
             currentFlare = builder.build();
         } catch (IOException e) {

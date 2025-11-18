@@ -1,6 +1,6 @@
 --- a/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -2167,6 +_,7 @@
+@@ -2168,6 +_,7 @@
  
      @Override
      public void handlePaddleBoat(ServerboundPaddleBoatPacket packet) {

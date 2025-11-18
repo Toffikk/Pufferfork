@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/level/Level.java
 +++ b/net/minecraft/world/level/Level.java
-@@ -1431,15 +_,15 @@
+@@ -1432,15 +_,15 @@
      public <T extends Entity> void guardEntityTick(Consumer<T> action, T entity) {
          try {
              action.accept(entity);

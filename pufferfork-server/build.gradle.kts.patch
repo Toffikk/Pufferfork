@@ -47,7 +47,7 @@
  dependencies {
 -    implementation(project(":paper-api"))
 +    implementation(project(":pufferfork-api")) // Pufferfork
-     implementation("ca.spottedleaf:concurrentutil:0.0.5")
+     implementation("ca.spottedleaf:concurrentutil:0.0.7")
      implementation("org.jline:jline-terminal-ffm:3.27.1") // use ffm on java 22+
      implementation("org.jline:jline-terminal-jni:3.27.1") // fall back to jni on java 21
 @@ -162,6 +_,13 @@
@@ -59,7 +59,7 @@
 +        exclude(group="org.yaml", module="snakeyaml")
 +    }
 +    // Pufferfish end
-+    implementation("net.serlith:Flare:4.0.3") // Pufferfish - flare
++    implementation("net.serlith:Flare:4.0.9") // Pufferfish - flare
 +
      testImplementation("io.github.classgraph:classgraph:4.8.179") // For mob goal test
      testImplementation("org.junit.jupiter:junit-jupiter:5.12.2")

@@ -92,13 +92,15 @@ public class FlareCommand {
                 .executes(ctx -> {
                     CommandSender sender = ctx.getSource().getSender();
 
-                    String profile = ProfilingManager.getProfilingUri();
-                    if (ProfilingManager.stop()) {
-                        broadcastPrefixed(
-                            Component.text("Profiling has been stopped.", MAIN_COLOR),
-                            Component.text(profile, HEX).clickEvent(ClickEvent.openUrl(profile))
-                        );
-                    }
+                    MCUtil.scheduleAsyncTask(() -> {
+                        String profile = ProfilingManager.getProfilingUri();
+                        if (ProfilingManager.stop()) {
+                            broadcastPrefixed(
+                                    Component.text("Profiling has been stopped.", MAIN_COLOR),
+                                    Component.text(profile, HEX).clickEvent(ClickEvent.openUrl(profile))
+                            );
+                        }
+                    });
                 return Command.SINGLE_SUCCESS;
                 })
             )
@@ -195,6 +197,14 @@ public class FlareCommand {
                 }
             });
 
+    }
+
+    protected static void broadcastException() {
+        String profilingUri = ProfilingManager.getProfilingUri();
+        broadcastPrefixed(
+                Component.text("An exception happened and profiling has stopped", MAIN_COLOR),
+                Component.text(profilingUri, HEX).clickEvent(ClickEvent.openUrl(profilingUri))
+        );
     }
 
 }
