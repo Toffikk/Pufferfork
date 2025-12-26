@@ -39,6 +39,7 @@ public class FlareCommand {
         .append(Component.text("]", NamedTextColor.DARK_GRAY))
         .append(Component.text(" "))
         .build();
+    private static String PROFILING_URI = "";
 
     public static void init() {
 
@@ -92,13 +93,14 @@ public class FlareCommand {
                 .executes(ctx -> {
                     CommandSender sender = ctx.getSource().getSender();
 
-                    String profile = ProfilingManager.getProfilingUri();
-                    if (ProfilingManager.stop()) {
-                        broadcastPrefixed(
-                            Component.text("Profiling has been stopped.", MAIN_COLOR),
-                            Component.text(profile, HEX).clickEvent(ClickEvent.openUrl(profile))
-                        );
-                    }
+                    MCUtil.scheduleAsyncTask(() -> {
+                        if (ProfilingManager.stop()) {
+                            broadcastPrefixed(
+                                    Component.text("Profiling has been stopped.", MAIN_COLOR),
+                                    Component.text(PROFILING_URI, HEX).clickEvent(ClickEvent.openUrl(PROFILING_URI))
+                            );
+                        }
+                    });
                 return Command.SINGLE_SUCCESS;
                 })
             )
@@ -157,13 +159,14 @@ public class FlareCommand {
         MCUtil.scheduleAsyncTask(() -> {
             try {
                 if (ProfilingManager.start(profileType)) {
+                    PROFILING_URI = ProfilingManager.getProfilingUri();
                     broadcastPrefixed(
                         Component.text("Flare has been started!", MAIN_COLOR),
                         Component.text("It will run in the background for 15 minutes", NamedTextColor.GRAY),
                         Component.text("or until manually stopped using:", NamedTextColor.GRAY),
                         Component.text("  ").append(Component.text("/flare stop", NamedTextColor.WHITE).clickEvent(ClickEvent.runCommand("flare stop"))),
                         Component.text("Follow its progress here:", NamedTextColor.GRAY),
-                        Component.text(ProfilingManager.getProfilingUri(), HEX).clickEvent(ClickEvent.openUrl(ProfilingManager.getProfilingUri()))
+                        Component.text(PROFILING_URI, HEX).clickEvent(ClickEvent.openUrl(PROFILING_URI))
                     );
                 }
             } catch (UserReportableException e) {
@@ -195,6 +198,13 @@ public class FlareCommand {
                 }
             });
 
+    }
+
+    protected static void broadcastException() {
+        broadcastPrefixed(
+                Component.text("An exception happened and profiling has stopped", MAIN_COLOR),
+                Component.text(PROFILING_URI, HEX).clickEvent(ClickEvent.openUrl(PROFILING_URI))
+        );
     }
 
 }

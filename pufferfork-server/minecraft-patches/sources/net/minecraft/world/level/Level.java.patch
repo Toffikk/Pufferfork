@@ -1,9 +1,9 @@
 --- a/net/minecraft/world/level/Level.java
 +++ b/net/minecraft/world/level/Level.java
-@@ -1481,15 +_,15 @@
-     public <T extends Entity> void guardEntityTick(Consumer<T> consumerEntity, T entity) {
+@@ -1427,15 +_,15 @@
+     public <T extends Entity> void guardEntityTick(Consumer<T> action, T entity) {
          try {
-             consumerEntity.accept(entity);
+             action.accept(entity);
 -        } catch (Throwable var6) {
 +        } catch (Throwable var6) { // Pufferfish - Remove lambda from ticking guard (diff on change ServerLevel.tick)
              // Paper start - Prevent block entity and entity crashes

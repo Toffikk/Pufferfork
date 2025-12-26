@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/level/chunk/LevelChunk.java
 +++ b/net/minecraft/world/level/chunk/LevelChunk.java
-@@ -88,6 +_,17 @@
+@@ -94,6 +_,17 @@
      private final LevelChunkTicks<Block> blockTicks;
      private final LevelChunkTicks<Fluid> fluidTicks;
      private LevelChunk.UnsavedListener unsavedListener = chunkPos -> {};
@@ -18,7 +18,7 @@
      // CraftBukkit start
      public boolean mustNotSave;
      public boolean needsDecoration;
-@@ -158,6 +_,7 @@
+@@ -164,6 +_,7 @@
          this.postLoad = postLoad;
          this.blockTicks = blockTicks;
          this.fluidTicks = fluidTicks;
