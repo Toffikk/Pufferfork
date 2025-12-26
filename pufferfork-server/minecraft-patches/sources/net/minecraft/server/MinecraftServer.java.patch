@@ -1,6 +1,6 @@
 --- a/net/minecraft/server/MinecraftServer.java
 +++ b/net/minecraft/server/MinecraftServer.java
-@@ -1301,7 +_,7 @@
+@@ -1304,7 +_,7 @@
                      final long ticksBehind = Math.max(1L, this.tickSchedule.getPeriodsAhead(l, tickStart));
                      final long catchup = (long)Math.max(
                          1,
@@ -9,7 +9,7 @@
                      );
  
                      // adjust ticksBehind so that it is not greater-than catchup
-@@ -2722,6 +_,7 @@
+@@ -2707,6 +_,7 @@
      // CraftBukkit end
  
      private ProfilerFiller createProfiler() {

@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/entity/ambient/Bat.java
 +++ b/net/minecraft/world/entity/ambient/Bat.java
-@@ -246,11 +_,20 @@
+@@ -210,10 +_,19 @@
          }
      }
  
@@ -8,12 +8,11 @@
 +    private static boolean isSpookySeason = false;
 +    private static final int ONE_HOUR = 20 * 60 * 60;
 +    private static int lastSpookyCheck = -ONE_HOUR;
-     private static boolean isHalloween() {
 +        if (net.minecraft.server.MinecraftServer.currentTick - lastSpookyCheck > ONE_HOUR) {
-         LocalDate localDate = LocalDate.now();
-         int i = localDate.get(ChronoField.DAY_OF_MONTH);
-         int i1 = localDate.get(ChronoField.MONTH_OF_YEAR);
--        return i1 == 10 && i >= 20 || i1 == 11 && i <= 3;
+     @Override
+     protected void readAdditionalSaveData(ValueInput input) {
+         super.readAdditionalSaveData(input);
+-        this.entityData.set(DATA_ID_FLAGS, input.getByteOr("BatFlags", (byte)0));
 +        isSpookySeason = i1 == 10 && i >= 20 || i1 == 11 && i <= 3;
 +        lastSpookyCheck = net.minecraft.server.MinecraftServer.currentTick;
 +        }
@@ -21,4 +20,4 @@
 +        // Pufferfish end
      }
  
-     private void setupAnimationStates() {
+     @Override
